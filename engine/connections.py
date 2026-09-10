@@ -550,7 +550,9 @@ def _yahoo_status() -> Dict:
     if not os.path.exists(YAHOO_SECRETS):
         return {"connected": False, "stage": "unregistered",
                 "detail": "no data/yahoo_secrets.json - register the app "
-                          "per SETUP_YAHOO.md (about five minutes, once)"}
+                          "per SETUP_YAHOO.md. The form is five minutes; "
+                          "Fantasy API access is then reviewed by Yahoo by "
+                          "hand and is NOT instant, so start it now"}
     try:
         with open(YAHOO_SECRETS) as fh:
             s = json.load(fh)

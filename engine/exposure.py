@@ -17,6 +17,7 @@ league's known count falls short, so the flag's limits stay on screen.
 
 import glob
 import os
+import re
 from typing import Dict, List, Optional, Tuple
 
 import yaml
@@ -30,13 +31,19 @@ MATCH_THRESHOLD = 70  # same bar intel.py uses for research-doc names
 class LeagueRoster(object):
     """One league's known holdings, resolved to player keys."""
 
-    __slots__ = ("league_id", "name", "size", "keys", "unresolved", "path")
+    __slots__ = ("league_id", "name", "size", "keys", "unresolved", "path",
+                 "auto_refresh")
 
-    def __init__(self, league_id: str, name: str, size: int, path: str = ""):
+    def __init__(self, league_id: str, name: str, size: int, path: str = "",
+                 auto_refresh: bool = True):
         self.league_id = league_id
         self.name = name
         self.size = size
         self.path = path
+        # False only when the file says so (the paste importer stamps
+        # `auto_refresh: false`). A frozen roster is complete, so the
+        # coverage arithmetic never notices it - banner_text() has to.
+        self.auto_refresh = auto_refresh
         self.keys = set()        # resolved player keys
         self.unresolved = []     # names that did not match the pool
 
@@ -80,6 +87,12 @@ class Exposure(object):
             return exp
 
         for path in sorted(glob.glob(os.path.join(dirpath, "*.yaml"))):
+            # RETENTION: this loop is the one roster read that never passes
+            # through a league yaml, so engine/models.LeagueConfig.load's
+            # gate cannot cover it. A Yahoo roster past its 24-hour clock
+            # (Yahoo APIs ToU s2.1) is dropped rather than flagged from.
+            if cls._retention_expired(path):
+                continue
             roster = cls._load_file(path, matcher)
             if roster is None:
                 continue
@@ -91,6 +104,23 @@ class Exposure(object):
                 if roster.name not in names:
                     names.append(roster.name)
         return exp
+
+    @staticmethod
+    def _retention_expired(path: str) -> bool:
+        """True for a Yahoo-derived roster past its own 24-hour stamp.
+
+        Only `yahoo-<digits>.yaml` is ever a candidate - the same name test
+        engine/yahoo.expired_artifacts() uses - so a Sleeper, ESPN or
+        hand-written roster is not re-parsed and can never be dropped here.
+        """
+        stem = os.path.splitext(os.path.basename(path))[0]
+        if not re.match(r"^yahoo-\d+$", stem):
+            return False
+        try:
+            from engine import yahoo   # noqa: PLC0415
+            return yahoo.is_expired(path)
+        except Exception:  # noqa: BLE001 - a broken check never eats a roster
+            return False
 
     @staticmethod
     def _load_file(path: str, matcher) -> Optional["LeagueRoster"]:
@@ -114,7 +144,8 @@ class Exposure(object):
         except (TypeError, ValueError):
             size = 0
 
-        roster = LeagueRoster(league_id, name, size, path)
+        roster = LeagueRoster(league_id, name, size, path,
+                              auto_refresh=data.get("auto_refresh") is not False)
         for raw in raw_players:
             pname = str(raw.get("name", "")) if isinstance(raw, dict) else str(raw or "")
             pname = pname.strip()
@@ -172,13 +203,30 @@ class Exposure(object):
                 out.append((player, leagues))
         return out
 
+    def frozen(self) -> List[str]:
+        """Display names of rosters that do not refresh themselves."""
+        return [r.name for r in self.leagues if not r.auto_refresh]
+
     def banner_text(self) -> str:
-        """One-line coverage warning when any roster is partial, else ''."""
-        gaps = ["%s roster known %d/%d" % (r.name, len(r.keys), r.size)
-                for r in self.leagues if len(r.keys) < r.size]
-        if not gaps:
-            return ""
-        return "%s - no flag does NOT mean not rostered" % "; ".join(gaps)
+        """One line for what these flags cannot be trusted to say, else ''.
+
+        TWO failures, not one. A PARTIAL roster is missing names, so a flag's
+        absence means nothing. A FROZEN (paste-fed) roster is complete but
+        stale, so its flags describe whatever the roster looked like at the
+        last paste. The second used to be silent precisely because the
+        coverage arithmetic reads it as 100% known.
+        """
+        parts = ["%s roster known %d/%d" % (r.name, len(r.keys), r.size)
+                 for r in self.leagues if len(r.keys) < r.size]
+        line = ("%s - no flag does NOT mean not rostered" % "; ".join(parts)
+                if parts else "")
+        frozen = self.frozen()
+        if frozen:
+            stale = ("%s paste-fed - as old as the last paste, so these "
+                     "flags may name players who have since been dropped"
+                     % "; ".join(frozen))
+            line = "%s. %s" % (line, stale) if line else stale
+        return line
 
     def __len__(self):
         return len(self._flags)

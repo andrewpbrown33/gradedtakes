@@ -911,9 +911,19 @@ def build_digest(league_id: str, week: int, force: bool = False,
             notes.append("priority league: a claim spends queue position, "
                          "not budget. MY QUEUE: %s."
                          % waivers.priority_position_note(league))
-        if getattr(league, "platform", "") == "yahoo":
-            notes.append("Kid's Table uses FAB; waivers process Tuesday - "
-                         "bids in by Monday night.")
+        # THIS LEAGUE's name and THIS league's waiver mode. Both were once
+        # hardcoded to the author's own league ("Kid's Table uses FAB;
+        # waivers process Tuesday"), which put one owner's league name and
+        # one owner's waiver schedule onto every Yahoo league's page - a
+        # cross-tenant leak that publish.py's pre-flight refuses, and a
+        # false claim besides. Nothing here may name a league we are not
+        # rendering. The processing day is NOT read from Yahoo, so it is
+        # given as Yahoo's default and labelled as one.
+        if getattr(league, "platform", "") == "yahoo" and waiver_mode == "faab":
+            notes.append("%s uses FAB (blind budget bids). Yahoo's default "
+                         "is Tuesday processing with bids in the night "
+                         "before - we do not read your league's waiver "
+                         "schedule, so confirm it in Yahoo." % league.name)
         return render_waivers(ranked, victim, drop_note, roster, notes,
                               mode=waiver_mode)
 
@@ -933,6 +943,9 @@ def build_digest(league_id: str, week: int, force: bool = False,
                              sigmas=lineup_mod.position_sigma(),
                              matcher=matcher)
         notes = []
+        stale = lineup_mod.stale_note(roster_l)
+        if stale:
+            notes.append(stale)
         if roster_l and len(roster_l["players"]) < roster_l["size"]:
             notes.append("lineup uses KNOWN players only (%d of %d) - an "
                          "open slot means no known player fits, not an "

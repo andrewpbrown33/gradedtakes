@@ -1738,6 +1738,7 @@ def cmd_publish(args, log=print):
     public_dir = args.out_dir
     _warn_shared_exposure(everyone, targets, args.roster_dir, log,
                           root=args.root)
+    _warn_yahoo_retention(targets, args.league_dir, args.roster_dir, log)
 
     if args.plan:
         log("PLAN ONLY — no renderer was run and nothing was written.")
@@ -1905,6 +1906,51 @@ def _warn_shared_exposure(everyone, targets, roster_dir, log, root=None):
             "be published for anyone. See docs/DEPLOY.md, \"cross-league "
             "exposure\".")
         break
+
+
+def _warn_yahoo_retention(targets, league_dir, roster_dir, log):
+    """Say, BEFORE ten minutes of rendering, which Yahoo pages will fail.
+
+    Yahoo APIs Terms of Use s2.1 caps retention of Yahoo user data at 24
+    hours, and engine/yahoo.py stamps every artifact it writes with its own
+    expiry. The refusal itself lives on the READ - engine/models.LeagueConfig
+    .load raises YahooRetentionError, and engine/exposure drops an expired
+    roster - so an expired league's pages simply do not render and the index
+    says why. That is deliberate: one person's stale Yahoo league must not
+    stop the publish for everyone, which is the failure mode this whole file
+    exists to avoid.
+
+    This is the early, legible half of that. It predicts the missing pages
+    and names the fix. It never refuses and never silences anything.
+    """
+    try:
+        from engine import yahoo   # noqa: PLC0415
+    except Exception:  # noqa: BLE001 - a missing module is not this run's job
+        return
+    league_dir = league_dir or LEAGUE_DIR
+    roster_dir = roster_dir or ROSTER_DIR
+    for p in targets:
+        stale = []
+        for lid in p.leagues:
+            for d in (league_dir, roster_dir):
+                path = os.path.join(d, "%s.yaml" % lid)
+                try:
+                    if os.path.exists(path) and yahoo.is_expired(path):
+                        stale.append(path)
+                except Exception:  # noqa: BLE001
+                    continue
+        if not stale:
+            continue
+        log("")
+        log("NOTE — %d Yahoo artifact(s) for %s are past the 24-hour "
+            "retention clock (Yahoo APIs Terms of Use s2.1):"
+            % (len(stale), p.name))
+        for path in stale:
+            log("    %s" % path)
+        log("  Those pages will NOT render — reading them is the violation "
+            "the stamp exists to prevent. Everything else still publishes. "
+            "Refresh with `./yahoo.sh import`, or drop them with "
+            "`./yahoo.sh purge`.")
 
 
 def _report_orphans(public_dir, people, log, prune=False):

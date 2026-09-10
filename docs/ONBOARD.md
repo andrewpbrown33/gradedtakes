@@ -195,6 +195,15 @@ told the *user* to register their own developer app. That was a single-user
 desktop design. Now there is one app — yours — and each person authorises it
 for themselves.
 
+**Before any of this works, once:** do steps 1–2 of
+[`SETUP_YAHOO.md`](../SETUP_YAHOO.md) — register the app, *and* apply for
+Fantasy API access at <https://sports.yahoo.com/developer/access/>. **Yahoo
+reviews that application by hand and it is not instant.** Until it is
+approved, Fantasy reads come back 403 and no friend's import will work, no
+matter how clean the consent round-trip looks. Register now so the clock
+starts; the panel reports Yahoo as `unregistered` until `data/yahoo_secrets
+.json` is on disk, and that status only covers the form, not the review.
+
 **In the panel:** Leagues → Yahoo → **Generate consent link**. Copy it.
 
 **Send them this, with the link:**

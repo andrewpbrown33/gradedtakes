@@ -2960,6 +2960,9 @@ def gather_league(league_id: str, week: int, force: bool = False,
     snap["_matcher"] = matcher
 
     roster = lineup_mod.load_roster(league_id, dirpath=roster_dir)
+    stale = lineup_mod.stale_note(roster)
+    if stale:
+        snap["notes"].append(stale)
     names = roster["players"] if roster else []
     if not names:
         snap["notes"].append(

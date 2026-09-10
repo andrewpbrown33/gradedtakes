@@ -255,8 +255,27 @@ class LeagueConfig(object):
 
     @classmethod
     def load(cls, path: str) -> "LeagueConfig":
+        """Parse one league yaml.
+
+        RETENTION GATE. Yahoo APIs Terms of Use s2.1 caps how long Yahoo
+        user data may be kept, and engine/yahoo.py stamps every artifact it
+        writes with `yahoo_retention_expires_at`. Stamping a file and then
+        serving it anyway is the same violation with better paperwork, so
+        the refusal belongs on the READ, here, where every renderer passes -
+        not in a purge command someone has to remember to type. Raises
+        engine.yahoo.YahooRetentionError; callers that already guard a bad
+        league yaml (engine/home.gather_league) surface it on the card, and
+        the ones that do not fail the page loudly, which is the point.
+
+        Only a file carrying the stamp pays for the check, so a Sleeper,
+        ESPN or hand-written config costs nothing and never trips it.
+        """
         with open(path, "r") as fh:
-            return cls(yaml.safe_load(fh) or {}, path)
+            data = yaml.safe_load(fh) or {}
+        if isinstance(data, dict) and data.get("yahoo_retention_expires_at"):
+            from engine import yahoo   # noqa: PLC0415 - avoids a cycle
+            yahoo.require_fresh(path)
+        return cls(data, path)
 
     @property
     def ppr(self) -> float:

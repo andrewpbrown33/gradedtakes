@@ -191,7 +191,16 @@ def p_first_beats(proj_a: float, proj_b: float,
 
 def load_roster(league_id: str,
                 dirpath: Optional[str] = None) -> Optional[Dict]:
-    """Parse data/rosters/<league>.yaml -> {name, size, players} or None."""
+    """Parse data/rosters/<league>.yaml -> {name, size, players, ...} or None.
+
+    Also carries `source` and `auto_refresh` straight off the file. A roster
+    written by the paste importer (engine/espn_public.import_pasted_league)
+    stamps `auto_refresh: false` because a private ESPN league cannot be
+    re-read: every number downstream is as old as the last paste. That fact
+    is useless on disk, so stale_note() turns it into a line every renderer
+    puts on the page. A file without the key reads as auto_refresh True -
+    the shape every roster yaml predating the field assumed.
+    """
     import yaml
     path = os.path.join(dirpath or ROSTER_DIR, "%s.yaml" % league_id)
     if not os.path.exists(path):
@@ -214,7 +223,28 @@ def load_roster(league_id: str,
     except (TypeError, ValueError):
         size = 0
     return {"name": str(data.get("name") or league_id),
-            "size": size or len(names), "players": names, "path": path}
+            "size": size or len(names), "players": names, "path": path,
+            "source": str(data.get("source") or "").strip().lower(),
+            "auto_refresh": data.get("auto_refresh") is not False,
+            "stamped_at": str(data.get("pasted_at")
+                              or data.get("fetched_at") or "").strip()}
+
+
+def stale_note(roster: Optional[Dict]) -> str:
+    """One line saying this roster does not refresh itself, else ''.
+
+    A frozen roster is COMPLETE, not partial, so no coverage banner fires
+    for it - which is exactly how a paste-fed page came to present month-old
+    numbers as current. Every renderer that shows a roster calls this.
+    """
+    if not roster or roster.get("auto_refresh", True):
+        return ""
+    when = roster.get("stamped_at") or "an unrecorded time"
+    src = roster.get("source") or "a manual import"
+    return ("%s is PASTE-FED (%s, %s) - it does NOT refresh on its own, so "
+            "every number on this page is as old as that paste. Re-paste the "
+            "roster after every add, drop or trade."
+            % (roster.get("name") or "this roster", src, when))
 
 
 def resolve_roster(names: List[str], proj: Dict[str, Dict], matcher=None

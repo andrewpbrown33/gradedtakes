@@ -1,0 +1,47 @@
+{
+  "people": {
+    "Andrew": {
+      "assertions": {
+        "all_pages_rendered": true,
+        "every_page_stamped": true,
+        "no_foreign_league": true,
+        "no_loopback": true,
+        "week_matches": true
+      },
+      "directory": "/Users/andrewbrown/Desktop/War Room/public/fe9vpAEH4rNtuW965jbS-a_XC-CL7qjEWBNPxflCX9w",
+      "expected_week": 1,
+      "failures": [],
+      "leagues": [
+        "espn-1",
+        "yahoo-main"
+      ],
+      "ok": true,
+      "page_files": [
+        "home.html",
+        "lineup-espn-1-week1.html",
+        "lineup-yahoo-main-week1.html",
+        "board-espn-1-week1.html",
+        "board-yahoo-main-week1.html",
+        "digest-espn-1-week1.html",
+        "digest-yahoo-main-week1.html",
+        "tradedesk-espn-1-week1.html",
+        "tradedesk-yahoo-main-week1.html",
+        "sources.html"
+      ],
+      "pages": 10,
+      "person": "Andrew",
+      "person_fingerprint": "a30a76067342",
+      "published_at": "2026-09-10T03:40:44Z",
+      "pwa": true,
+      "schema": "warroom.publish.heartbeat/2",
+      "stamped_weeks": [
+        1
+      ],
+      "token_fingerprint": "a30a76067342",
+      "week": 1
+    }
+  },
+  "public_dir": "/Users/andrewbrown/Desktop/War Room/public",
+  "schema": "warroom.publish.heartbeat/2",
+  "written_at": "2026-09-10T03:42:01Z"
+}

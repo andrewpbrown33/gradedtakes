@@ -195,6 +195,14 @@ def load_my_roster(league_id: str, matcher: Matcher,
                   "players only (positive-only semantics)"
                   % (roster.name, len(roster.keys), roster.size,
                      len(roster.keys)))
+    if not roster.auto_refresh:
+        # A paste-fed roster is COMPLETE, so the count above never fires for
+        # it - and a stale roster grades the wire against players who may
+        # already be gone. Say so on the same line, always.
+        stale = ("%s is PASTE-FED - it does not refresh on its own, so this "
+                 "wire was graded against whatever the roster looked like at "
+                 "the last paste" % roster.name)
+        banner = "%s. %s" % (banner, stale) if banner else stale
     return roster, banner
 
 

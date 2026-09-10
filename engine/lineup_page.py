@@ -1174,6 +1174,9 @@ def build_page(league_id: str, week: int, force: bool = False,
                      "projection feed only" % league.rankings_csv)
 
     roster = lineup_mod.load_roster(league_id, dirpath=roster_dir)
+    stale = lineup_mod.stale_note(roster)
+    if stale:
+        notes.insert(0, stale)
 
     try:
         proj = weekly.fetch_weekly_projections(week, scoring=scoring,

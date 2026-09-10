@@ -419,15 +419,33 @@ def test_config():
     finally:
         r.close()
 
-    shipped = os.path.join(HERE, "users.yaml")
-    check(os.path.exists(shipped), "users.yaml ships with the project")
+    # A FRESH CHECKOUT MUST FAIL CLOSED. This used to read the live
+    # users.yaml - which is gitignored and, the moment the owner configures
+    # himself, valid. The suite then went red for the one reason that is not
+    # a bug: the product being in use. Assert the PROPERTY instead, against a
+    # template written here, so it holds whatever the owner's real file says.
+    r = Root()
     try:
-        publish.load_users(shipped)
-        check(False, "the shipped users.yaml template must not publish")
+        with open(r.users, "w") as fh:
+            fh.write("people:\n"
+                     "  - name: Example Person\n"
+                     "    email: example.person@example.invalid\n"
+                     "    token: PUT-A-REAL-TOKEN-HERE-SEE-COMMENTS-ABOVE\n"
+                     "    leagues:\n"
+                     "      - example-league\n")
+        publish.load_users(r.users, league_dir=r.leagues)
+        check(False, "a placeholder token must not publish")
     except publish.ConfigError as exc:
         check("token" in str(exc).lower(),
-              "the shipped users.yaml template refuses to publish (its token "
-              "is a placeholder), so a fresh checkout fails closed")
+              "a placeholder token refuses to publish, so a fresh checkout "
+              "fails closed")
+    finally:
+        r.close()
+
+    # ...and the file the project ships is still that template, so a new
+    # reader inherits the safe default.
+    shipped = os.path.join(HERE, "users.yaml")
+    check(os.path.exists(shipped), "users.yaml ships with the project")
 
 
 # =============================================================================
