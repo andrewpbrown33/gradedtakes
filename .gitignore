@@ -1,0 +1,57 @@
+# ── SECRETS ─────────────────────────────────────────────────────────────
+# Platform credentials and tokens. A secret committed once lives in git
+# history forever, so these are listed first and never relaxed.
+data/espn_secrets.json
+data/yahoo_secrets.json
+data/yahoo_token.json
+data/yahoo_tokens/
+data/*secret*
+data/*token*
+*.pem
+.env
+.env.*
+
+# ── OTHER PEOPLE'S PRIVACY ──────────────────────────────────────────────
+# users.yaml holds real names, email addresses and the unguessable path
+# tokens that keep one reader's pages private from another. Those tokens
+# ARE the privacy lock before anyone logs in - treat them like passwords.
+users.yaml
+public/
+
+# ── GENERATED, AND BIG ──────────────────────────────────────────────────
+# ~98 MB of shared feed snapshots. It rebuilds itself from the network, it
+# is identical for every user, and it lives in the same directory as the
+# secrets above - which is exactly how a credential ends up in a commit.
+data/cache/
+
+# Rendered pages: outputs, not sources. Every one is regenerable.
+/*.html
+board-*.html
+digest-*.html
+home.html
+install.html
+lineup-*.html
+sources.html
+strip.html
+tradedesk-*.html
+
+# Rankings CSVs are rebuilt per league from live feeds.
+data/rankings*.csv
+
+# ── PERSONAL STATE ──────────────────────────────────────────────────────
+# Draft history and the humility ledger: yours, not the product's.
+saves/
+data/streaming_log.jsonl
+data/source_ledger.jsonl
+data/performance_history.jsonl
+data/creator_calls/
+data/league-needs-*.json
+
+# ── LOCAL ───────────────────────────────────────────────────────────────
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+data/*.bak
+data/*.bak2

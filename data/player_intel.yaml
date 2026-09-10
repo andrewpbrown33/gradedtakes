@@ -1,0 +1,170 @@
+meta:
+  source: Four-Layer Deep Dive, Aug 23 2026
+  format_caveat: research assumes half-PPR; this league is full PPR
+players:
+- name: Christian McCaffrey
+  adjust: -18
+  note: 'FADE at RB3: turns 30, league-high 413 touches in 2025, camp ''tightness''
+    - the same vague term that preceded his lost 2024'
+- name: Davante Adams
+  adjust: -10
+  note: 'FADE: most obvious TD regression candidate (14 TDs from Stafford)'
+- name: Matthew Stafford
+  adjust: -10
+  note: 'FADE: 46 pass TDs on a 7%+ TD rate is not repeatable'
+- name: Kenneth Walker
+  adjust: 0
+  note: 'RETRACTED fade: KC RB1 now - record FA deal, SB LX MVP (NFL.com/ESPN Aug
+    2026); Aug 28 ankle swelling UNVERIFIED single-source'
+- name: Chuba Hubbard
+  adjust: -10
+  note: mid-August hamstring, out since; healthy Brooks makes it a committee (CBS/PlayerProfiler
+    Aug 2026)
+- name: Alvin Kamara
+  adjust: -16
+  note: MCL sprain Aug 18, out 1+ month, opener in doubt - DO NOT ADD (multi-source)
+- name: Aaron Jones
+  adjust: -8
+  note: 'FADE at cost: Mason is the lead back, Jones relegated to passing downs'
+- name: Jeremiyah Love
+  adjust: -4
+  note: Allgeier listed RB1 on first depth chart (NBC/Yahoo); consensus still expects
+    Love to lead - softened fade
+- name: Derrick Henry
+  adjust: -3
+  note: 'mild caution: Year 11, TD regression likely - but has defied the age cliff'
+- name: George Pickens
+  adjust: -5
+  note: TD-dependent; ceiling capped by a healthy CeeDee
+- name: Tetairoa McMillan
+  adjust: -5
+  note: TD/efficiency questions - top-12 only twice despite a 26% target share
+- name: Jameson Williams
+  adjust: -4
+  note: TD-dependent profile
+- name: Jordyn Tyson
+  adjust: -18
+  note: 'AVOID: new hamstring, out until roughly October'
+- name: James Conner
+  adjust: -12
+  note: foot surgery
+- name: Josh Jacobs
+  adjust: -15
+  note: charges confirmed + open NFL probe, 6-game CBA baseline, court Nov 17 (CBS/Yahoo
+    Aug 2026); practiced since Aug 18
+- name: George Kittle
+  adjust: -6
+  note: Achilles recovery - could miss early games by his own admission
+- name: Alec Pierce
+  adjust: -2
+  note: ankle rehab, has slipped in ADP
+- name: Breece Hall
+  adjust: 4
+  note: groin Aug 17 (2-3 wks); expected for opener @TEN, not banked (WaPo/ESPN)
+- name: Javonte Williams
+  adjust: 8
+  note: 'BUY: inverted dead zone (34 ADP vs 24 projected)'
+- name: Travis Etienne Jr.
+  adjust: 12
+  note: Kamara MCL out 1+ month - lion's share in NO (SI/CBS); verified elite W15-17
+    slate @TB/ARI/@ATL; Kendre Miller rider
+- name: Cam Skattebo
+  adjust: 7
+  note: 'BUY: rising, top of the Giants depth chart (40 ADP vs 31 projected)'
+- name: Jaylen Warren
+  adjust: 6
+  note: 'BUY: dead-zone value (73 ADP vs 57 projected)'
+- name: Tony Pollard
+  adjust: 6
+  note: 'BUY: dead-zone value (85 ADP vs 67 projected)'
+- name: David Montgomery
+  adjust: 5
+  note: 'BUY: Houston lead workhorse with goal-line and receiving work'
+- name: TreVeyon Henderson
+  adjust: 4
+  note: camp riser - was RB3 in fantasy over the games Stevenson missed
+- name: Bhayshul Tuten
+  adjust: 4
+  note: inherits Etienne's vacated Jacksonville touches
+- name: Bijan Robinson
+  adjust: 5
+  note: near-lock every-down workhorse; Allgeier's 8 goal-line TDs vacated
+- name: Jonathan Taylor
+  adjust: 5
+  note: true bell cow (73.1% rush share) - prefer over McCaffrey
+- name: Ashton Jeanty
+  adjust: 4
+  note: true workhorse (72.1% rush share)
+- name: DeVonta Smith
+  adjust: 6
+  note: 'BUY: inherits A.J. Brown''s ~121 vacated targets as the clear Philly WR1'
+- name: Malik Nabers
+  adjust: 6
+  note: 'BUY: elite talent (77.6 rec yds/gm), on track for Week 1 - monitor ACL'
+- name: Brock Bowers
+  adjust: 5
+  note: elite TE, higher ceiling than McBride - TE edge is magnified by two flex spots
+- name: Trey McBride
+  adjust: 3
+  note: elite TE; mild Cardinals TD regression risk
+- name: Jayden Daniels
+  adjust: 9
+  note: 'Diggs-to-WAS verified lifts environment; ASTERISK: 7 games in 2025 (knee/hamstring/elbow)
+    - durability is the question'
+- name: Jalen Hurts
+  adjust: 6
+  note: 'QB value pocket Rd 5-6: goal-line rushing TD machine'
+- name: Kyler Murray
+  adjust: 4
+  note: second-wave QB after pick 100 - within ~18 points of QB15
+- name: Jared Goff
+  adjust: 4
+  note: second-wave QB after pick 100
+- name: Jordan Love
+  adjust: 3
+  note: second-wave QB after pick 100
+- name: Baker Mayfield
+  adjust: 3
+  note: second-wave QB after pick 100
+- name: Matthew Golden
+  adjust: 7
+  note: 'BUY late: Green Bay vacated ~138 targets, 4.29 flanker with Love'
+- name: Jayden Higgins
+  adjust: 5
+  note: 'late flier: 24% target-per-route-run late 2025, contingent WR1 upside'
+- name: Jonathon Brooks
+  adjust: 4
+  note: finally healthy, explosive half of expected CAR committee (CBS/PlayerProfiler/Yahoo)
+    - confidence upgraded to MED
+- name: De'Zhaun Stribling
+  adjust: 4
+  note: 'deep flier: ~139 vacated 49ers targets'
+- name: Luther Burden III
+  adjust: 3
+  note: ARSB-style YAC role with Moore gone - camp groin, crowded room
+- name: Marvin Harrison Jr.
+  adjust: 0
+  note: Kyler released ($54.7M dead cap), Brissett QB room - market price only; verified
+    good W15-17 slate is the sweetener
+- name: Jonah Coleman
+  adjust: 2
+  note: value flier from a weak rookie RB class
+- name: A.J. Brown
+  adjust: 4
+  note: verified NE trade (2028 1st + 2027 5th), Vrabel offense, NE 10.5 wins; camp-glow
+    specifics desk-cited only
+- name: Kyle Pitts Sr.
+  adjust: 4
+  note: '118 tgt/88 rec 2025 = TE2 overall, TE6 per-game (corrected); 3yr/$54M extension;
+    downside: 19% share at TE20 pace w/ London active'
+playoff_schedule:
+  favorable:
+  - WAS
+  - 'NO'
+  - ARI
+  tough:
+  - PHI
+  - SEA
+  - SF
+  bonus: 3
+  from_round: 8

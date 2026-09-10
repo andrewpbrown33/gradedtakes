@@ -1,0 +1,1270 @@
+{
+ "league": "espn-1",
+ "season": 2026,
+ "teams": {
+  "1": {
+   "name": "AI",
+   "players": [
+    {
+     "player": "Jahmyr Gibbs",
+     "pos": "RB",
+     "nfl": "DET",
+     "bye": 6,
+     "proj": 364.9,
+     "round": 1,
+     "overall": 1
+    },
+    {
+     "player": "Drake London",
+     "pos": "WR",
+     "nfl": "ATL",
+     "bye": 11,
+     "proj": 269.8,
+     "round": 2,
+     "overall": 16
+    },
+    {
+     "player": "A.J. Brown",
+     "pos": "WR",
+     "nfl": "NE",
+     "bye": 11,
+     "proj": 248.8,
+     "round": 3,
+     "overall": 17
+    },
+    {
+     "player": "Breece Hall",
+     "pos": "RB",
+     "nfl": "NYJ",
+     "bye": 13,
+     "proj": 274.0,
+     "round": 4,
+     "overall": 32
+    },
+    {
+     "player": "Travis Etienne Jr.",
+     "pos": "RB",
+     "nfl": "NO",
+     "bye": 8,
+     "proj": 246.1,
+     "round": 5,
+     "overall": 33
+    },
+    {
+     "player": "Jayden Daniels",
+     "pos": "QB",
+     "nfl": "WAS",
+     "bye": 7,
+     "proj": 318.4,
+     "round": 6,
+     "overall": 48
+    },
+    {
+     "player": "Marvin Harrison Jr.",
+     "pos": "WR",
+     "nfl": "ARI",
+     "bye": 14,
+     "proj": 193.8,
+     "round": 7,
+     "overall": 49
+    },
+    {
+     "player": "Tony Pollard",
+     "pos": "RB",
+     "nfl": "TEN",
+     "bye": 9,
+     "proj": 185.8,
+     "round": 8,
+     "overall": 64
+    },
+    {
+     "player": "Kyle Pitts Sr.",
+     "pos": "TE",
+     "nfl": "ATL",
+     "bye": 11,
+     "proj": 185.1,
+     "round": 9,
+     "overall": 65
+    },
+    {
+     "player": "Rico Dowdle",
+     "pos": "RB",
+     "nfl": "PIT",
+     "bye": 9,
+     "proj": 186.1,
+     "round": 10,
+     "overall": 80
+    },
+    {
+     "player": "Jonathon Brooks",
+     "pos": "RB",
+     "nfl": "CAR",
+     "bye": 5,
+     "proj": 170.8,
+     "round": 11,
+     "overall": 81
+    },
+    {
+     "player": "Josh Downs",
+     "pos": "WR",
+     "nfl": "IND",
+     "bye": 13,
+     "proj": 157.7,
+     "round": 12,
+     "overall": 96
+    },
+    {
+     "player": "Xavier Worthy",
+     "pos": "WR",
+     "nfl": "KC",
+     "bye": 5,
+     "proj": 173.7,
+     "round": 13,
+     "overall": 97
+    },
+    {
+     "player": "Jauan Jennings",
+     "pos": "WR",
+     "nfl": "MIN",
+     "bye": 6,
+     "proj": 114.6,
+     "round": 14,
+     "overall": 112
+    },
+    {
+     "player": "Rachaad White",
+     "pos": "RB",
+     "nfl": "WAS",
+     "bye": 7,
+     "proj": 164.7,
+     "round": 15,
+     "overall": 113
+    },
+    {
+     "player": "LA Chargers Defense",
+     "pos": "DEF",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 94.8,
+     "round": 16,
+     "overall": 128
+    },
+    {
+     "player": "Harrison Mevis",
+     "pos": "K",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 159.5,
+     "round": 17,
+     "overall": 129
+    }
+   ]
+  },
+  "2": {
+   "name": "Minnesota Mommies",
+   "players": [
+    {
+     "player": "Bijan Robinson",
+     "pos": "RB",
+     "nfl": "ATL",
+     "bye": 11,
+     "proj": 352.8,
+     "round": 1,
+     "overall": 2
+    },
+    {
+     "player": "Chase Brown",
+     "pos": "RB",
+     "nfl": "CIN",
+     "bye": 6,
+     "proj": 272.1,
+     "round": 2,
+     "overall": 15
+    },
+    {
+     "player": "Saquon Barkley",
+     "pos": "RB",
+     "nfl": "PHI",
+     "bye": 10,
+     "proj": 273.6,
+     "round": 3,
+     "overall": 18
+    },
+    {
+     "player": "Jeremiyah Love",
+     "pos": "RB",
+     "nfl": "ARI",
+     "bye": 14,
+     "proj": 278.5,
+     "round": 4,
+     "overall": 31
+    },
+    {
+     "player": "Garrett Wilson",
+     "pos": "WR",
+     "nfl": "NYJ",
+     "bye": 13,
+     "proj": 249.4,
+     "round": 5,
+     "overall": 34
+    },
+    {
+     "player": "Tee Higgins",
+     "pos": "WR",
+     "nfl": "CIN",
+     "bye": 6,
+     "proj": 219.3,
+     "round": 6,
+     "overall": 47
+    },
+    {
+     "player": "Drake Maye",
+     "pos": "QB",
+     "nfl": "NE",
+     "bye": 11,
+     "proj": 319.4,
+     "round": 7,
+     "overall": 50
+    },
+    {
+     "player": "Harold Fannin Jr.",
+     "pos": "TE",
+     "nfl": "CLE",
+     "bye": 11,
+     "proj": 189.2,
+     "round": 8,
+     "overall": 63
+    },
+    {
+     "player": "TreVeyon Henderson",
+     "pos": "RB",
+     "nfl": "NE",
+     "bye": 11,
+     "proj": 197.4,
+     "round": 9,
+     "overall": 66
+    },
+    {
+     "player": "Kenny Gainwell",
+     "pos": "RB",
+     "nfl": "TB",
+     "bye": 10,
+     "proj": 177.8,
+     "round": 10,
+     "overall": 79
+    },
+    {
+     "player": "Michael Wilson",
+     "pos": "WR",
+     "nfl": "ARI",
+     "bye": 14,
+     "proj": 176.5,
+     "round": 11,
+     "overall": 82
+    },
+    {
+     "player": "Stefon Diggs",
+     "pos": "WR",
+     "nfl": "WAS",
+     "bye": 7,
+     "proj": 164.0,
+     "round": 12,
+     "overall": 95
+    },
+    {
+     "player": "Jaxson Dart",
+     "pos": "QB",
+     "nfl": "NYG",
+     "bye": 8,
+     "proj": 299.8,
+     "round": 13,
+     "overall": 98
+    },
+    {
+     "player": "Travis Hunter",
+     "pos": "WR",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 113.1,
+     "round": 14,
+     "overall": 111
+    },
+    {
+     "player": "Chris Godwin Jr.",
+     "pos": "WR",
+     "nfl": "TB",
+     "bye": 10,
+     "proj": 157.4,
+     "round": 15,
+     "overall": 114
+    },
+    {
+     "player": "Eddy Pi\u00f1eiro",
+     "pos": "K",
+     "nfl": "SF",
+     "bye": 8,
+     "proj": 155.3,
+     "round": 16,
+     "overall": 127
+    },
+    {
+     "player": "Baltimore Defense",
+     "pos": "DEF",
+     "nfl": "BAL",
+     "bye": 13,
+     "proj": 120.0,
+     "round": 17,
+     "overall": 130
+    }
+   ]
+  },
+  "3": {
+   "name": "Golden Brown Gibbs",
+   "players": [
+    {
+     "player": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "nfl": "SEA",
+     "bye": 11,
+     "proj": 326.7,
+     "round": 1,
+     "overall": 3
+    },
+    {
+     "player": "Omarion Hampton",
+     "pos": "RB",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 261.7,
+     "round": 2,
+     "overall": 14
+    },
+    {
+     "player": "Chris Olave",
+     "pos": "WR",
+     "nfl": "NO",
+     "bye": 8,
+     "proj": 250.4,
+     "round": 3,
+     "overall": 19
+    },
+    {
+     "player": "George Pickens",
+     "pos": "WR",
+     "nfl": "DAL",
+     "bye": 14,
+     "proj": 238.6,
+     "round": 4,
+     "overall": 30
+    },
+    {
+     "player": "Kyren Williams",
+     "pos": "RB",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 232.1,
+     "round": 5,
+     "overall": 35
+    },
+    {
+     "player": "Jaylen Waddle",
+     "pos": "WR",
+     "nfl": "DEN",
+     "bye": 10,
+     "proj": 213.3,
+     "round": 6,
+     "overall": 46
+    },
+    {
+     "player": "Bhayshul Tuten",
+     "pos": "RB",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 205.3,
+     "round": 7,
+     "overall": 51
+    },
+    {
+     "player": "Jadarian Price",
+     "pos": "RB",
+     "nfl": "SEA",
+     "bye": 11,
+     "proj": 194.1,
+     "round": 8,
+     "overall": 62
+    },
+    {
+     "player": "Joe Burrow",
+     "pos": "QB",
+     "nfl": "CIN",
+     "bye": 6,
+     "proj": 304.8,
+     "round": 9,
+     "overall": 67
+    },
+    {
+     "player": "DK Metcalf",
+     "pos": "WR",
+     "nfl": "PIT",
+     "bye": 9,
+     "proj": 195.9,
+     "round": 10,
+     "overall": 78
+    },
+    {
+     "player": "RJ Harvey",
+     "pos": "RB",
+     "nfl": "DEN",
+     "bye": 10,
+     "proj": 149.5,
+     "round": 11,
+     "overall": 83
+    },
+    {
+     "player": "Trevor Lawrence",
+     "pos": "QB",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 288.3,
+     "round": 12,
+     "overall": 94
+    },
+    {
+     "player": "Tucker Kraft",
+     "pos": "TE",
+     "nfl": "GB",
+     "bye": 11,
+     "proj": 180.7,
+     "round": 13,
+     "overall": 99
+    },
+    {
+     "player": "Brandon Aubrey",
+     "pos": "K",
+     "nfl": "DAL",
+     "bye": 14,
+     "proj": 171.7,
+     "round": 14,
+     "overall": 110
+    },
+    {
+     "player": "Houston Defense",
+     "pos": "DEF",
+     "nfl": "HOU",
+     "bye": 8,
+     "proj": 130.3,
+     "round": 15,
+     "overall": 115
+    },
+    {
+     "player": "Romeo Doubs",
+     "pos": "WR",
+     "nfl": "NE",
+     "bye": 11,
+     "proj": 150.4,
+     "round": 16,
+     "overall": 126
+    },
+    {
+     "player": "Zach Charbonnet",
+     "pos": "RB",
+     "nfl": "SEA",
+     "bye": 11,
+     "proj": 134.0,
+     "round": 17,
+     "overall": 131
+    }
+   ]
+  },
+  "4": {
+   "name": "Lights Kamara Action",
+   "players": [
+    {
+     "player": "Ja'Marr Chase",
+     "pos": "WR",
+     "nfl": "CIN",
+     "bye": 6,
+     "proj": 337.5,
+     "round": 1,
+     "overall": 4
+    },
+    {
+     "player": "Derrick Henry",
+     "pos": "RB",
+     "nfl": "BAL",
+     "bye": 13,
+     "proj": 274.7,
+     "round": 2,
+     "overall": 13
+    },
+    {
+     "player": "Nico Collins",
+     "pos": "WR",
+     "nfl": "HOU",
+     "bye": 8,
+     "proj": 248.3,
+     "round": 3,
+     "overall": 20
+    },
+    {
+     "player": "Javonte Williams",
+     "pos": "RB",
+     "nfl": "DAL",
+     "bye": 14,
+     "proj": 259.7,
+     "round": 4,
+     "overall": 29
+    },
+    {
+     "player": "Quinshon Judkins",
+     "pos": "RB",
+     "nfl": "CLE",
+     "bye": 11,
+     "proj": 227.4,
+     "round": 5,
+     "overall": 36
+    },
+    {
+     "player": "D'Andre Swift",
+     "pos": "RB",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 211.7,
+     "round": 6,
+     "overall": 45
+    },
+    {
+     "player": "Terry McLaurin",
+     "pos": "WR",
+     "nfl": "WAS",
+     "bye": 7,
+     "proj": 218.7,
+     "round": 7,
+     "overall": 52
+    },
+    {
+     "player": "Carnell Tate",
+     "pos": "WR",
+     "nfl": "TEN",
+     "bye": 9,
+     "proj": 202.4,
+     "round": 8,
+     "overall": 61
+    },
+    {
+     "player": "Jalen Hurts",
+     "pos": "QB",
+     "nfl": "PHI",
+     "bye": 10,
+     "proj": 320.3,
+     "round": 9,
+     "overall": 68
+    },
+    {
+     "player": "Sam LaPorta",
+     "pos": "TE",
+     "nfl": "DET",
+     "bye": 6,
+     "proj": 188.6,
+     "round": 10,
+     "overall": 77
+    },
+    {
+     "player": "Patrick Mahomes",
+     "pos": "QB",
+     "nfl": "KC",
+     "bye": 5,
+     "proj": 291.3,
+     "round": 11,
+     "overall": 84
+    },
+    {
+     "player": "George Kittle",
+     "pos": "TE",
+     "nfl": "SF",
+     "bye": 8,
+     "proj": 188.9,
+     "round": 12,
+     "overall": 93
+    },
+    {
+     "player": "Kyle Monangai",
+     "pos": "RB",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 176.2,
+     "round": 13,
+     "overall": 100
+    },
+    {
+     "player": "Jordan Addison",
+     "pos": "WR",
+     "nfl": "MIN",
+     "bye": 6,
+     "proj": 170.5,
+     "round": 14,
+     "overall": 109
+    },
+    {
+     "player": "LA Rams Defense",
+     "pos": "DEF",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 121.9,
+     "round": 15,
+     "overall": 116
+    },
+    {
+     "player": "Ka'imi Fairbairn",
+     "pos": "K",
+     "nfl": "HOU",
+     "bye": 8,
+     "proj": 157.9,
+     "round": 16,
+     "overall": 125
+    },
+    {
+     "player": "Tyjae Spears",
+     "pos": "RB",
+     "nfl": "TEN",
+     "bye": 9,
+     "proj": 154.5,
+     "round": 17,
+     "overall": 132
+    }
+   ]
+  },
+  "5": {
+   "name": "Brock Hard",
+   "players": [
+    {
+     "player": "Puka Nacua",
+     "pos": "WR",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 356.3,
+     "round": 1,
+     "overall": 5
+    },
+    {
+     "player": "James Cook III",
+     "pos": "RB",
+     "nfl": "BUF",
+     "bye": 7,
+     "proj": 279.6,
+     "round": 2,
+     "overall": 12
+    },
+    {
+     "player": "Ashton Jeanty",
+     "pos": "RB",
+     "nfl": "LV",
+     "bye": 13,
+     "proj": 280.8,
+     "round": 3,
+     "overall": 21
+    },
+    {
+     "player": "Malik Nabers",
+     "pos": "WR",
+     "nfl": "NYG",
+     "bye": 8,
+     "proj": 245.7,
+     "round": 4,
+     "overall": 28
+    },
+    {
+     "player": "Tetairoa McMillan",
+     "pos": "WR",
+     "nfl": "CAR",
+     "bye": 5,
+     "proj": 236.5,
+     "round": 5,
+     "overall": 37
+    },
+    {
+     "player": "Colston Loveland",
+     "pos": "TE",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 205.9,
+     "round": 6,
+     "overall": 44
+    },
+    {
+     "player": "Bucky Irving",
+     "pos": "RB",
+     "nfl": "TB",
+     "bye": 10,
+     "proj": 207.1,
+     "round": 7,
+     "overall": 53
+    },
+    {
+     "player": "Rome Odunze",
+     "pos": "WR",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 212.6,
+     "round": 8,
+     "overall": 60
+    },
+    {
+     "player": "Dak Prescott",
+     "pos": "QB",
+     "nfl": "DAL",
+     "bye": 14,
+     "proj": 286.9,
+     "round": 9,
+     "overall": 69
+    },
+    {
+     "player": "Christian Watson",
+     "pos": "WR",
+     "nfl": "GB",
+     "bye": 11,
+     "proj": 185.1,
+     "round": 10,
+     "overall": 76
+    },
+    {
+     "player": "Justin Herbert",
+     "pos": "QB",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 283.6,
+     "round": 11,
+     "overall": 85
+    },
+    {
+     "player": "Brian Thomas Jr.",
+     "pos": "WR",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 176.6,
+     "round": 12,
+     "overall": 92
+    },
+    {
+     "player": "Blake Corum",
+     "pos": "RB",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 159.4,
+     "round": 13,
+     "overall": 101
+    },
+    {
+     "player": "Isaiah Likely",
+     "pos": "TE",
+     "nfl": "NYG",
+     "bye": 8,
+     "proj": 155.5,
+     "round": 14,
+     "overall": 108
+    },
+    {
+     "player": "Dalton Kincaid",
+     "pos": "TE",
+     "nfl": "BUF",
+     "bye": 7,
+     "proj": 155.4,
+     "round": 15,
+     "overall": 117
+    },
+    {
+     "player": "Jason Myers",
+     "pos": "K",
+     "nfl": "SEA",
+     "bye": 11,
+     "proj": 158.5,
+     "round": 16,
+     "overall": 124
+    },
+    {
+     "player": "Philadelphia Defense",
+     "pos": "DEF",
+     "nfl": "PHI",
+     "bye": 10,
+     "proj": 106.7,
+     "round": 17,
+     "overall": 133
+    }
+   ]
+  },
+  "6": {
+   "name": "Worthy of Your Mom",
+   "players": [
+    {
+     "player": "Christian McCaffrey",
+     "pos": "RB",
+     "nfl": "SF",
+     "bye": 8,
+     "proj": 342.8,
+     "round": 1,
+     "overall": 6
+    },
+    {
+     "player": "De'Von Achane",
+     "pos": "RB",
+     "nfl": "MIA",
+     "bye": 6,
+     "proj": 293.4,
+     "round": 2,
+     "overall": 11
+    },
+    {
+     "player": "Rashee Rice",
+     "pos": "WR",
+     "nfl": "KC",
+     "bye": 5,
+     "proj": 260.5,
+     "round": 3,
+     "overall": 22
+    },
+    {
+     "player": "Lamar Jackson",
+     "pos": "QB",
+     "nfl": "BAL",
+     "bye": 13,
+     "proj": 322.9,
+     "round": 4,
+     "overall": 27
+    },
+    {
+     "player": "DeVonta Smith",
+     "pos": "WR",
+     "nfl": "PHI",
+     "bye": 10,
+     "proj": 239.2,
+     "round": 5,
+     "overall": 38
+    },
+    {
+     "player": "Tyler Warren",
+     "pos": "TE",
+     "nfl": "IND",
+     "bye": 13,
+     "proj": 210.9,
+     "round": 6,
+     "overall": 43
+    },
+    {
+     "player": "Davante Adams",
+     "pos": "WR",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 232.3,
+     "round": 7,
+     "overall": 54
+    },
+    {
+     "player": "DJ Moore",
+     "pos": "WR",
+     "nfl": "BUF",
+     "bye": 7,
+     "proj": 209.5,
+     "round": 8,
+     "overall": 59
+    },
+    {
+     "player": "Rhamondre Stevenson",
+     "pos": "RB",
+     "nfl": "NE",
+     "bye": 11,
+     "proj": 202.9,
+     "round": 9,
+     "overall": 70
+    },
+    {
+     "player": "Courtland Sutton",
+     "pos": "WR",
+     "nfl": "DEN",
+     "bye": 10,
+     "proj": 204.4,
+     "round": 10,
+     "overall": 75
+    },
+    {
+     "player": "Chuba Hubbard",
+     "pos": "RB",
+     "nfl": "CAR",
+     "bye": 5,
+     "proj": 172.9,
+     "round": 11,
+     "overall": 86
+    },
+    {
+     "player": "Alec Pierce",
+     "pos": "WR",
+     "nfl": "IND",
+     "bye": 13,
+     "proj": 186.7,
+     "round": 12,
+     "overall": 91
+    },
+    {
+     "player": "J.K. Dobbins",
+     "pos": "RB",
+     "nfl": "DEN",
+     "bye": 10,
+     "proj": 175.0,
+     "round": 13,
+     "overall": 102
+    },
+    {
+     "player": "Jakobi Meyers",
+     "pos": "WR",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 182.0,
+     "round": 14,
+     "overall": 107
+    },
+    {
+     "player": "Matthew Stafford",
+     "pos": "QB",
+     "nfl": "LAR",
+     "bye": 11,
+     "proj": 293.2,
+     "round": 15,
+     "overall": 118
+    },
+    {
+     "player": "Pittsburgh Defense",
+     "pos": "DEF",
+     "nfl": "PIT",
+     "bye": 9,
+     "proj": 122.7,
+     "round": 16,
+     "overall": 123
+    },
+    {
+     "player": "Harrison Butker",
+     "pos": "K",
+     "nfl": "KC",
+     "bye": 5,
+     "proj": 148.8,
+     "round": 17,
+     "overall": 134
+    }
+   ]
+  },
+  "7": {
+   "name": "Mike (sea)Hawk",
+   "players": [
+    {
+     "player": "Jonathan Taylor",
+     "pos": "RB",
+     "nfl": "IND",
+     "bye": 13,
+     "proj": 316.5,
+     "round": 1,
+     "overall": 7
+    },
+    {
+     "player": "Justin Jefferson",
+     "pos": "WR",
+     "nfl": "MIN",
+     "bye": 6,
+     "proj": 293.7,
+     "round": 2,
+     "overall": 10
+    },
+    {
+     "player": "Brock Bowers",
+     "pos": "TE",
+     "nfl": "LV",
+     "bye": 13,
+     "proj": 240.9,
+     "round": 3,
+     "overall": 23
+    },
+    {
+     "player": "Josh Allen",
+     "pos": "QB",
+     "nfl": "BUF",
+     "bye": 7,
+     "proj": 369.7,
+     "round": 4,
+     "overall": 26
+    },
+    {
+     "player": "Ladd McConkey",
+     "pos": "WR",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 221.0,
+     "round": 5,
+     "overall": 39
+    },
+    {
+     "player": "Emeka Egbuka",
+     "pos": "WR",
+     "nfl": "TB",
+     "bye": 10,
+     "proj": 229.0,
+     "round": 6,
+     "overall": 42
+    },
+    {
+     "player": "Josh Jacobs",
+     "pos": "RB",
+     "nfl": "GB",
+     "bye": 11,
+     "proj": 259.1,
+     "round": 7,
+     "overall": 55
+    },
+    {
+     "player": "Jameson Williams",
+     "pos": "WR",
+     "nfl": "DET",
+     "bye": 6,
+     "proj": 208.4,
+     "round": 8,
+     "overall": 58
+    },
+    {
+     "player": "Parker Washington",
+     "pos": "WR",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 187.3,
+     "round": 9,
+     "overall": 71
+    },
+    {
+     "player": "Jaylen Warren",
+     "pos": "RB",
+     "nfl": "PIT",
+     "bye": 9,
+     "proj": 191.7,
+     "round": 10,
+     "overall": 74
+    },
+    {
+     "player": "Wan'Dale Robinson",
+     "pos": "WR",
+     "nfl": "TEN",
+     "bye": 9,
+     "proj": 175.0,
+     "round": 11,
+     "overall": 87
+    },
+    {
+     "player": "Matthew Golden",
+     "pos": "WR",
+     "nfl": "GB",
+     "bye": 11,
+     "proj": 185.0,
+     "round": 12,
+     "overall": 90
+    },
+    {
+     "player": "Quentin Johnston",
+     "pos": "WR",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 165.4,
+     "round": 13,
+     "overall": 103
+    },
+    {
+     "player": "Aaron Jones Sr.",
+     "pos": "RB",
+     "nfl": "MIN",
+     "bye": 6,
+     "proj": 177.0,
+     "round": 14,
+     "overall": 106
+    },
+    {
+     "player": "Seattle Defense",
+     "pos": "DEF",
+     "nfl": "SEA",
+     "bye": 11,
+     "proj": 122.3,
+     "round": 15,
+     "overall": 119
+    },
+    {
+     "player": "Cam Little",
+     "pos": "K",
+     "nfl": "JAX",
+     "bye": 7,
+     "proj": 146.9,
+     "round": 16,
+     "overall": 122
+    },
+    {
+     "player": "Woody Marks",
+     "pos": "RB",
+     "nfl": "HOU",
+     "bye": 8,
+     "proj": 127.7,
+     "round": 17,
+     "overall": 135
+    }
+   ]
+  },
+  "8": {
+   "name": "Tractorcito Supply",
+   "players": [
+    {
+     "player": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "nfl": "DET",
+     "bye": 6,
+     "proj": 324.0,
+     "round": 1,
+     "overall": 8
+    },
+    {
+     "player": "CeeDee Lamb",
+     "pos": "WR",
+     "nfl": "DAL",
+     "bye": 14,
+     "proj": 293.7,
+     "round": 2,
+     "overall": 9
+    },
+    {
+     "player": "Trey McBride",
+     "pos": "TE",
+     "nfl": "ARI",
+     "bye": 14,
+     "proj": 241.9,
+     "round": 3,
+     "overall": 24
+    },
+    {
+     "player": "Kenneth Walker",
+     "pos": "RB",
+     "nfl": "KC",
+     "bye": 5,
+     "proj": 274.2,
+     "round": 4,
+     "overall": 25
+    },
+    {
+     "player": "Zay Flowers",
+     "pos": "WR",
+     "nfl": "BAL",
+     "bye": 13,
+     "proj": 238.8,
+     "round": 5,
+     "overall": 40
+    },
+    {
+     "player": "Cam Skattebo",
+     "pos": "RB",
+     "nfl": "NYG",
+     "bye": 8,
+     "proj": 227.1,
+     "round": 6,
+     "overall": 41
+    },
+    {
+     "player": "Luther Burden III",
+     "pos": "WR",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 205.9,
+     "round": 7,
+     "overall": 56
+    },
+    {
+     "player": "David Montgomery",
+     "pos": "RB",
+     "nfl": "HOU",
+     "bye": 8,
+     "proj": 192.6,
+     "round": 8,
+     "overall": 57
+    },
+    {
+     "player": "Mike Evans",
+     "pos": "WR",
+     "nfl": "SF",
+     "bye": 8,
+     "proj": 180.9,
+     "round": 9,
+     "overall": 72
+    },
+    {
+     "player": "Michael Pittman Jr.",
+     "pos": "WR",
+     "nfl": "PIT",
+     "bye": 9,
+     "proj": 197.3,
+     "round": 10,
+     "overall": 73
+    },
+    {
+     "player": "Jordan Mason",
+     "pos": "RB",
+     "nfl": "MIN",
+     "bye": 6,
+     "proj": 150.5,
+     "round": 11,
+     "overall": 88
+    },
+    {
+     "player": "Caleb Williams",
+     "pos": "QB",
+     "nfl": "CHI",
+     "bye": 10,
+     "proj": 281.7,
+     "round": 12,
+     "overall": 89
+    },
+    {
+     "player": "Makai Lemon",
+     "pos": "WR",
+     "nfl": "PHI",
+     "bye": 10,
+     "proj": 154.6,
+     "round": 13,
+     "overall": 104
+    },
+    {
+     "player": "Jacory Croskey-Merritt",
+     "pos": "RB",
+     "nfl": "WAS",
+     "bye": 7,
+     "proj": 159.5,
+     "round": 14,
+     "overall": 105
+    },
+    {
+     "player": "Denver Defense",
+     "pos": "DEF",
+     "nfl": "DEN",
+     "bye": 10,
+     "proj": 130.6,
+     "round": 15,
+     "overall": 120
+    },
+    {
+     "player": "Cameron Dicker",
+     "pos": "K",
+     "nfl": "LAC",
+     "bye": 7,
+     "proj": 161.9,
+     "round": 16,
+     "overall": 121
+    },
+    {
+     "player": "MarShawn Lloyd",
+     "pos": "RB",
+     "nfl": "GB",
+     "bye": 11,
+     "proj": 86.3,
+     "round": 17,
+     "overall": 136
+    }
+   ]
+  }
+ }
+}

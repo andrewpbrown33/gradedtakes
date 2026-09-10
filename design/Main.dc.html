@@ -1,0 +1,313 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+    a { color: #4ade80; } a:hover { color: #86efac; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #0b0e13; color: #d5dbe3; display: flex; flex-direction: column; overflow: hidden">
+
+  <!-- top status strip -->
+  <div style="display: flex; align-items: center; gap: 20px; padding: 14px 24px; border-bottom: 1px solid #1c222c; background: #0e1219">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; color: #8b95a3; letter-spacing: 0.08em">WAR ROOM</div>
+    <div style="width: 1px; height: 22px; background: #1c222c"></div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #8b95a3">Kid's Table · 10-team · Full PPR</div>
+    <div style="flex-grow: 1"></div>
+    <div style="display: flex; align-items: center; gap: 10px; background: #14331f; border: 1px solid #1f5c33; border-radius: 6px; padding: 8px 16px">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80"></div>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: #4ade80">ON THE CLOCK · PICK 2.10 (20)</span>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #8b95a3">next: 3.01 · <span style="color: #e8b339">1 pick away — turn</span></div>
+  </div>
+
+  <!-- main three-column row -->
+  <div style="display: flex; flex-grow: 1; min-height: 0">
+
+    <!-- left rail: board -->
+    <div style="width: 300px; border-right: 1px solid #1c222c; display: flex; flex-direction: column; background: #0d1117">
+      <div style="display: flex; gap: 6px; padding: 14px 16px 10px 16px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 5px; background: #1c2733; color: #d5dbe3">ALL</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 5px; color: #6b7686">RB</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 5px; color: #6b7686">WR</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 5px; color: #6b7686">TE</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 5px; color: #6b7686">QB</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 4px 16px 8px 16px">
+        <span style="font-size: 11px; letter-spacing: 0.1em; color: #6b7686; font-weight: 600">BOARD</span>
+        <div style="flex-grow: 1"></div>
+        <span style="font-size: 11px; color: #4d5766">strikethrough = gone</span>
+      </div>
+      <div style="display: flex; flex-direction: column; overflow: hidden">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #131a23">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">RB · TIER 2</span>
+          <div style="flex-grow: 1; height: 1px; background: #1c222c"></div>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #e8b339; font-weight: 600">1 left</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 2l8 8M10 2l-8 8" stroke="#3a4553" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span style="font-size: 13px; color: #4d5766; text-decoration: line-through; text-decoration-color: #333d4a; flex-grow: 1">De'Von Achane</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #5b6675">T1 2.01</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 9px 16px; background: #1a1509; border-left: 2px solid #e8b339">
+          <span style="font-size: 14px; font-weight: 600; flex-grow: 1">Saquon Barkley</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #f0b429">RB</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e8b339; font-weight: 600">83%</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 6px; padding: 5px 16px; background: #1d1014; border-top: 1px solid #4a1f28; border-bottom: 1px solid #4a1f28">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M8 8v5M5 11l3 3 3-3" stroke="#fb7185" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #fb7185">CLIFF · next RB tier ~9 picks out</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #131a23">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">WR · TIER 2</span>
+          <div style="flex-grow: 1; height: 1px; background: #1c222c"></div>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4ade80; font-weight: 600">6 left</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 2l8 8M10 2l-8 8" stroke="#3a4553" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span style="font-size: 13px; color: #4d5766; text-decoration: line-through; text-decoration-color: #333d4a; flex-grow: 1">Rashee Rice</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #5b6675">T6 2.06</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <span style="font-size: 14px; flex-grow: 1">Malik Nabers</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4ade80">BUY</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">95%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <span style="font-size: 14px; flex-grow: 1">DeVonta Smith</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4ade80">BUY</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">97%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <span style="font-size: 14px; flex-grow: 1">Nico Collins</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">85%</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #131a23">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">TE · TIER 1</span>
+          <div style="flex-grow: 1; height: 1px; background: #1c222c"></div>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #e8b339; font-weight: 600">2 left</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <span style="font-size: 14px; flex-grow: 1">Trey McBride</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #a78bfa">TE</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">96%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 8px 16px">
+          <span style="font-size: 14px; flex-grow: 1">Brock Bowers</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #a78bfa">TE</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">98%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- center: the answer -->
+    <div style="flex-grow: 1; display: flex; flex-direction: column; padding: 24px 28px; gap: 18px; min-width: 0">
+
+      <!-- the pick card -->
+      <div style="background: linear-gradient(180deg, #10241a 0%, #0e1a14 100%); border: 1px solid #1f5c33; border-radius: 10px; padding: 22px 26px; display: flex; flex-direction: column; gap: 10px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #4ade80; font-weight: 600">PICK</div>
+        <div style="display: flex; align-items: baseline; gap: 16px">
+          <div style="font-size: 40px; font-weight: 700; color: #f2f5f8; letter-spacing: -0.01em">Saquon Barkley</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #8b95a3">RB · PHI · bye 10</div>
+        </div>
+        <div style="font-size: 15px; color: #b7c0cb; line-height: 1.5">Last RB in Tier 2 — only <strong style="color: #e8b339">83%</strong> to survive even one pick. Fills RB2. Your WR targets are 95–98% safe for the 3.01 turn pick.</div>
+      </div>
+
+      <!-- alternates -->
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.1em; color: #6b7686; font-weight: 600">ALTERNATES · SURVIVAL TO 3.01</div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="background: #10151c; border: 1px solid #1c222c; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+              <div style="font-size: 15px; font-weight: 600">DeVonta Smith <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #38bdf8">WR</span></div>
+              <div style="font-size: 12px; color: #8b95a3">BUY — inherits A.J. Brown's 121 targets</div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #4ade80">97%</div>
+              <div style="width: 64px; height: 4px; border-radius: 2px; background: #1c222c"><div style="width: 62px; height: 4px; border-radius: 2px; background: #4ade80"></div></div>
+            </div>
+          </div>
+          <div style="background: #10151c; border: 1px solid #1c222c; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+              <div style="font-size: 15px; font-weight: 600">Brock Bowers <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #a78bfa">TE</span></div>
+              <div style="font-size: 12px; color: #8b95a3">Elite TE — frees both flex spots</div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #4ade80">98%</div>
+              <div style="width: 64px; height: 4px; border-radius: 2px; background: #1c222c"><div style="width: 63px; height: 4px; border-radius: 2px; background: #4ade80"></div></div>
+            </div>
+          </div>
+          <div style="background: #10151c; border: 1px solid #1c222c; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+              <div style="font-size: 15px; font-weight: 600">Trey McBride <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #a78bfa">TE</span></div>
+              <div style="font-size: 12px; color: #8b95a3">Elite TE — mild TD regression risk</div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #4ade80">96%</div>
+              <div style="width: 64px; height: 4px; border-radius: 2px; background: #1c222c"><div style="width: 61px; height: 4px; border-radius: 2px; background: #4ade80"></div></div>
+            </div>
+          </div>
+          <div style="background: #10151c; border: 1px solid #1c222c; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+              <div style="font-size: 15px; font-weight: 600">Malik Nabers <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #38bdf8">WR</span></div>
+              <div style="font-size: 12px; color: #8b95a3">BUY — elite talent, monitor ACL</div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #4ade80">95%</div>
+              <div style="width: 64px; height: 4px; border-radius: 2px; background: #1c222c"><div style="width: 60px; height: 4px; border-radius: 2px; background: #4ade80"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- alerts row -->
+      <div style="display: flex; gap: 10px">
+        <div style="display: flex; align-items: center; gap: 8px; background: #2a1e10; border: 1px solid #6b4a17; border-radius: 6px; padding: 9px 14px">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 15 14H1L8 1.5Z" stroke="#e8b339" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v4" stroke="#e8b339" stroke-width="1.5"/><circle cx="8" cy="12" r="0.8" fill="#e8b339"/></svg>
+          <span style="font-size: 13px; color: #e8b339; font-weight: 500">WR RUN — 3 of last 5 picks</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #221426; border: 1px solid #5b3a66; border-radius: 6px; padding: 9px 14px">
+          <span style="font-size: 13px; color: #c99add; font-weight: 500">Elite TE window: both alive — take one or commit to punting</span>
+        </div>
+      </div>
+
+      <!-- input bar -->
+      <div style="margin-top: auto; display: flex; gap: 10px; align-items: center">
+        <div style="flex-grow: 1; display: flex; align-items: center; gap: 10px; background: #10151c; border: 1px solid #26303d; border-radius: 8px; padding: 13px 16px">
+          <span style="font-family: 'IBM Plex Mono', monospace; color: #4ade80; font-size: 14px">&gt;</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6b7686">paste picks or type names — nacua, chase, robinson…</span>
+        </div>
+        <div style="background: #1f5c33; color: #d3f4de; border-radius: 8px; padding: 13px 22px; font-weight: 600; font-size: 14px">Sync</div>
+      </div>
+    </div>
+
+    <!-- right rail: strategy -->
+    <div style="width: 330px; border-left: 1px solid #1c222c; background: #0d1117; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; background: #14331f; color: #4ade80; border-radius: 5px; padding: 5px 10px">BRANCH A</div>
+        <div style="font-size: 13px; color: #8b95a3">Anchor RB</div>
+        <div style="flex-grow: 1"></div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4ade80">ON SCRIPT</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.1em; color: #6b7686; font-weight: 600">ROUND PLAN</div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; background: #10151c">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4ade80">R1 ✓</span>
+          <span style="font-size: 13px; color: #8b95a3">Gibbs — bell cow locked</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; background: #16202b; border: 1px solid #26303d">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e8b339">R2 ›</span>
+          <span style="font-size: 13px; color: #d5dbe3">prefer WR — <span style="color: #fb7185">all 4 targets sniped</span></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; background: #10151c">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">R3</span>
+          <span style="font-size: 13px; color: #8b95a3">prefer WR · Smith / Nabers alive</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; background: #10151c">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7686">R4-6</span>
+          <span style="font-size: 13px; color: #8b95a3">dead-zone RBs · Hall 98% alive</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.1em; color: #6b7686; font-weight: 600">BOARD SHIFT SINCE 1.01</div>
+        <div style="display: flex; gap: 8px">
+          <div style="flex-grow: 1; background: #10151c; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 2px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: #38bdf8">10</span>
+            <span style="font-size: 11px; color: #6b7686">WR gone</span>
+          </div>
+          <div style="flex-grow: 1; background: #10151c; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 2px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: #f0b429">8</span>
+            <span style="font-size: 11px; color: #6b7686">RB gone</span>
+          </div>
+          <div style="flex-grow: 1; background: #10151c; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 2px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: #fb7185">4</span>
+            <span style="font-size: 11px; color: #6b7686">targets lost</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 7px; margin-top: auto">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <span style="font-size: 11px; letter-spacing: 0.1em; color: #6b7686; font-weight: 600">STARTING LINEUP</span>
+          <div style="flex-grow: 1"></div>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">1 / 16</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; background: #0f1a14; border-left: 3px solid #4ade80; border-radius: 4px; padding: 9px 11px">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4ade80; width: 32px">RB1</span>
+          <span style="font-size: 13px; font-weight: 600; flex-grow: 1">Jahmyr Gibbs</span>
+          <span style="font-size: 11px; color: #6b7686">bye 6</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; background: #1d1014; border-left: 3px solid #fb7185; border-radius: 4px; padding: 9px 11px">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #fb7185; width: 32px">RB2</span>
+          <span style="font-size: 13px; color: #f2f5f8; flex-grow: 1; font-weight: 500">empty</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #fb7185; background: #33161d; border-radius: 3px; padding: 2px 6px">1 LEFT IN TIER</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #1a1509; border-left: 3px solid #e8b339; border-radius: 4px; padding: 8px 10px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #e8b339">WR1</span>
+            <span style="font-size: 12px; color: #8b95a3; flex-grow: 1">empty</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #e8b339">6</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1a1509; border-left: 3px solid #e8b339; border-radius: 4px; padding: 8px 10px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #e8b339">WR2</span>
+            <span style="font-size: 12px; color: #8b95a3; flex-grow: 1">empty</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #e8b339">6</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 8px 10px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">FLEX</span>
+            <span style="font-size: 12px; color: #4d5766; flex-grow: 1">empty</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 8px 10px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7686">FLEX</span>
+            <span style="font-size: 12px; color: #4d5766; flex-grow: 1">empty</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+          <div style="background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 7px 8px; display: flex; flex-direction: column; gap: 1px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7686">TE</span>
+            <span style="font-size: 10px; color: #8b95a3">elite or wait</span>
+          </div>
+          <div style="background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 7px 8px; display: flex; flex-direction: column; gap: 1px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7686">QB</span>
+            <span style="font-size: 10px; color: #8b95a3">R5-6</span>
+          </div>
+          <div style="background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 7px 8px; display: flex; flex-direction: column; gap: 1px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7686">K</span>
+            <span style="font-size: 10px; color: #8b95a3">R16</span>
+          </div>
+          <div style="background: #10151c; border-left: 3px solid #3a4553; border-radius: 4px; padding: 7px 8px; display: flex; flex-direction: column; gap: 1px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7686">DEF</span>
+            <span style="font-size: 10px; color: #8b95a3">R15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

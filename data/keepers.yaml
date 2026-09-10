@@ -1,0 +1,16 @@
+# Keeper candidates for `python -m engine.keeper --list`.
+#
+# Each entry: the player being offered as a keeper and the round he would
+# cost (the draft pick you forfeit by keeping him). Names are fuzzy-matched
+# against the rankings pool the same way pasted draft picks are.
+#
+#   players:
+#     - name: Puka Nacua
+#       cost_round: 5
+#     - name: Jahmyr Gibbs
+#       cost_round: 2
+#
+# NOTE: league keeper rules are unconfirmed (RUNBOOK B2) - fill this in only
+# once the commissioner confirms the format and costs.
+
+players: []

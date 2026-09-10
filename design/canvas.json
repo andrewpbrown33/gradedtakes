@@ -1,0 +1,11 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "War Room — on the clock", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "TierGrid.dc.html", "title": "Tier Board — by position", "x": 1540, "y": 0, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    { "id": "note-clock", "x": 0, "y": -150, "w": 460, "text": "MAIN VIEW — the 30-second answer.\nLine 1 is the pick. Everything else is supporting detail you can skip.\nLeft rail: board with drafted players struck through.\nRight rail: strategy branch + roster holes colored by urgency." },
+    { "id": "note-tiers", "x": 1540, "y": -150, "w": 460, "text": "TIER BOARD — positional scarcity at a glance.\nColumns per position, tier bands inside each.\nGone players are X'd and struck through, tagged with who took them.\nRed CLIFF bars mark real drop-offs. Roster needs bottom-right: red = critical, amber = act soon, grey = can wait." }
+  ],
+  "launch": { "view": "canvas" }
+}

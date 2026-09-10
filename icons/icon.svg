@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="t">
+  <title id="t">War Room</title>
+  <!--
+    THE APP MARK. This is `.wr-mark-sq` from engine/ui.py drawn large: the
+    identity gold diamond on the navy bar, and nothing else. Both hexes are
+    the design tokens, not a second palette. engine/pwa.py asserts they
+    equal ui's nav and rule tokens at build time and tests/pwa_test.py
+    asserts it again, so a palette edit this file misses is a red suite
+    rather than a home screen that quietly goes off brand.
+
+    GEOMETRY. `.wr-mark-sq` is a 12x12 square with a 1px radius, rotated 45
+    degrees. Held to that ratio the radius here is side/12 = 18. The
+    square's side is 217, so its diagonal (the width the eye actually
+    reads) is 307, exactly 60% of the 512 canvas. That is the largest the
+    diamond goes before its points crowd an iOS icon's corner mask.
+
+    NO TEXT. "WAR ROOM" is set in the nav beside this mark, and at the 60px
+    a home screen actually renders it would be four illegible pixels of
+    letterform. The label under the icon says the name; the icon says whose.
+
+    The drawable content lives in one g#mark so engine/pwa.py can derive
+    the Android maskable variant by scaling that group about the centre,
+    leaving the navy ground full bleed.
+
+    KEEP THIS FILE VALID XML. macOS `sips` parses it with libxml2, which
+    rejects a double hyphen inside a comment. Write token names bare.
+  -->
+  <rect id="ground" x="0" y="0" width="512" height="512" fill="#101B33"/>
+  <g id="mark">
+    <rect x="147.5" y="147.5" width="217" height="217" rx="18" ry="18"
+          fill="#F2B722" transform="rotate(45 256 256)"/>
+  </g>
+</svg>

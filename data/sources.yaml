@@ -1,0 +1,76 @@
+# War Room creator-source registry (see engine/sources.py).
+#
+#   id       unique kebab-slug          type     youtube|rss|url|paste|feed
+#   handle   channel URL/@handle, RSS url, page url, or builtin feed key
+#   weight   0-100, relative - normalized at consensus time
+#
+# 'feed' entries are the engine's own built-in inputs; consensus reads those
+# feeds directly, so fetch_source() returns [] for them.
+
+sources:
+- id: engine
+  name: War Room Engine
+  type: feed
+  handle: engine
+  enabled: true
+  weight: 17
+  notes: 'Built-in: weekly projections + lineup verdicts.'
+- id: espn-proj
+  name: ESPN Projections
+  type: feed
+  handle: espn-proj
+  enabled: true
+  weight: 17
+  notes: 'Built-in: ESPN kona weekly projections.'
+- id: sleeper-proj
+  name: Sleeper Projections
+  type: feed
+  handle: sleeper-proj
+  enabled: true
+  weight: 11
+  notes: 'Built-in: Sleeper weekly projections.'
+- id: chen-tiers
+  name: Boris Chen Tiers
+  type: feed
+  handle: chen-tiers
+  enabled: true
+  weight: 11
+  notes: 'Built-in: Boris Chen clustering tiers.'
+- id: sharp-or-square
+  name: Sharp or Square (Millman & Hunter)
+  type: rss
+  handle: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/291fe8ed-f80d-4107-9ee1-b34c015266d0/51f38aeb-0341-43f7-a21b-b34c01526b07/podcast.rss
+  enabled: true
+  weight: 17
+  notes: Millman+Hunter's show on The Volume (they left Action Network; The Favorites
+    now has different hosts). BETTING lens - game scripts/totals, not start/sit. RSS
+    gives episode blurbs only, so auto-extraction yields few calls; paste specific
+    takes for real weight.
+  topic_filter: fantasy
+- id: house-research
+  name: House Research (verified verdicts)
+  type: feed
+  handle: engine
+  enabled: true
+  weight: 10
+  notes: data/player_intel.yaml - the Aug 29 five-desk verdicts (2+ sources each,
+    skeptic-passed).
+- id: the-favorites
+  name: The Favorites / Action Network (fantasy only)
+  type: youtube
+  handle: https://www.youtube.com/@TheActionNetwork
+  enabled: true
+  weight: 17
+  notes: Action Network channel (The Favorites + fantasy shows). Mixed feed - betting/MLB/CFB
+    dropped by the fantasy filter.
+  topic_filter: fantasy
+
+# Example creator entry - replace with YOUR creators (this one is a disabled
+# placeholder, not a recommendation):
+# - id: example-youtuber
+#   name: "Example Fantasy Channel"
+#   type: youtube
+#   handle: "https://www.youtube.com/@example-channel"
+#   enabled: false
+#   weight: 25
+#   notes: "Placeholder. Paste any channel URL or @handle."

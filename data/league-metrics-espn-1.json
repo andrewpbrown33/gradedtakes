@@ -1,0 +1,1067 @@
+{
+  "league": "espn-1",
+  "season": 2026,
+  "replacement_levels": {
+    "DST": 106.7,
+    "K": 146.9,
+    "QB": 296.2,
+    "RB": 207.1,
+    "TE": 185.1,
+    "WR": 208.4
+  },
+  "teams": {
+    "1": {
+      "team": "AI",
+      "slot": 1,
+      "starter_points": 2355.2,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Jayden Daniels",
+          "pos": "QB",
+          "nfl": "WAS",
+          "bye": 7,
+          "proj": 318.4
+        },
+        {
+          "slot": "RB1",
+          "player": "Jahmyr Gibbs",
+          "pos": "RB",
+          "nfl": "DET",
+          "bye": 6,
+          "proj": 364.9
+        },
+        {
+          "slot": "RB2",
+          "player": "Breece Hall",
+          "pos": "RB",
+          "nfl": "NYJ",
+          "bye": 13,
+          "proj": 274.0
+        },
+        {
+          "slot": "WR1",
+          "player": "Drake London",
+          "pos": "WR",
+          "nfl": "ATL",
+          "bye": 11,
+          "proj": 269.8
+        },
+        {
+          "slot": "WR2",
+          "player": "A.J. Brown",
+          "pos": "WR",
+          "nfl": "NE",
+          "bye": 11,
+          "proj": 248.8
+        },
+        {
+          "slot": "TE",
+          "player": "Kyle Pitts Sr.",
+          "pos": "TE",
+          "nfl": "ATL",
+          "bye": 11,
+          "proj": 185.1
+        },
+        {
+          "slot": "K",
+          "player": "Harrison Mevis",
+          "pos": "K",
+          "nfl": "LAR",
+          "bye": 11,
+          "proj": 159.5
+        },
+        {
+          "slot": "DST",
+          "player": "LA Chargers Defense",
+          "pos": "DST",
+          "nfl": "LAC",
+          "bye": 7,
+          "proj": 94.8
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Travis Etienne Jr.",
+          "pos": "RB",
+          "nfl": "NO",
+          "bye": 8,
+          "proj": 246.1
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Marvin Harrison Jr.",
+          "pos": "WR",
+          "nfl": "ARI",
+          "bye": 14,
+          "proj": 193.8
+        }
+      ],
+      "groups": {
+        "RB_top3": 885.0,
+        "WR_top3": 712.4,
+        "QB_top1": 318.4,
+        "TE_top1": 185.1
+      },
+      "total_proj": 3508.6,
+      "bench_points": 1153.4,
+      "vbd_sum": 73.6,
+      "adp_steals_ge8": 0,
+      "adp_reaches_ge8": 8,
+      "bye_clusters": [
+        {
+          "week": 11,
+          "starters_out": 4
+        }
+      ],
+      "ranks": {
+        "starter_points": 7,
+        "RB_top3": 2,
+        "WR_top3": 7,
+        "QB_top1": 5,
+        "TE_top1": 7,
+        "bench_points": 7,
+        "vbd_sum": 7,
+        "adp_steals_ge8": 8
+      }
+    },
+    "2": {
+      "team": "Minnesota Mommies",
+      "slot": 2,
+      "starter_points": 2429.6,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Drake Maye",
+          "pos": "QB",
+          "nfl": "NE",
+          "bye": 11,
+          "proj": 319.4
+        },
+        {
+          "slot": "RB1",
+          "player": "Bijan Robinson",
+          "pos": "RB",
+          "nfl": "ATL",
+          "bye": 11,
+          "proj": 352.8
+        },
+        {
+          "slot": "RB2",
+          "player": "Jeremiyah Love",
+          "pos": "RB",
+          "nfl": "ARI",
+          "bye": 14,
+          "proj": 278.5
+        },
+        {
+          "slot": "WR1",
+          "player": "Garrett Wilson",
+          "pos": "WR",
+          "nfl": "NYJ",
+          "bye": 13,
+          "proj": 249.4
+        },
+        {
+          "slot": "WR2",
+          "player": "Tee Higgins",
+          "pos": "WR",
+          "nfl": "CIN",
+          "bye": 6,
+          "proj": 219.3
+        },
+        {
+          "slot": "TE",
+          "player": "Harold Fannin Jr.",
+          "pos": "TE",
+          "nfl": "CLE",
+          "bye": 11,
+          "proj": 189.2
+        },
+        {
+          "slot": "K",
+          "player": "Eddy Pi\u00f1eiro",
+          "pos": "K",
+          "nfl": "SF",
+          "bye": 8,
+          "proj": 155.3
+        },
+        {
+          "slot": "DST",
+          "player": "Baltimore Defense",
+          "pos": "DST",
+          "nfl": "BAL",
+          "bye": 13,
+          "proj": 120.0
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Saquon Barkley",
+          "pos": "RB",
+          "nfl": "PHI",
+          "bye": 10,
+          "proj": 273.6
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Chase Brown",
+          "pos": "RB",
+          "nfl": "CIN",
+          "bye": 6,
+          "proj": 272.1
+        }
+      ],
+      "groups": {
+        "RB_top3": 904.9,
+        "WR_top3": 645.2,
+        "QB_top1": 319.4,
+        "TE_top1": 189.2
+      },
+      "total_proj": 3715.6,
+      "bench_points": 1286.0,
+      "vbd_sum": 191.5,
+      "adp_steals_ge8": 2,
+      "adp_reaches_ge8": 6,
+      "bye_clusters": [
+        {
+          "week": 11,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 1,
+        "RB_top3": 1,
+        "WR_top3": 8,
+        "QB_top1": 4,
+        "TE_top1": 5,
+        "bench_points": 5,
+        "vbd_sum": 4,
+        "adp_steals_ge8": 5
+      }
+    },
+    "3": {
+      "team": "Golden Brown Gibbs",
+      "slot": 3,
+      "starter_points": 2310.3,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Joe Burrow",
+          "pos": "QB",
+          "nfl": "CIN",
+          "bye": 6,
+          "proj": 304.8
+        },
+        {
+          "slot": "RB1",
+          "player": "Omarion Hampton",
+          "pos": "RB",
+          "nfl": "LAC",
+          "bye": 7,
+          "proj": 261.7
+        },
+        {
+          "slot": "RB2",
+          "player": "Kyren Williams",
+          "pos": "RB",
+          "nfl": "LAR",
+          "bye": 11,
+          "proj": 232.1
+        },
+        {
+          "slot": "WR1",
+          "player": "Jaxon Smith-Njigba",
+          "pos": "WR",
+          "nfl": "SEA",
+          "bye": 11,
+          "proj": 326.7
+        },
+        {
+          "slot": "WR2",
+          "player": "Chris Olave",
+          "pos": "WR",
+          "nfl": "NO",
+          "bye": 8,
+          "proj": 250.4
+        },
+        {
+          "slot": "TE",
+          "player": "Tucker Kraft",
+          "pos": "TE",
+          "nfl": "GB",
+          "bye": 11,
+          "proj": 180.7
+        },
+        {
+          "slot": "K",
+          "player": "Brandon Aubrey",
+          "pos": "K",
+          "nfl": "DAL",
+          "bye": 14,
+          "proj": 171.7
+        },
+        {
+          "slot": "DST",
+          "player": "Houston Defense",
+          "pos": "DST",
+          "nfl": "HOU",
+          "bye": 8,
+          "proj": 130.3
+        },
+        {
+          "slot": "FLEX1",
+          "player": "George Pickens",
+          "pos": "WR",
+          "nfl": "DAL",
+          "bye": 14,
+          "proj": 238.6
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Jaylen Waddle",
+          "pos": "WR",
+          "nfl": "DEN",
+          "bye": 10,
+          "proj": 213.3
+        }
+      ],
+      "groups": {
+        "RB_top3": 699.1,
+        "WR_top3": 815.7,
+        "QB_top1": 304.8,
+        "TE_top1": 180.7
+      },
+      "total_proj": 3627.8,
+      "bench_points": 1317.5,
+      "vbd_sum": 103.7,
+      "adp_steals_ge8": 5,
+      "adp_reaches_ge8": 4,
+      "bye_clusters": [
+        {
+          "week": 11,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 8,
+        "RB_top3": 7,
+        "WR_top3": 3,
+        "QB_top1": 6,
+        "TE_top1": 8,
+        "bench_points": 4,
+        "vbd_sum": 6,
+        "adp_steals_ge8": 2
+      }
+    },
+    "4": {
+      "team": "Lights Kamara Action",
+      "slot": 4,
+      "starter_points": 2355.3,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Jalen Hurts",
+          "pos": "QB",
+          "nfl": "PHI",
+          "bye": 10,
+          "proj": 320.3
+        },
+        {
+          "slot": "RB1",
+          "player": "Derrick Henry",
+          "pos": "RB",
+          "nfl": "BAL",
+          "bye": 13,
+          "proj": 274.7
+        },
+        {
+          "slot": "RB2",
+          "player": "Javonte Williams",
+          "pos": "RB",
+          "nfl": "DAL",
+          "bye": 14,
+          "proj": 259.7
+        },
+        {
+          "slot": "WR1",
+          "player": "Ja'Marr Chase",
+          "pos": "WR",
+          "nfl": "CIN",
+          "bye": 6,
+          "proj": 337.5
+        },
+        {
+          "slot": "WR2",
+          "player": "Nico Collins",
+          "pos": "WR",
+          "nfl": "HOU",
+          "bye": 8,
+          "proj": 248.3
+        },
+        {
+          "slot": "TE",
+          "player": "George Kittle",
+          "pos": "TE",
+          "nfl": "SF",
+          "bye": 8,
+          "proj": 188.9
+        },
+        {
+          "slot": "K",
+          "player": "Ka'imi Fairbairn",
+          "pos": "K",
+          "nfl": "HOU",
+          "bye": 8,
+          "proj": 157.9
+        },
+        {
+          "slot": "DST",
+          "player": "LA Rams Defense",
+          "pos": "DST",
+          "nfl": "LAR",
+          "bye": 11,
+          "proj": 121.9
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Quinshon Judkins",
+          "pos": "RB",
+          "nfl": "CLE",
+          "bye": 11,
+          "proj": 227.4
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Terry McLaurin",
+          "pos": "WR",
+          "nfl": "WAS",
+          "bye": 7,
+          "proj": 218.7
+        }
+      ],
+      "groups": {
+        "RB_top3": 761.8,
+        "WR_top3": 804.5,
+        "QB_top1": 320.3,
+        "TE_top1": 188.9
+      },
+      "total_proj": 3750.5,
+      "bench_points": 1395.2,
+      "vbd_sum": 249.7,
+      "adp_steals_ge8": 1,
+      "adp_reaches_ge8": 9,
+      "bye_clusters": [
+        {
+          "week": 8,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 6,
+        "RB_top3": 6,
+        "WR_top3": 4,
+        "QB_top1": 3,
+        "TE_top1": 6,
+        "bench_points": 2,
+        "vbd_sum": 2,
+        "adp_steals_ge8": 7
+      }
+    },
+    "5": {
+      "team": "Brock Hard",
+      "slot": 5,
+      "starter_points": 2369.5,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Dak Prescott",
+          "pos": "QB",
+          "nfl": "DAL",
+          "bye": 14,
+          "proj": 286.9
+        },
+        {
+          "slot": "RB1",
+          "player": "Ashton Jeanty",
+          "pos": "RB",
+          "nfl": "LV",
+          "bye": 13,
+          "proj": 280.8
+        },
+        {
+          "slot": "RB2",
+          "player": "James Cook III",
+          "pos": "RB",
+          "nfl": "BUF",
+          "bye": 7,
+          "proj": 279.6
+        },
+        {
+          "slot": "WR1",
+          "player": "Puka Nacua",
+          "pos": "WR",
+          "nfl": "LAR",
+          "bye": 11,
+          "proj": 356.3
+        },
+        {
+          "slot": "WR2",
+          "player": "Malik Nabers",
+          "pos": "WR",
+          "nfl": "NYG",
+          "bye": 8,
+          "proj": 245.7
+        },
+        {
+          "slot": "TE",
+          "player": "Colston Loveland",
+          "pos": "TE",
+          "nfl": "CHI",
+          "bye": 10,
+          "proj": 205.9
+        },
+        {
+          "slot": "K",
+          "player": "Jason Myers",
+          "pos": "K",
+          "nfl": "SEA",
+          "bye": 11,
+          "proj": 158.5
+        },
+        {
+          "slot": "DST",
+          "player": "Philadelphia Defense",
+          "pos": "DST",
+          "nfl": "PHI",
+          "bye": 10,
+          "proj": 106.7
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Tetairoa McMillan",
+          "pos": "WR",
+          "nfl": "CAR",
+          "bye": 5,
+          "proj": 236.5
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Rome Odunze",
+          "pos": "WR",
+          "nfl": "CHI",
+          "bye": 10,
+          "proj": 212.6
+        }
+      ],
+      "groups": {
+        "RB_top3": 767.5,
+        "WR_top3": 838.5,
+        "QB_top1": 286.9,
+        "TE_top1": 205.9
+      },
+      "total_proj": 3692.2,
+      "bench_points": 1322.7,
+      "vbd_sum": 212.1,
+      "adp_steals_ge8": 2,
+      "adp_reaches_ge8": 6,
+      "bye_clusters": [
+        {
+          "week": 10,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 5,
+        "RB_top3": 4,
+        "WR_top3": 2,
+        "QB_top1": 7,
+        "TE_top1": 4,
+        "bench_points": 3,
+        "vbd_sum": 3,
+        "adp_steals_ge8": 5
+      }
+    },
+    "6": {
+      "team": "Worthy of Your Mom",
+      "slot": 6,
+      "starter_points": 2383.0,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Lamar Jackson",
+          "pos": "QB",
+          "nfl": "BAL",
+          "bye": 13,
+          "proj": 322.9
+        },
+        {
+          "slot": "RB1",
+          "player": "Christian McCaffrey",
+          "pos": "RB",
+          "nfl": "SF",
+          "bye": 8,
+          "proj": 342.8
+        },
+        {
+          "slot": "RB2",
+          "player": "De'Von Achane",
+          "pos": "RB",
+          "nfl": "MIA",
+          "bye": 6,
+          "proj": 293.4
+        },
+        {
+          "slot": "WR1",
+          "player": "Rashee Rice",
+          "pos": "WR",
+          "nfl": "KC",
+          "bye": 5,
+          "proj": 260.5
+        },
+        {
+          "slot": "WR2",
+          "player": "DeVonta Smith",
+          "pos": "WR",
+          "nfl": "PHI",
+          "bye": 10,
+          "proj": 239.2
+        },
+        {
+          "slot": "TE",
+          "player": "Tyler Warren",
+          "pos": "TE",
+          "nfl": "IND",
+          "bye": 13,
+          "proj": 210.9
+        },
+        {
+          "slot": "K",
+          "player": "Harrison Butker",
+          "pos": "K",
+          "nfl": "KC",
+          "bye": 5,
+          "proj": 148.8
+        },
+        {
+          "slot": "DST",
+          "player": "Pittsburgh Defense",
+          "pos": "DST",
+          "nfl": "PIT",
+          "bye": 9,
+          "proj": 122.7
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Davante Adams",
+          "pos": "WR",
+          "nfl": "LAR",
+          "bye": 11,
+          "proj": 232.3
+        },
+        {
+          "slot": "FLEX2",
+          "player": "DJ Moore",
+          "pos": "WR",
+          "nfl": "BUF",
+          "bye": 7,
+          "proj": 209.5
+        }
+      ],
+      "groups": {
+        "RB_top3": 839.1,
+        "WR_top3": 732.0,
+        "QB_top1": 322.9,
+        "TE_top1": 210.9
+      },
+      "total_proj": 3800.1,
+      "bench_points": 1417.1,
+      "vbd_sum": 274.7,
+      "adp_steals_ge8": 8,
+      "adp_reaches_ge8": 4,
+      "bye_clusters": [],
+      "ranks": {
+        "starter_points": 3,
+        "RB_top3": 3,
+        "WR_top3": 6,
+        "QB_top1": 2,
+        "TE_top1": 3,
+        "bench_points": 1,
+        "vbd_sum": 1,
+        "adp_steals_ge8": 1
+      }
+    },
+    "7": {
+      "team": "Mike (sea)Hawk",
+      "slot": 7,
+      "starter_points": 2407.5,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Josh Allen",
+          "pos": "QB",
+          "nfl": "BUF",
+          "bye": 7,
+          "proj": 369.7
+        },
+        {
+          "slot": "RB1",
+          "player": "Jonathan Taylor",
+          "pos": "RB",
+          "nfl": "IND",
+          "bye": 13,
+          "proj": 316.5
+        },
+        {
+          "slot": "RB2",
+          "player": "Josh Jacobs",
+          "pos": "RB",
+          "nfl": "GB",
+          "bye": 11,
+          "proj": 259.1
+        },
+        {
+          "slot": "WR1",
+          "player": "Justin Jefferson",
+          "pos": "WR",
+          "nfl": "MIN",
+          "bye": 6,
+          "proj": 293.7
+        },
+        {
+          "slot": "WR2",
+          "player": "Emeka Egbuka",
+          "pos": "WR",
+          "nfl": "TB",
+          "bye": 10,
+          "proj": 229.0
+        },
+        {
+          "slot": "TE",
+          "player": "Brock Bowers",
+          "pos": "TE",
+          "nfl": "LV",
+          "bye": 13,
+          "proj": 240.9
+        },
+        {
+          "slot": "K",
+          "player": "Cam Little",
+          "pos": "K",
+          "nfl": "JAX",
+          "bye": 7,
+          "proj": 146.9
+        },
+        {
+          "slot": "DST",
+          "player": "Seattle Defense",
+          "pos": "DST",
+          "nfl": "SEA",
+          "bye": 11,
+          "proj": 122.3
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Ladd McConkey",
+          "pos": "WR",
+          "nfl": "LAC",
+          "bye": 7,
+          "proj": 221.0
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Jameson Williams",
+          "pos": "WR",
+          "nfl": "DET",
+          "bye": 6,
+          "proj": 208.4
+        }
+      ],
+      "groups": {
+        "RB_top3": 767.3,
+        "WR_top3": 743.7,
+        "QB_top1": 369.7,
+        "TE_top1": 240.9
+      },
+      "total_proj": 3616.6,
+      "bench_points": 1209.1,
+      "vbd_sum": 179.0,
+      "adp_steals_ge8": 4,
+      "adp_reaches_ge8": 4,
+      "bye_clusters": [
+        {
+          "week": 7,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 2,
+        "RB_top3": 5,
+        "WR_top3": 5,
+        "QB_top1": 1,
+        "TE_top1": 2,
+        "bench_points": 6,
+        "vbd_sum": 5,
+        "adp_steals_ge8": 3
+      }
+    },
+    "8": {
+      "team": "Tractorcito Supply",
+      "slot": 8,
+      "starter_points": 2379.8,
+      "lineup": [
+        {
+          "slot": "QB",
+          "player": "Caleb Williams",
+          "pos": "QB",
+          "nfl": "CHI",
+          "bye": 10,
+          "proj": 281.7
+        },
+        {
+          "slot": "RB1",
+          "player": "Kenneth Walker",
+          "pos": "RB",
+          "nfl": "KC",
+          "bye": 5,
+          "proj": 274.2
+        },
+        {
+          "slot": "RB2",
+          "player": "Cam Skattebo",
+          "pos": "RB",
+          "nfl": "NYG",
+          "bye": 8,
+          "proj": 227.1
+        },
+        {
+          "slot": "WR1",
+          "player": "Amon-Ra St. Brown",
+          "pos": "WR",
+          "nfl": "DET",
+          "bye": 6,
+          "proj": 324.0
+        },
+        {
+          "slot": "WR2",
+          "player": "CeeDee Lamb",
+          "pos": "WR",
+          "nfl": "DAL",
+          "bye": 14,
+          "proj": 293.7
+        },
+        {
+          "slot": "TE",
+          "player": "Trey McBride",
+          "pos": "TE",
+          "nfl": "ARI",
+          "bye": 14,
+          "proj": 241.9
+        },
+        {
+          "slot": "K",
+          "player": "Cameron Dicker",
+          "pos": "K",
+          "nfl": "LAC",
+          "bye": 7,
+          "proj": 161.9
+        },
+        {
+          "slot": "DST",
+          "player": "Denver Defense",
+          "pos": "DST",
+          "nfl": "DEN",
+          "bye": 10,
+          "proj": 130.6
+        },
+        {
+          "slot": "FLEX1",
+          "player": "Zay Flowers",
+          "pos": "WR",
+          "nfl": "BAL",
+          "bye": 13,
+          "proj": 238.8
+        },
+        {
+          "slot": "FLEX2",
+          "player": "Luther Burden III",
+          "pos": "WR",
+          "nfl": "CHI",
+          "bye": 10,
+          "proj": 205.9
+        }
+      ],
+      "groups": {
+        "RB_top3": 693.9,
+        "WR_top3": 856.5,
+        "QB_top1": 281.7,
+        "TE_top1": 241.9
+      },
+      "total_proj": 3501.5,
+      "bench_points": 1121.7,
+      "vbd_sum": 65.2,
+      "adp_steals_ge8": 3,
+      "adp_reaches_ge8": 5,
+      "bye_clusters": [
+        {
+          "week": 10,
+          "starters_out": 3
+        }
+      ],
+      "ranks": {
+        "starter_points": 4,
+        "RB_top3": 8,
+        "WR_top3": 1,
+        "QB_top1": 8,
+        "TE_top1": 1,
+        "bench_points": 8,
+        "vbd_sum": 8,
+        "adp_steals_ge8": 4
+      }
+    }
+  },
+  "waiver_pool_top3": {
+    "DST": [
+      {
+        "player": "Detroit Defense",
+        "nfl": "DET",
+        "bye": 6,
+        "proj": 107.8,
+        "rank": 128
+      },
+      {
+        "player": "Cleveland Defense",
+        "nfl": "CLE",
+        "bye": 11,
+        "proj": 103.9,
+        "rank": 203
+      },
+      {
+        "player": "New England Defense",
+        "nfl": "NE",
+        "bye": 11,
+        "proj": 100.3,
+        "rank": 136
+      }
+    ],
+    "K": [
+      {
+        "player": "Tyler Loop",
+        "nfl": "BAL",
+        "bye": 13,
+        "proj": 146.0,
+        "rank": 187
+      },
+      {
+        "player": "Jake Bates",
+        "nfl": "DET",
+        "bye": 6,
+        "proj": 145.8,
+        "rank": 161
+      },
+      {
+        "player": "Cairo Santos",
+        "nfl": "CHI",
+        "bye": 10,
+        "proj": 144.4,
+        "rank": 248
+      }
+    ],
+    "QB": [
+      {
+        "player": "Bo Nix",
+        "nfl": "DEN",
+        "bye": 10,
+        "proj": 296.2,
+        "rank": 117
+      },
+      {
+        "player": "Brock Purdy",
+        "nfl": "SF",
+        "bye": 8,
+        "proj": 292.5,
+        "rank": 89
+      },
+      {
+        "player": "Jared Goff",
+        "nfl": "DET",
+        "bye": 6,
+        "proj": 268.5,
+        "rank": 103
+      }
+    ],
+    "RB": [
+      {
+        "player": "Isiah Pacheco",
+        "nfl": "DET",
+        "bye": 6,
+        "proj": 123.5,
+        "rank": 174
+      },
+      {
+        "player": "Alvin Kamara",
+        "nfl": "NO",
+        "bye": 8,
+        "proj": 117.4,
+        "rank": 171
+      },
+      {
+        "player": "Justice Hill",
+        "nfl": "BAL",
+        "bye": 13,
+        "proj": 114.2,
+        "rank": 252
+      }
+    ],
+    "TE": [
+      {
+        "player": "Travis Kelce",
+        "nfl": "KC",
+        "bye": 5,
+        "proj": 177.9,
+        "rank": 106
+      },
+      {
+        "player": "Dallas Goedert",
+        "nfl": "PHI",
+        "bye": 10,
+        "proj": 177.1,
+        "rank": 104
+      },
+      {
+        "player": "Mark Andrews",
+        "nfl": "BAL",
+        "bye": 13,
+        "proj": 169.3,
+        "rank": 131
+      }
+    ],
+    "WR": [
+      {
+        "player": "Khalil Shakir",
+        "nfl": "BUF",
+        "bye": 7,
+        "proj": 171.1,
+        "rank": 107
+      },
+      {
+        "player": "Jayden Reed",
+        "nfl": "GB",
+        "bye": 11,
+        "proj": 170.2,
+        "rank": 98
+      },
+      {
+        "player": "KC Concepcion",
+        "nfl": "CLE",
+        "bye": 11,
+        "proj": 155.9,
+        "rank": 125
+      }
+    ]
+  },
+  "notes": {
+    "lineup_rule": "QB,2RB,2WR,TE,2FLEX(W/R/T),K,DST greedy by projection",
+    "vbd": "sum over roster of proj - engine replacement level (pos-matched, negatives kept)",
+    "adp": "steal: drafted >=8 picks after ADP; reach: >=8 picks before ADP",
+    "bye_cluster": ">=3 projected starters share a bye week"
+  }
+}

@@ -1,0 +1,212 @@
+# Contingency tree for "Kid's Table" - 10 team, FULL PPR, TWO W/R/T flex,
+# 6-of-10 playoffs, 16 rounds.
+#
+# Built from the Four-Layer Deep Dive research (Aug 23 2026). Its ranked
+# archetypes map onto branches:
+#   A = Anchor RB          (research pick #1 - best blend, works from any slot)
+#   B = Hero RB into WR    (research pick #2 - highest ceiling, mid/late slots)
+#   D = Elite-TE pivot     (research pick #3 - only if a top-8 RB doesn't fall)
+#   C = late-first best available (fallback when the top 6 are gone)
+#
+# Format note: the research assumes half-PPR; this league is FULL PPR, which
+# pushes pass-catching backs, high-target WRs, and the elite TEs up further.
+#
+# Core theses encoded here:
+#   - one elite RB early, then attack the deep flat WR tier (~picks 30-65)
+#   - the 2026 RB "dead zone" is INVERTED into a value zone (Hall, Javonte,
+#     Etienne, Skattebo in rounds 4-6)
+#   - wait on QB: QBs are 0-for-15 vs projection - Daniels/Hurts in Rd 5-6, or
+#     two dart throws after pick 100
+#   - 60% of teams make the playoffs, so bias to CEILING over floor
+#   - two flex spots reward RB/WR depth and magnify the elite-TE edge
+#
+# Named fades live in data/player_intel.yaml as score penalties (McCaffrey,
+# Kenneth Walker, Hubbard, Kamara, Aaron Jones...). They are deliberately NOT
+# in do_not_draft - they are "not at this price", not "never".
+
+meta:
+  league: yahoo-main
+  name: "Anchor RB - full PPR, two flex, ceiling-biased"
+  default_branch: C
+  # At 1.01 both A and B qualify (an elite RB and an elite WR are both there).
+  # This is the tie-break, in your order of preference - not the alphabet.
+  # Reorder this line to change what the engine opens with.
+  branch_priority: [A, B, D, C]
+
+# Truly never draft. Fades belong in player_intel.yaml instead.
+do_not_draft: []
+  # - { name: "Jordyn Tyson", reason: "hamstring, out until ~October" }
+
+watch:
+  - id: early-rb-run
+    when: { type: position_gone, position: RB, at_least: 10, by_overall_pick: 24 }
+    then:
+      goto: B
+      alert: "10+ RBs gone by pick 24 - the room is drained. Stop chasing RB, hammer the flat WR tier (Branch B)"
+
+  - id: rb-run-live
+    when: { type: position_run, position: RB, window: 5, at_least: 3 }
+    then: { alert: "RB run live - the dead-zone value backs (Hall/Javonte/Etienne/Skattebo) will not last another turn" }
+
+  - id: wr-run-live
+    when: { type: position_run, position: WR, window: 5, at_least: 3 }
+    then: { alert: "WR run live - the flat WR tier is the value engine here; take yours now rather than next round" }
+
+  - id: elite-te-gone
+    when: { type: players_gone, names: ["Trey McBride", "Brock Bowers"], at_least: 2 }
+    then: { alert: "Both elite TEs gone - the cliff to Loveland/T.Warren is steep. Punt TE to round 7+ and take the discount" }
+
+  - id: elite-te-window
+    when: { type: players_gone, names: ["Trey McBride", "Brock Bowers"], at_least: 1 }
+    then: { alert: "One elite TE left - in a two-flex league a top TE frees BOTH flex spots. Take him or commit to punting TE" }
+
+  - id: qb-run
+    when: { type: position_run, position: QB, window: 5, at_least: 3 }
+    then: { alert: "QB run - do NOT chase. QBs are 0-for-15 vs projection; the pocket after pick 100 is deep" }
+
+  - id: rb-deadzone-open
+    when: { type: player_available, name: "Breece Hall", at_overall_pick: 40 }
+    then: { alert: "Breece Hall still there past pick 40 - Winks' single best RB value (36 ADP vs 22 projected)" }
+
+branches:
+
+  A:
+    name: "Anchor RB (research pick #1)"
+    entry:
+      round: 1
+      any_available: ["Jahmyr Gibbs", "Bijan Robinson", "Jonathan Taylor",
+                      "Ashton Jeanty"]
+    plan:
+      - round: 1
+        targets: ["Jahmyr Gibbs", "Bijan Robinson", "Jonathan Taylor"]
+        reach_ok: true
+        notes: "Lock a true bell cow. Gibbs is a tier of one; prefer J.Taylor over McCaffrey (age/touches/tightness)."
+      - rounds: [2, 3]
+        prefer: [WR]
+        targets: ["CeeDee Lamb", "Justin Jefferson", "Rashee Rice", "Drake London",
+                  "Nico Collins", "Malik Nabers", "DeVonta Smith", "Zay Flowers",
+                  "Garrett Wilson"]
+        notes: "Attack the deep flat WR tier. Two flex spots mean WR volume plays. Elite TE is defensible here instead."
+      - rounds: [4, 6]
+        prefer: [RB, WR]
+        avoid: [K, DEF]
+        targets: ["Breece Hall", "Javonte Williams", "Travis Etienne Jr.",
+                  "Cam Skattebo", "Jayden Daniels", "Jalen Hurts",
+                  "Terry McLaurin"]
+        notes: "The inverted dead zone: RB2 at a discount. Daniels or Hurts here is the QB value pocket."
+      - rounds: [7, 9]
+        prefer: [WR, RB, TE, QB]
+        targets: ["Tony Pollard", "Jaylen Warren", "TreVeyon Henderson",
+                  "Colston Loveland", "Tyler Warren"]
+        notes: "TE if still open, QB if you passed in 5-6, plus dead-zone RB depth."
+      - rounds: [10, 14]
+        prefer: [WR, RB]
+        targets: ["Matthew Golden", "Jayden Higgins", "Jonathon Brooks",
+                  "De'Zhaun Stribling"]
+        notes: "Ceiling swings only. 60% make the playoffs - high-floor/low-ceiling belongs on waivers in a 10-teamer."
+      - rounds: [15, 16]
+        prefer: [DEF, K]
+    pivots:
+      - when: { type: targets_gone, round: 2 }
+        then: { alert: "Round 2-3 WR targets gone - take the best WR by tier or pivot to an elite TE; do NOT reach for RB2" }
+      - when: { type: tier_break, position: RB, tier: 3, remaining_at_most: 1 }
+        then: { alert: "RB tier thinning - the dead-zone backs are the plan, do not panic up a tier" }
+
+  B:
+    name: "Hero RB into WR-heavy (research pick #2)"
+    entry:
+      round: 1
+      any_available: ["Puka Nacua", "Ja'Marr Chase", "Jaxon Smith-Njigba",
+                      "Amon-Ra St. Brown"]
+    plan:
+      - round: 1
+        targets: ["Puka Nacua", "Ja'Marr Chase", "Jaxon Smith-Njigba",
+                  "Amon-Ra St. Brown"]
+        reach_ok: true
+        notes: "Alpha target share is the safest asset in FULL PPR, volume-independent of TDs."
+      - round: 2
+        prefer: [RB]
+        targets: ["De'Von Achane", "James Cook III", "Chase Brown",
+                  "Ashton Jeanty", "Derrick Henry", "Saquon Barkley"]
+        notes: "One anchor RB before the cliff after RB8-10. Committee murk starts after RB13."
+      - rounds: [3, 4]
+        prefer: [WR, TE]
+        avoid: [QB, K, DEF]
+        notes: "A 10-team league has room for three set-and-forget WRs (Jahnke). Elite TE fine here."
+      - rounds: [5, 7]
+        prefer: [RB, WR]
+        targets: ["Breece Hall", "Javonte Williams", "Travis Etienne Jr.",
+                  "Cam Skattebo", "Jayden Daniels", "Jalen Hurts",
+                  "David Montgomery"]
+        notes: "Buy the inverted dead zone for RB2/RB3, and take the QB pocket."
+      - rounds: [8, 9]
+        prefer: [QB, TE, RB, WR]
+      - rounds: [10, 14]
+        prefer: [WR, RB]
+        targets: ["Matthew Golden", "Jayden Higgins", "Jonathon Brooks",
+                  "Bhayshul Tuten"]
+      - rounds: [15, 16]
+        prefer: [DEF, K]
+    pivots:
+      - when: { type: position_gone, position: RB, at_least: 14, by_overall_pick: 30 }
+        then: { alert: "RB room gutted before my round 3 - stay WR/TE and buy the dead zone in rounds 5-7 as planned" }
+
+  D:
+    name: "Elite-TE pivot (research pick #3)"
+    # Not an auto-entry branch: switch into it with `pivot D` when a top-8 RB
+    # does not fall to you at the 2-3 turn and Bowers or McBride is still there.
+    entry: {}
+    plan:
+      - rounds: [2, 3]
+        prefer: [TE, WR]
+        targets: ["Brock Bowers", "Trey McBride"]
+        reach_ok: true
+        notes: "A top TE occupies the TE slot and frees BOTH flex spots for your best RB/WR. ~100 points clear of TE12."
+      - rounds: [4, 6]
+        prefer: [RB, WR]
+        targets: ["Breece Hall", "Javonte Williams", "Travis Etienne Jr.",
+                  "Cam Skattebo"]
+        notes: "Recover the flex body from the inverted dead zone - this is the cost of the TE."
+      - rounds: [7, 9]
+        prefer: [WR, RB, QB]
+        targets: ["Jayden Daniels", "Jalen Hurts", "Tony Pollard", "Jaylen Warren"]
+      - rounds: [10, 14]
+        prefer: [WR, RB]
+      - rounds: [15, 16]
+        prefer: [DEF, K]
+
+  C:
+    name: "Late first - best available"
+    entry:
+      round: 1
+      all_gone: ["Jahmyr Gibbs", "Bijan Robinson", "Puka Nacua", "Ja'Marr Chase",
+                 "Jaxon Smith-Njigba", "Amon-Ra St. Brown"]
+    plan:
+      - round: 1
+        targets: ["CeeDee Lamb", "Justin Jefferson", "Drake London",
+                  "De'Von Achane", "James Cook III", "Chase Brown",
+                  "Rashee Rice"]
+        notes: "From picks 8-10 take the highest tier left, then double-tap at the turn."
+      - round: 2
+        prefer: [RB, WR]
+        notes: "The turn lets you pair RB+WR or WR+WR - DeVonta Smith / Breece Hall range."
+      - rounds: [3, 4]
+        prefer: [WR, TE]
+        avoid: [QB, K, DEF]
+        notes: "Load up at WR - a 10-team league has room for three set-and-forget WRs."
+      - rounds: [5, 7]
+        prefer: [RB, WR]
+        targets: ["Breece Hall", "Javonte Williams", "Travis Etienne Jr.",
+                  "Cam Skattebo", "Jayden Daniels", "Jalen Hurts",
+                  "Colston Loveland"]
+        notes: "Inverted dead zone plus the QB/TE value that falls to late slots."
+      - rounds: [8, 9]
+        prefer: [QB, TE, WR, RB]
+      - rounds: [10, 14]
+        prefer: [WR, RB]
+        targets: ["Matthew Golden", "Jayden Higgins", "Jonathon Brooks"]
+      - rounds: [15, 16]
+        prefer: [DEF, K]
+    pivots:
+      - when: { type: tier_break, position: RB, tier: 3, remaining_at_most: 1 }
+        then: { alert: "RB Tier 3 down to its last body - the next RB costs a full round more" }

@@ -1,0 +1,49 @@
+id: espn-1
+name: The Original 8 (ESPN)
+platform: espn
+teams: 8
+my_slot: 1
+# Waivers are inverse-standings PRIORITY (reset weekly), not FAAB. Draft
+# slot 1 starts the season 8th of 8 in the queue.
+waiver_mode: priority
+roster_spots:
+- QB
+- RB
+- RB
+- WR
+- WR
+- TE
+- W/R/T
+- W/R/T
+- K
+- DEF
+- BN
+- BN
+- BN
+- BN
+- BN
+- BN
+rounds: 17
+rankings_csv: data/rankings-espn.csv
+strategy_file: strategies/espn-1.yaml
+scoring:
+  passing_yards_per_point: 25
+  passing_td: 4
+  interception: -2
+  rushing_yards_per_point: 10
+  rushing_td: 6
+  reception: 1
+  receiving_yards_per_point: 10
+  receiving_td: 6
+  fumble_lost: -2
+team_names:
+- AI
+- Minnesota Mommies
+- Golden Brown Gibbs
+- Lights Kamara Action
+- Brock Hard
+- Worthy of Your Mom
+- Mike (sea)Hawk
+- Tractorcito Supply
+espn_league_id: 284298483
+host: {league_id: 284298483, team_id: 8}

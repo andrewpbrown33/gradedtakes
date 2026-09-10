@@ -1,0 +1,67 @@
+# Mined rival tendencies - written by engine/tendencies.py from 1
+# historical draft(s). Same managers schema as data/my_calls.yaml.
+#
+# MERGE ORDER MATTERS: Intel.merge() lets the LATER file win per
+# slot (intel.py updates the managers dict). Merge this file AFTER
+# data/player_intel.yaml but BEFORE data/my_calls.yaml, so your
+# hand-written manager reads always replace these mined ones.
+
+managers:
+- slot: 1
+  name: Team 1
+  favors_positions:
+  - QB
+  reach: 7.8
+  note: 'mined from 1 draft: first QB rd 6 (room rd 9); takes players ~8 picks before
+    ADP'
+- slot: 2
+  name: Team 2
+  favors_positions:
+  - RB
+  - QB
+  reach: 6.3
+  note: 'mined from 1 draft: RB 67% of rds 1-6 (room 38%); first QB rd 7 (room rd
+    9); takes players ~6 picks before ADP'
+- slot: 3
+  name: Team 3
+  favors_positions:
+  - WR
+  - K
+  reach: -0.8
+  note: 'mined from 1 draft: WR 67% of rds 1-6 (room 40%); first K rd 14 (room rd
+    16)'
+- slot: 4
+  name: Team 4
+  favors_positions:
+  - RB
+  reach: 7.3
+  note: 'mined from 1 draft: RB 67% of rds 1-6 (room 38%); takes players ~7 picks
+    before ADP'
+- slot: 5
+  name: Team 5
+  favors_positions:
+  - TE
+  reach: 4.0
+  note: 'mined from 1 draft: first TE rd 6 (room rd 8); takes players ~4 picks before
+    ADP'
+- slot: 6
+  name: Team 6
+  favors_positions:
+  - QB
+  - TE
+  reach: -4.1
+  note: 'mined from 1 draft: first QB rd 4 (room rd 9); first TE rd 6 (room rd 8);
+    waits ~4 picks past ADP'
+- slot: 7
+  name: Team 7
+  favors_positions:
+  - QB
+  - TE
+  reach: -2.0
+  note: 'mined from 1 draft: first QB rd 4 (room rd 9); first TE rd 3 (room rd 8)'
+- slot: 8
+  name: Team 8
+  favors_positions:
+  - TE
+  reach: 1.6
+  note: 'mined from 1 draft: first TE rd 3 (room rd 8)'

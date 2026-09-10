@@ -1,0 +1,95 @@
+# ============================================================================
+# MY CALLS - overrides that WIN over data/player_intel.yaml
+# ============================================================================
+#
+# Drafted by Claude on 23 Aug 2026 for Andrew to review, not invented from
+# scratch. Every entry below is a CORRECTION the pre-draft audit justified:
+# either the research doc contradicts itself, or it was written for half-PPR
+# and this league is full PPR. Nothing here is a new player opinion.
+#
+# Each note says WHY, so you can overrule any single line in ten seconds.
+# Delete a line and the research doc's original number comes back.
+#
+# THE FORMAT CORRECTION, in one sentence: a full point per reception (vs the
+# half point the research assumed) is worth roughly 40-50 points a season to a
+# 90-catch player, so pass-catching backs and every TE gain ground, and
+# early-down grinders lose it.
+
+players:
+
+  # --- Contradictions inside the research doc ------------------------------
+
+  - name: "DeVonta Smith"
+    adjust: 2
+    note: "REVIEW: doc calls him a BUY on A.J. Brown's ~121 vacated targets, but the SAME doc notes Winks has him a slight negative (27 ADP vs 37 proj). Split the difference rather than pick the bullish half"
+
+  - name: "Christian McCaffrey"
+    adjust: -9
+    note: "REVIEW: age/413-touch/tightness fade is real, but -18 was written for half PPR. He led ALL backs in catches and targets - full PPR is his best format. Still a fade, half as hard"
+
+  # --- Full-PPR corrections: receptions are worth double what the doc assumed
+
+  - name: "Brock Bowers"
+    adjust: 10
+    note: "REVIEW: raised from +5. At +5 the doc's own #3 archetype (elite-TE pivot) could never fire - he landed 8th at my turn. TEs also gain in full PPR. +10 makes it a real option at 2.10"
+
+  - name: "Trey McBride"
+    adjust: 5
+    note: "raised from +3 - full PPR lifts high-volume TEs, and he is the other half of the elite-TE tier"
+
+  - name: "De'Von Achane"
+    adjust: 4
+    note: "heavy receiving back - full PPR is his best format, and the doc priced him for half"
+
+  - name: "Jahmyr Gibbs"
+    adjust: 3
+    note: "pass-catching workhorse; the doc's 'tier of one' case gets stronger, not weaker, in full PPR"
+
+  - name: "James Cook III"
+    adjust: 3
+    note: "receiving work in a good offense - underpriced by half-PPR framing"
+
+  - name: "Chase Brown"
+    adjust: 3
+    note: "pass-game role in Cincinnati gains in full PPR"
+
+  - name: "Derrick Henry"
+    adjust: -6
+    note: "deepened from -3: he is the archetype full PPR hurts most - almost no receptions, and Year 11 TD regression on top"
+
+  - name: "Kenneth Walker"
+    adjust: -6
+    note: "softened from -8: bust-model flag stands, but he catches enough passes that full PPR cushions the floor"
+
+  - name: "Bucky Irving"
+    adjust: -2
+    note: "mild trim - efficient runner, but the receiving share is Gainwell's, so full PPR does not help him"
+
+
+# Hard exclusions. Left empty deliberately - the audit found no player the
+# research condemns outright, and a fade is 'not at this price', not 'never'.
+never_draft: []
+
+
+# ============================================================================
+# THE OTHER NINE MANAGERS - the one thing I cannot fill in for you
+# ============================================================================
+# This is empty because I have no information about your league mates, and
+# guessing would be worse than leaving it blank. It is also the highest-value
+# two minutes you could spend: it feeds straight into survival odds, which
+# otherwise assume every rival drafts by ADP and roster need.
+#
+#   - slot: 3
+#     name: "Hannah Amontana"
+#     favors_teams: ["BAL"]
+#     note: "always takes a Raven a round early"
+
+managers: []
+
+
+# Not read by the engine - a running list for us.
+research_wanted:
+  - "Full-PPR-specific rankings to replace the half-PPR research doc"
+  - "Andrew's read on the other 9 managers (tendencies, favorite NFL teams)"
+  - "Projected points column so value becomes real VORP instead of rank order"
+  - "Late news check: McCaffrey tightness, Nabers/Kittle Week 1, Jacobs legal"

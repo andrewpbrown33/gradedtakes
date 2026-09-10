@@ -1,0 +1,78 @@
+# Yahoo - "Kid's Table" (league ID 428472)
+# Draft: Sun Aug 23, 9:00pm EDT, live standard (snake), 30-second pick clock.
+# Settings transcribed from the league-settings screenshots.
+
+id: yahoo-main
+name: "Kid's Table (Yahoo)"
+platform: yahoo
+teams: 10
+
+# Waivers are FAAB (blind budget bids) - the waiver engine's bid bands apply.
+waiver_mode: faab
+
+my_slot: 1
+
+# QB, WR, WR, RB, RB, TE, W/R/T, W/R/T, K, DEF + 6 bench = 16 rounds.
+roster_spots:
+  - QB
+  - WR
+  - WR
+  - RB
+  - RB
+  - TE
+  - W/R/T
+  - W/R/T
+  - K
+  - DEF
+  - BN
+  - BN
+  - BN
+  - BN
+  - BN
+  - BN
+
+rounds: 16
+
+rankings_csv: data/rankings.csv
+strategy_file: strategies/yahoo-main.yaml
+
+# Full PPR (Receptions = 1). Fractional and negative points are enabled.
+scoring:
+  passing_yards_per_point: 25
+  passing_td: 4
+  interception: -1
+  rushing_yards_per_point: 10
+  rushing_td: 6
+  reception: 1
+  receiving_yards_per_point: 10
+  receiving_td: 6
+  return_td: 6
+  two_point_conversion: 2
+  fumble_lost: -2
+  offensive_fumble_return_td: 6
+  kicker:
+    fg_0_19: 3
+    fg_20_29: 3
+    fg_30_39: 3
+    fg_40_49: 4
+    fg_50_plus: 5
+    pat_made: 1
+  defense:
+    sack: 1
+    interception: 2
+    fumble_recovery: 2
+    touchdown: 6
+    safety: 2
+    block_kick: 2
+    return_td: 6
+    points_allowed_0: 10
+    points_allowed_1_6: 7
+    points_allowed_7_13: 4
+    points_allowed_14_20: 1     # Yahoo default - not visible in screenshots
+    points_allowed_21_27: 0     # Yahoo default - not visible in screenshots
+    points_allowed_28_34: -1
+    points_allowed_35_plus: -4  # Yahoo default - not visible in screenshots
+
+# Optional: replace with real manager names as they appear in the draft room.
+team_names: []
+host: {league_id: 428472, team_id: 5}
