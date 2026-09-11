@@ -252,6 +252,17 @@ name last:
    local now -> ONE WEEK of league beta with The Original 8 -> then
    public-platform setup (hosting, accounts, per-user credentials, and a
    hard-gate commercial re-audit of every data feed before launch).
+0c. **DECIDED (Sep 10, 2026): the app's look and tab bar.** Obsidian glass
+   theme approved (direction; see design/obsidian/). MODEL replaces LEDGER as
+   the fifth tab. The Ledger (Tuesday digest) stays reachable off the tab
+   bar: from the settings gear ("This week's digest"), from a Home card
+   ("This week's brief"), and as the deep-link target of the Tuesday push.
+   PALETTE OPENS UP: no longer married to navy+gold - use colour
+   intuitively across the app and across pages (position colours fantasy
+   players already know, a hue per page, category colours in the library),
+   with ONE consistent, readable text scale everywhere. Verdict chips keep
+   their weight encoding (fill / ghost / dash) - a green-start/red-sit
+   dashboard is what the owner rejected first.
 0b. **DECIDED (Sep 10, 2026): per-user data lives in Supabase.** The owner's
    existing Supabase Pro org (Pro, not Free - Free pauses after 7 idle days
    and this product is idle Feb-Aug). First use: the Model page - each
