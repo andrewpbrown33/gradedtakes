@@ -1,0 +1,161 @@
+/* Graded Takes - OBSIDIAN GLASS theme tokens + the glass recipe.
+ *
+ * This file is SPEC.md §1 (tokens) and §4.2 (page-side treatment) verbatim,
+ * in the live --wr-* vocabulary, so engine/ui.py and engine/prefs.py can lift
+ * the block into an _OBSIDIAN dict / a :root[data-theme="obsidian"] block
+ * without renaming anything. Nothing here is wired in. If this file and
+ * SPEC.md ever disagree, SPEC.md wins and this file is wrong.
+ *
+ * Hard rules honoured: no green, no red; verdicts by WEIGHT (gold fill =
+ * START, ghost outline = SIT, dashed = TOSS-UP); gold is ONE accent (START
+ * fills, one primary verb per screen, the attention rule, and text only on
+ * numbers and times); glass on CONTROLS only, never on a content card; the
+ * 11px type floor; 44pt targets.
+ */
+
+:root[data-theme="obsidian"] {
+  /* ground ladder: L* 3.4 -> 6.8 -> 12.3 -> 16.6, cool cast (hue ~225, the navy pushed to black) */
+  --wr-canvas:      #0A0C12;
+  --wr-panel:       #12151D;     /* the opaque card fill (Reduce Transparency / Increase Contrast); app mode uses it at 78% */
+  --wr-raised:      #1C202B;     /* pills, badges, ghost verbs, avatar discs */
+  --wr-raised-2:    #262A35;     /* the selected segment; text 11.2:1, muted 6.1:1 */
+
+  /* hairlines are ALPHA so they read the same over glass, wash and panel */
+  --wr-hairline:    #FFFFFF14;   /* white 8%  -> ~#1D1F25 on canvas */
+  --wr-hairline-2:  #FFFFFF24;   /* white 14% -> ~#2D2E33 on canvas */
+
+  /* ink: warm off-white, never #FFF (halation on OLED near-black) */
+  --wr-text:        #E8E3D8;     /* 15.3:1 canvas, 14.3:1 panel, 12.7:1 raised */
+  --wr-muted:       #ABA9A1;     /*  8.3:1 canvas,  7.8:1 panel,  6.9:1 raised */
+  --wr-dim:         #909298;     /*  6.3:1 canvas,  5.9:1 panel,  5.2:1 raised */
+  --wr-slate:       #909298;
+  --wr-nav-text-2:  #C9C5BC;     /* the ONLY secondary ink allowed on glass (the status line under the league): 8.5:1 on the worst-case glass */
+
+  /* the one accent */
+  --wr-gold:        #F2B722;     /* 10.8:1 canvas - text-safe, so gold text is allowed on dark: numbers and times only */
+  --wr-rule:        #F2B722;
+
+  /* 'positive' stays ink-blue, 'negative' recedes to stone (hue rule: no green, no red) */
+  --wr-mint:        #9DBBF3;     /*  9.4:1 panel */
+  --wr-coral:       #BDB0A0;     /*  8.6:1 panel */
+
+  /* verdict chips - weight, not colour */
+  --wr-chip-ink:    #101B33;     /*  9.4:1 on the gold fill */
+  --wr-chip-start:  #F2B722;     /* solid fill - the loudest object on the screen, on purpose */
+  --wr-chip-sit:    #6A6E77;     /* ghost outline, 3.2-3.8:1 on canvas/panel/raised and 3.4:1 on the translucent card (WCAG non-text floor) */
+  --wr-chip-lean:   #F2B722;     /* dashed gold */
+  --wr-chip-none:   #3C3F49;     /* deliberately recessive: not a control, not a verdict */
+
+  /* row washes: a tint the eye reads, never a fill that competes with a chip */
+  --wr-wash-hot:    #2D281E;     /* gold 12% over panel  - the honesty banner, the empty-record note */
+  --wr-wash-cold:   #1B1E26;     /* white 4% over panel  - cold/bye rows */
+  --wr-wash-good:   #141E32;     /* ink-blue 16% over panel - good-matchup rows */
+  --wr-wash-bad:    #212125;     /* stone 14% over panel - avoid rows */
+  --wr-wash-split:  #24221D;     /* gold 8% over panel   - the challenger line under a contested slot */
+
+  --wr-shadow:      #0000009E;   /* 62% - under floating glass only; never under a card */
+
+  /* nav: in app mode the native Liquid Glass chrome is the only chrome; these
+     are the web-header fallbacks and the sticky-glass base colour */
+  --wr-nav:         #0E1118;
+  --wr-nav-text:    #E8E3D8;     /* 14.8:1 */
+  --wr-nav-raised:  #21242A;
+  --wr-nav-line:    #303238;
+  --wr-frost:       #14171E;     /* Reduce-Transparency bar fill at 96% */
+
+  /* meters */
+  --wr-meter-hi:    #F2B722;     /* smash/good pips */
+  --wr-meter-mid:   #E8E3D8;     /* neutral pips */
+  --wr-meter-lo:    #3A3E48;     /* OFF pips (drawn at 45%); the ON pips of a tough/avoid meter use --wr-dim */
+
+  /* glass recipe knobs (SPEC §1) */
+  --gt-glass-fill:  rgba(28, 31, 40, 0.52);   /* the mockup's stand-in for Apple's regular dark glass; native code does not set this */
+  --gt-glass-blur:  22px;
+  --gt-float-fill:  rgba(14, 17, 24, 0.72);   /* a page-rendered L2 float (web fallback of the accessory) */
+  --gt-float-blur:  20px;
+  --gt-panel-fill:  rgba(18, 21, 29, 0.78);   /* the translucent content card in app mode - NOT blurred */
+  --gt-edge-top:    rgba(255, 255, 255, 0.16); /* the lit top edge that sells 'glass' */
+  --gt-edge:        rgba(255, 255, 255, 0.07); /* the faint all-round rim */
+  --gt-shadow:      0 8px 24px rgba(0, 0, 0, 0.45);   /* under floats only */
+  --gt-frost:       rgba(20, 23, 30, 0.96);   /* Reduce Transparency: the bars frost, the floats go solid */
+}
+
+/* app mode: the page paints no ground; the native shell does */
+html[data-app="ios"][data-theme="obsidian"], html[data-app="ios"][data-theme="obsidian"] body { background: transparent; }
+html[data-app="ios"] body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }  /* safeAreaBar extends these */
+
+/* ---------------------------------------------------------------------
+ * LEVEL 1 - the content card: translucent fill + lit edge. No blur (Apple:
+ * "Don't use Liquid Glass in the content layer"). No drop shadow (shadows
+ * vanish on near-black). Depth = the lightness ladder + the edge.
+ * ------------------------------------------------------------------- */
+[data-theme="obsidian"] .wr-card {
+  background: var(--gt-panel-fill);
+  border: 1px solid var(--wr-hairline);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+}
+[data-theme="obsidian"] .wr-card.wr-attn { box-shadow: inset 0 2px 0 var(--wr-rule), inset 0 1px 0 rgba(255, 255, 255, 0.06); }
+
+/* ---------------------------------------------------------------------
+ * LEVEL 2 - the page-rendered float (only when the shell does not render
+ * it natively): the "Next lock" strip, the primary-verb strip. At most two
+ * per screen, each a floating CONTROL, never a card. Only primary ink,
+ * nav-text-2 and gold on this surface. No gold rule on the float - it is
+ * already the float; gold goes on the time.
+ * ------------------------------------------------------------------- */
+.gt-glass {
+  background: var(--gt-float-fill);
+  -webkit-backdrop-filter: blur(var(--gt-float-blur)) saturate(140%);
+          backdrop-filter: blur(var(--gt-float-blur)) saturate(140%);
+  border: 1px solid var(--gt-edge);
+  box-shadow: inset 0 1px 0 var(--gt-edge-top), inset 0 -1px 0 rgba(0, 0, 0, 0.35), var(--gt-shadow);
+  border-radius: 16px;
+}
+/* Pressed: Liquid Glass "illuminates from within". A brief inset wash, no glow. */
+.gt-glass:active { box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.06), inset 0 1px 0 var(--gt-edge-top); }
+
+/* Reduce Transparency (injected by the shell; WebKit has no prefers-reduced-transparency)
+   and Increase Contrast (native media query + injected attribute): solid obsidian panels */
+:root[data-reduce-transparency="1"] .wr-card, :root[data-increase-contrast="1"] .wr-card { background: var(--wr-panel); }
+:root[data-reduce-transparency="1"] .gt-glass, :root[data-increase-contrast="1"] .gt-glass {
+  background: var(--wr-panel); -webkit-backdrop-filter: none; backdrop-filter: none; border: 1px solid var(--wr-hairline-2); }
+@media (prefers-contrast: more) {
+  :root[data-theme="obsidian"] { --wr-muted: #C4C2BA; --wr-dim: #ABADB3; --wr-chip-sit: #8E929B; }
+  [data-theme="obsidian"] .wr-card { background: var(--wr-panel); border-color: rgba(255, 255, 255, 0.5); }
+}
+@media (prefers-reduced-motion: reduce) { .gt-glass { transition: none; } }
+
+/* ---------------------------------------------------------------------
+ * Obsidian-specific component overrides (all colour, no markup change)
+ * ------------------------------------------------------------------- */
+/* the slot / position badge is plain dim mono - un-boxed; the row is not a form */
+[data-theme="obsidian"] .wr-pos { background: transparent; border: 0; color: var(--wr-dim); font-family: var(--wr-mono, ui-monospace, monospace); letter-spacing: 0.06em; }
+/* opponent chips: only a GRADED opponent carries weight. neutral = borderless muted; none = borderless dim;
+   good/tough = 1px cream at 55%; smash = 1.5px cream; avoid = cream fill + the wall glyph. No gold on an opponent chip. */
+[data-theme="obsidian"] .wr-opp { border-color: transparent; color: var(--wr-muted); }
+[data-theme="obsidian"] .wr-opp-none { color: var(--wr-dim); border-style: solid; }
+[data-theme="obsidian"] .wr-opp-good, [data-theme="obsidian"] .wr-opp-tough { border-color: rgba(232, 227, 216, 0.55); color: var(--wr-text); }
+[data-theme="obsidian"] .wr-opp-smash { background: transparent; color: var(--wr-text); border: 1.5px solid var(--wr-text); }
+[data-theme="obsidian"] .wr-opp-avoid { background: var(--wr-text); color: var(--wr-panel); border-color: var(--wr-text); }
+/* a wall is drawn in dim ink, not in the OFF colour; the meter LABEL is cream, never gold - the pips say it once */
+[data-theme="obsidian"] .wr-meter-lo .wr-meter-on { fill: var(--wr-dim); }
+[data-theme="obsidian"] .wr-meter-hi .wr-meter-l { color: var(--wr-text); }
+/* in a row the confidence rides BESIDE the verdict chip in dim mono; the versus card's large chip keeps it inside */
+[data-theme="obsidian"] .wr-chip-md .wr-chip-pct { color: var(--wr-dim); background: transparent; }
+/* SIT = ghost glass: hairline outline, a 3% white fill, muted ink */
+[data-theme="obsidian"] .wr-chip-sit { background: rgba(255, 255, 255, 0.03); color: var(--wr-muted); border-color: var(--wr-chip-sit); }
+/* locked / unfiled / "contests FLEX": no border, no fill, dim 600 - a locked player never gets a verdict fill */
+[data-theme="obsidian"] .wr-chip-none, [data-theme="obsidian"] .wr-chip-locked { background: transparent; border-color: transparent; color: var(--wr-dim); font-weight: 600; }
+/* gold TEXT is for numbers and times only: kickers, SMASH, VS, SPLIT, "n calls", "wt" are cream or dim */
+[data-theme="obsidian"] .wr-kicker { color: var(--wr-muted); }
+[data-theme="obsidian"] .wr-np-w { color: var(--wr-dim); }
+/* avatars lift off the card on the raised step; the 2px gap ring is solid panel so it reads over the translucent card */
+[data-theme="obsidian"] .wr-av { background: var(--wr-raised); box-shadow: 0 0 0 2px var(--wr-panel), 0 0 0 3.5px var(--wr-hairline-2); }
+[data-theme="obsidian"] .wr-av-creator { box-shadow: 0 0 0 2px var(--wr-panel), 0 0 0 3.5px var(--wr-rule); }
+/* verbs: capsules, 44px tall; one primary per screen */
+[data-theme="obsidian"] .wr-verb { min-height: 44px; border-radius: 22px; background: var(--wr-raised); color: var(--wr-text);
+                                    border: 1px solid var(--wr-hairline-2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+[data-theme="obsidian"] .wr-verb-primary { background: var(--wr-chip-start); color: var(--wr-chip-ink); border-color: var(--wr-chip-start); }
+/* sticky table heads inside cards stay opaque - a translucent sticky header over rows is glass on content */
+[data-theme="obsidian"] .wr-table th { background: var(--wr-panel); }

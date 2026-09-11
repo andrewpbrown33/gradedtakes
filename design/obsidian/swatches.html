@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en" data-theme="obsidian" data-app="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obsidian Glass - proof sheet</title>
+<style>
+/* === inlined copy of tokens.obsidian.css (source of truth is that file) === */
+/* Graded Takes - OBSIDIAN GLASS theme tokens + glass recipe.
+ *
+ * Companion to design/obsidian/BRIEF-dark-glass.md. Nothing here is wired
+ * in: engine/ui.py and engine/prefs.py own the live token blocks. This file
+ * is the proposed values in the SAME token vocabulary (--wr-*) so the other
+ * build can lift the block into a `_OBSIDIAN` dict / a
+ * `:root[data-theme="obsidian"]` block without renaming anything.
+ *
+ * Hard rules honoured: no green, no red; verdicts by WEIGHT (gold fill =
+ * START, ghost outline = SIT, dashed = TOSS-UP); attention = a gold rule;
+ * chip-start is #F2B722 in every theme; numbers stay tabular mono.
+ */
+
+:root[data-theme="obsidian"] {
+  /* ground ladder: L* 3.4 -> 6.8 -> 12.3, cool cast (hue ~225, the navy pushed to black) */
+  --wr-canvas:      #0A0C12;
+  --wr-panel:       #12151D;
+  --wr-raised:      #1C202B;
+
+  /* hairlines are ALPHA so they read the same over glass, wash and panel */
+  --wr-hairline:    #FFFFFF14;   /* white 8%  -> ~#1D1F25 on canvas */
+  --wr-hairline-2:  #FFFFFF24;   /* white 14% -> ~#2D2E33 on canvas */
+
+  /* ink: warm off-white, never #FFF (halation on OLED near-black) */
+  --wr-text:        #E8E3D8;     /* 15.3:1 canvas, 14.3:1 panel, 12.7:1 raised */
+  --wr-muted:       #ABA9A1;     /*  8.3:1 canvas,  7.8:1 panel,  6.9:1 raised */
+  --wr-dim:         #909298;     /*  6.3:1 canvas,  5.9:1 panel,  5.2:1 raised */
+  --wr-slate:       #909298;
+
+  /* the one accent */
+  --wr-gold:        #F2B722;     /* 10.8:1 canvas - text-safe, so gold text is allowed on dark */
+  --wr-rule:        #F2B722;
+
+  /* 'positive' stays ink-blue, 'negative' recedes to stone (v3 rule) */
+  --wr-mint:        #9DBBF3;     /*  9.4:1 panel */
+  --wr-coral:       #BDB0A0;     /*  8.6:1 panel */
+
+  /* verdict chips - weight, not colour */
+  --wr-chip-ink:    #101B33;     /*  9.4:1 on the gold fill */
+  --wr-chip-start:  #F2B722;     /* solid fill - the loudest object on the screen, on purpose */
+  --wr-chip-sit:    #6A6E77;     /* ghost outline, 3.2-3.8:1 on every surface (WCAG non-text floor) */
+  --wr-chip-lean:   #F2B722;     /* dashed gold */
+  --wr-chip-none:   #3C3F49;     /* deliberately recessive: not a control, not a verdict */
+
+  /* row washes: a tint the eye reads, never a fill that competes with a chip */
+  --wr-wash-hot:    #2D281E;     /* gold 12% over panel  - text 11.5:1, muted 6.2:1, gold 8.1:1 */
+  --wr-wash-cold:   #1B1E26;     /* white 4% over panel  - text 13.0:1, muted 7.1:1 */
+  --wr-wash-good:   #141E32;     /* ink-blue 16% over panel - text 13.0:1, muted 7.1:1 */
+  --wr-wash-bad:    #212125;     /* stone 14% over panel - text 12.5:1, muted 6.8:1 */
+  --wr-wash-split:  #24221D;     /* gold 8% over panel   - text 12.4:1, muted 6.8:1 */
+
+  --wr-shadow:      #0000009E;   /* 62% - dark needs a heavier, tighter shadow than paper does */
+
+  /* nav: in app mode the native Liquid Glass chrome is the only chrome; these
+     are the web-header fallbacks and the sticky-glass base colour */
+  --wr-nav:         #0E1118;
+  --wr-nav-text:    #E8E3D8;     /* 14.8:1 */
+  --wr-nav-raised:  #21242A;
+  --wr-nav-line:    #303238;
+
+  /* meters */
+  --wr-meter-hi:    #F2B722;
+  --wr-meter-mid:   #E8E3D8;
+  --wr-meter-lo:    #3A3E48;     /* off pips; the ON pips carry the value */
+
+  /* glass recipe knobs (new; see .gt-glass-* below) */
+  --gt-glass-fill:      rgba(14, 17, 24, 0.72);   /* floating bars, sticky headers */
+  --gt-glass-fill-thick:rgba(14, 17, 24, 0.84);   /* sheets, menus, anything with muted text */
+  --gt-glass-blur:      20px;
+  --gt-glass-blur-thick:28px;
+  --gt-glass-edge-top:  rgba(255, 255, 255, 0.16); /* the 1px top highlight that sells 'glass' */
+  --gt-glass-edge:      rgba(255, 255, 255, 0.07);
+  --gt-glass-shadow:    0 8px 24px rgba(0, 0, 0, 0.45);
+  --gt-glass-shadow-thick: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------------------------------------------------------------------
+ * LEVEL 1 - content card. NOT glass. Opaque panel, hairline, a faint top
+ * edge. Depth comes from the lightness ladder + the edge, not from blur
+ * and not from a drop shadow (shadows vanish on near-black).
+ * ------------------------------------------------------------------- */
+[data-theme="obsidian"] .wr-card,
+[data-theme="obsidian"] .gt-panel {
+  background: var(--wr-panel);
+  border: 1px solid var(--wr-hairline);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+}
+
+/* ---------------------------------------------------------------------
+ * LEVEL 2 - floating glass. Sticky group headers ("Do now"), the verb
+ * bar, the league switcher popover, anything content scrolls BENEATH.
+ * Only primary text + gold on this surface (muted text can drop under
+ * 4.5:1 when a gold chip passes under it).
+ * ------------------------------------------------------------------- */
+.gt-glass {
+  background: var(--gt-glass-fill);
+  -webkit-backdrop-filter: blur(var(--gt-glass-blur)) saturate(140%);
+          backdrop-filter: blur(var(--gt-glass-blur)) saturate(140%);
+  border: 1px solid var(--gt-glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--gt-glass-edge-top),        /* top edge catches the light */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),            /* bottom edge falls into shadow */
+    var(--gt-glass-shadow);
+  border-radius: 16px;
+}
+
+/* LEVEL 3 - thick glass: sheets, menus, the settings tray. Muted text OK. */
+.gt-glass-thick {
+  background: var(--gt-glass-fill-thick);
+  -webkit-backdrop-filter: blur(var(--gt-glass-blur-thick)) saturate(140%);
+          backdrop-filter: blur(var(--gt-glass-blur-thick)) saturate(140%);
+  border: 1px solid var(--gt-glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--gt-glass-edge-top),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+    var(--gt-glass-shadow-thick);
+  border-radius: 20px;
+}
+
+/* Pressed: Liquid Glass "illuminates from within". A brief inset wash, no glow. */
+.gt-glass:active, .gt-glass-thick:active,
+.gt-glass .gt-press:active {
+  box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.06),
+              inset 0 1px 0 var(--gt-glass-edge-top);
+}
+
+/* Attention on glass is a gold RULE, never a glow. */
+.gt-glass.gt-attn { border-top: 2px solid var(--wr-rule); }
+
+/* Apple's accessibility modifiers, mirrored: frostier glass / hard border. */
+@media (prefers-reduced-transparency: reduce) {
+  .gt-glass, .gt-glass-thick {
+    background: rgba(14, 17, 24, 0.96);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .gt-glass, .gt-glass-thick { border-color: rgba(255, 255, 255, 0.5); }
+  [data-theme="obsidian"] { --wr-muted: #C4C2BA; --wr-dim: #ABADB3; --wr-chip-sit: #8E929B; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gt-glass, .gt-glass-thick { transition: none; }
+}
+
+</style>
+<style>
+  /* Proof sheet only. Fonts fall back to system if the brand faces are not installed. */
+  :root { color-scheme: dark; }
+  html, body { margin: 0; background: var(--wr-canvas); color: var(--wr-text);
+    font: 15px/1.4 Archivo, -apple-system, "SF Pro Text", system-ui, sans-serif; }
+  .num, .mono { font-family: "Spline Sans Mono", "SF Mono", ui-monospace, Menlo, monospace;
+    font-variant-numeric: tabular-nums; }
+  .disp { font-family: "Archivo Black", Archivo, system-ui, sans-serif; font-weight: 900; }
+  .phone { max-width: 402px; margin: 0 auto; padding: 0 0 120px; position: relative; }
+  h1 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--wr-muted);
+    margin: 22px 16px 8px; font-weight: 600; }
+  h1 b { color: var(--wr-gold); font-weight: 700; }
+  section { padding: 0 16px; }
+  .cap { font-size: 12px; color: var(--wr-dim); margin: 6px 0 14px; }
+
+  /* swatch grid */
+  .sw { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .sw div { height: 64px; border-radius: 10px; border: 1px solid var(--wr-hairline);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; font-size: 11px; }
+  .sw .k { color: var(--wr-muted); }
+  .sw .v { color: var(--wr-text); font-size: 11px; }
+
+  /* ladder */
+  .ladder { position: relative; height: 150px; background: var(--wr-canvas);
+    border: 1px solid var(--wr-hairline); border-radius: 14px; overflow: hidden; }
+  .ladder .p { position: absolute; left: 14px; top: 26px; right: 14px; bottom: 14px; }
+  .ladder .r { position: absolute; left: 14px; top: 26px; right: 14px; bottom: 14px;
+    background: var(--wr-raised); border-radius: 12px; border: 1px solid var(--wr-hairline-2); }
+  .ladder .lbl { position: absolute; font-size: 11px; color: var(--wr-muted); }
+
+  /* chips (mirrors .wr-chip vocabulary) */
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px 0 8px;
+    border-radius: 7px; font-size: 12px; font-weight: 700; letter-spacing: .04em; border: 1px solid transparent; }
+  .chip .pct { opacity: .78; }
+  .chip-start { background: var(--wr-chip-start); color: var(--wr-chip-ink); border-color: var(--wr-chip-start); }
+  .chip-sit   { background: transparent; color: var(--wr-muted); border-color: var(--wr-chip-sit); }
+  .chip-lean  { background: transparent; color: var(--wr-chip-lean); border: 1px dashed var(--wr-chip-lean); }
+  .chip-none  { background: transparent; color: var(--wr-dim); border-color: var(--wr-chip-none); }
+
+  /* rows */
+  .row { display: grid; grid-template-columns: 36px 1fr auto auto; gap: 10px; align-items: center;
+    min-height: 56px; padding: 8px 12px; border-bottom: 1px solid var(--wr-hairline); }
+  .row:last-child { border-bottom: 0; }
+  .av { width: 36px; height: 36px; border-radius: 50%; background: var(--wr-raised);
+    box-shadow: 0 0 0 2px var(--wr-panel), 0 0 0 3px var(--wr-hairline-2);
+    display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--wr-muted); }
+  .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .who .n { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .who .m { font-size: 12px; color: var(--wr-muted); }
+  .who .m i { font-style: normal; color: var(--wr-dim); }
+  .proj { text-align: right; font-size: 15px; color: var(--wr-text); }
+  .proj small { display: block; font-size: 11px; color: var(--wr-dim); }
+  .wash-hot { background: var(--wr-wash-hot); } .wash-good { background: var(--wr-wash-good); }
+  .wash-bad { background: var(--wr-wash-bad); } .wash-split { background: var(--wr-wash-split); }
+  .wash-cold { background: var(--wr-wash-cold); }
+  .pill { font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 2px 7px; border-radius: 5px;
+    border: 1px solid var(--wr-hairline-2); background: var(--wr-raised); color: var(--wr-muted); }
+
+  /* needs-you inbox item with the verb button */
+  .need { display: flex; align-items: center; gap: 12px; padding: 12px; }
+  .need .t { flex: 1; min-width: 0; }
+  .need .t b { display: block; }
+  .need .t span { font-size: 12px; color: var(--wr-muted); }
+  .verb { height: 44px; padding: 0 16px; border-radius: 11px; font-weight: 700; font-size: 14px;
+    border: 1px solid var(--wr-hairline-2); background: var(--wr-raised); color: var(--wr-text); }
+  .verb.primary { background: var(--wr-gold); color: var(--wr-chip-ink); border-color: var(--wr-gold); }
+  .attn { border-top: 2px solid var(--wr-rule); }
+
+  /* the scrolling demo: a glass bar pinned over content that moves under it */
+  .scroller { position: relative; height: 230px; overflow: auto; border-radius: 14px;
+    border: 1px solid var(--wr-hairline); background: var(--wr-canvas); }
+  .scroller .inner { padding: 60px 12px 12px; }
+  .scroller .bar { position: sticky; top: 10px; margin: 0 10px; height: 48px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 14px; z-index: 2; }
+  .scroller .bar b { letter-spacing: .06em; font-size: 12px; text-transform: uppercase; }
+  .bright { background: var(--wr-text); color: var(--wr-canvas); border-radius: 10px; padding: 10px 12px;
+    font-weight: 700; margin: 10px 0; }
+  .goldblock { background: var(--wr-gold); color: var(--wr-chip-ink); border-radius: 10px; padding: 10px 12px;
+    font-weight: 800; margin: 10px 0; }
+
+  /* the bottom "native" chrome stand-in: this is what the Liquid Glass tab bar will do for real */
+  .tabbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; width: 370px; height: 60px;
+    display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; border-radius: 30px; z-index: 9; }
+  .tabbar div { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--wr-muted); }
+  .tabbar div i { display: block; width: 22px; height: 22px; margin: 0 auto 3px; border-radius: 6px;
+    border: 1.5px solid currentColor; }
+  .tabbar div.on { color: var(--wr-gold); }
+  .tabbar div.on i { background: var(--wr-gold); border-color: var(--wr-gold); }
+
+  /* a mono ledger block (the Bloomberg lesson: density is fine, decoration is not) */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--wr-dim);
+    font-weight: 700; padding: 6px 8px; border-bottom: 1px solid var(--wr-hairline-2); }
+  td { padding: 8px; border-bottom: 1px solid var(--wr-hairline); }
+  td.n { text-align: right; }
+  .mark { display: inline-block; width: 14px; height: 14px; background: var(--wr-gold); transform: rotate(45deg);
+    border-radius: 1px; margin-right: 8px; vertical-align: -2px; }
+  .cr { font-size: 11px; color: var(--wr-dim); }
+  .cr b { color: var(--wr-muted); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <h1><span class="mark"></span><b>Obsidian glass</b> proof sheet</h1>
+  <section><p class="cap">Not a screen. A sheet for eyeballing the tokens in design/obsidian/tokens.obsidian.css on a phone. Contrast figures are computed live from the tokens.</p></section>
+
+  <h1>1 · The ground ladder</h1>
+  <section>
+    <div class="ladder">
+      <span class="lbl" style="left:12px;top:8px">canvas #0A0C12 · L* 3.4</span>
+      <div class="p gt-panel"><span class="lbl" style="left:12px;top:8px">panel #12151D · L* 6.8 (opaque, hairline, 1px top edge)</span>
+        <div class="r"><span class="lbl" style="left:12px;top:8px">raised #1C202B · L* 12.3</span></div>
+      </div>
+    </div>
+    <p class="cap">Three opaque steps of 3–6 L* each. The step is small on purpose: the hairline and the top edge carry the boundary, the lightness carries the depth.</p>
+  </section>
+
+  <h1>2 · Tokens</h1>
+  <section>
+    <div class="sw" id="sw"></div>
+    <p class="cap" id="crs"></p>
+  </section>
+
+  <h1>3 · Verdict by weight</h1>
+  <section>
+    <div class="gt-panel" style="padding:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span class="chip chip-start">START <span class="pct num">78%</span></span>
+      <span class="chip chip-sit">SIT <span class="pct num">61%</span></span>
+      <span class="chip chip-lean">TOSS-UP <span class="pct num">52%</span></span>
+      <span class="chip chip-none">NO CALL</span>
+    </div>
+    <p class="cap">Gold fill is the loudest thing on the screen because it is the only thing allowed to be. The SIT outline sits at 3.6:1 on panel, the WCAG floor for a control boundary.</p>
+  </section>
+
+  <h1>4 · Needs you</h1>
+  <section>
+    <div class="gt-panel">
+      <div class="need attn">
+        <div class="t"><b>Set your FLEX before 1:00 PM</b><span>Kamara is <i>questionable</i> · 3 sources moved him to SIT since 9:10 AM</span></div>
+        <button class="verb primary">Fix lineup</button>
+      </div>
+      <div class="need" style="border-top:1px solid var(--wr-hairline)">
+        <div class="t"><b>Claim a kicker</b><span>Your K is on bye · waivers clear Wed 3:00 AM</span></div>
+        <button class="verb">Pick one</button>
+      </div>
+      <div class="need" style="border-top:1px solid var(--wr-hairline)">
+        <div class="t"><b>Answer the trade offer</b><span>From Marcus · expires Thu</span></div>
+        <button class="verb">Open</button>
+      </div>
+    </div>
+    <p class="cap">One gold button per screen (the "Do now" item). Every other verb is a raised glass-look button. Attention is the gold rule on the item's top edge, not a glow and not a red badge.</p>
+  </section>
+
+  <h1>5 · Roster rows on washes</h1>
+  <section>
+    <div class="gt-panel" style="overflow:hidden">
+      <div class="row wash-hot"><div class="av">JJ</div><div class="who"><span class="n">Justin Jefferson</span><span class="m">WR · MIN <i>vs GB</i></span></div><div class="proj num">21.4<small>proj</small></div><span class="chip chip-start">START</span></div>
+      <div class="row"><div class="av">AK</div><div class="who"><span class="n">Alvin Kamara</span><span class="m">RB · NO <i>@ ATL</i> · <span class="pill">Q</span></span></div><div class="proj num">12.8<small>proj</small></div><span class="chip chip-lean">TOSS-UP</span></div>
+      <div class="row wash-bad"><div class="av">DM</div><div class="who"><span class="n">Deebo Samuel</span><span class="m">WR · WAS <i>@ PHI</i></span></div><div class="proj num">9.1<small>proj</small></div><span class="chip chip-sit">SIT</span></div>
+      <div class="row wash-good"><div class="av">TK</div><div class="who"><span class="n">Travis Kelce</span><span class="m">TE · KC <i>vs LV</i></span></div><div class="proj num">14.0<small>proj</small></div><span class="chip chip-start">START</span></div>
+      <div class="row wash-split"><div class="av">BR</div><div class="who"><span class="n">Bijan Robinson</span><span class="m">RB · ATL <i>vs NO</i></span></div><div class="proj num">17.6<small>proj</small></div><span class="chip chip-lean">TOSS-UP</span></div>
+    </div>
+    <p class="cap">Washes are tints, 4–16% over panel: text stays above 11:1, muted above 6:1 on every one of them.</p>
+  </section>
+
+  <h1>6 · Real glass, with content passing under it</h1>
+  <section>
+    <div class="scroller">
+      <div class="bar gt-glass"><b>Before lock · 3</b><span class="num" style="color:var(--wr-gold)">1:00 PM</span></div>
+      <div class="inner">
+        <p class="cap">Scroll this box. The bar is the Level-2 recipe: rgba(14,17,24,.72) · blur 20px · saturate 140% · 1px top edge at white 16%.</p>
+        <div class="goldblock">A gold block passing under the bar</div>
+        <div class="bright">A cream block passing under the bar</div>
+        <div class="gt-panel" style="padding:12px">A panel passing under the bar. Note the bar never looks like the panel: the panel has no blur, the bar has no wash.</div>
+        <div class="goldblock">Another gold block</div>
+        <div class="bright">Another cream block</div>
+        <div class="gt-panel" style="padding:12px">Last panel.</div>
+      </div>
+    </div>
+    <p class="cap">Worst case is cream text on the bar while a gold chip is directly beneath: 8.0:1. Muted text in the same spot would drop to 4.4:1, so muted text is not allowed on Level-2 glass.</p>
+  </section>
+
+  <h1>7 · Dense mono, no decoration</h1>
+  <section>
+    <div class="gt-panel" style="padding:4px 6px">
+      <table>
+        <thead><tr><th>Source</th><th class="n">Wk 1</th><th class="n">Season</th><th class="n">Δ</th></tr></thead>
+        <tbody>
+          <tr><td>Consensus</td><td class="n num">71.2</td><td class="n num">68.9</td><td class="n num" style="color:var(--wr-gold)">+2.3</td></tr>
+          <tr><td>FantasyPros</td><td class="n num">69.8</td><td class="n num">70.1</td><td class="n num">−0.3</td></tr>
+          <tr><td>Underdog ADP</td><td class="n num">64.0</td><td class="n num">66.2</td><td class="n num">−2.2</td></tr>
+          <tr><td>Your calls</td><td class="n num">74.5</td><td class="n num">71.0</td><td class="n num" style="color:var(--wr-gold)">+3.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cap">The Bloomberg lesson kept, the Bloomberg colour dropped: density is fine when every number is tabular and the only colour on the table is the one accent, used for the one thing that is up.</p>
+  </section>
+
+  <div class="tabbar gt-glass">
+    <div class="on"><i></i>HOME</div><div><i></i>LINEUP</div><div><i></i>BOARD</div><div><i></i>LEDGER</div><div><i></i>TRADES</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var names = ['canvas','panel','raised','hairline','hairline-2','text','muted','dim','gold','rule','chip-ink','chip-start','chip-sit','chip-lean','chip-none','wash-hot','wash-cold','wash-good','wash-bad','wash-split','nav','nav-text','nav-raised','nav-line','meter-hi','meter-mid','meter-lo','mint','coral'];
+  var cs = getComputedStyle(document.documentElement);
+  var sw = document.getElementById('sw');
+  function hexOf(v) { return v.trim(); }
+  names.forEach(function (n) {
+    var v = hexOf(cs.getPropertyValue('--wr-' + n));
+    var d = document.createElement('div');
+    d.style.background = v.length === 9 ? v : v; // 8-digit hex renders in WebKit
+    d.innerHTML = '<span class="k">' + n + '</span><span class="v mono">' + v + '</span>';
+    sw.appendChild(d);
+  });
+  function lum(h) { h = h.replace('#','').slice(0,6); var c=[0,2,4].map(function(i){return parseInt(h.substr(i,2),16)/255;});
+    c = c.map(function(x){return x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4);}); return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; }
+  function cr(a,b){var la=lum(a),lb=lum(b);return ((Math.max(la,lb)+0.05)/(Math.min(la,lb)+0.05)).toFixed(1);}
+  var t = hexOf(cs.getPropertyValue('--wr-text')), m = hexOf(cs.getPropertyValue('--wr-muted')), dm = hexOf(cs.getPropertyValue('--wr-dim')),
+      g = hexOf(cs.getPropertyValue('--wr-gold')), c = hexOf(cs.getPropertyValue('--wr-canvas')), p = hexOf(cs.getPropertyValue('--wr-panel')), r = hexOf(cs.getPropertyValue('--wr-raised'));
+  document.getElementById('crs').innerHTML =
+    '<span class="cr">text on canvas/panel/raised <b>' + cr(t,c) + ' / ' + cr(t,p) + ' / ' + cr(t,r) + '</b> · ' +
+    'muted <b>' + cr(m,c) + ' / ' + cr(m,p) + ' / ' + cr(m,r) + '</b> · dim <b>' + cr(dm,c) + ' / ' + cr(dm,p) + ' / ' + cr(dm,r) + '</b> · gold <b>' + cr(g,c) + ' / ' + cr(g,p) + ' / ' + cr(g,r) + '</b></span>';
+})();
+</script>
+</body>
+</html>
