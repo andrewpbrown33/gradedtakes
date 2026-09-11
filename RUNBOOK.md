@@ -252,6 +252,17 @@ name last:
    local now -> ONE WEEK of league beta with The Original 8 -> then
    public-platform setup (hosting, accounts, per-user credentials, and a
    hard-gate commercial re-audit of every data feed before launch).
+0e. **DECIDED (Sep 11, 2026) — brand direction.** (1) DROP THE SINGLE ACCENT:
+   gold is retired as "the" accent; obsidian ground + one cream/steel text
+   ladder do the work, with position and league hues as the only colour.
+   The verdict encoding must survive without gold (fill / ghost / dash in
+   the ladder's own tones). (2) THE MARK: explore "GT" / "G" monograms, a
+   wordmark with an icon, and concepts that play on "graded" (a grade, a
+   check, a stamp, a take that gets marked). Must read at 1024 (App Store),
+   60 (home screen), 29 (Settings) and 16 (favicon); no alpha on the icon.
+   (3) SOURCES ARE REAL FACES EVERYWHERE: the avatar fetch is the default
+   for every creator; algorithmic feeds get designed marks, not monograms;
+   the engine wears the product mark. Keep: the obsidian glass quality.
 0d. **Sep 11, 2026 — design feedback on the swatches.** DECIDED: the matchup
    grade is a bipolar centred scale (right = good, green; left = avoid, red);
    colour follows position, not a one-way fill. UNDER REVIEW before any
