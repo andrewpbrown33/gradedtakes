@@ -1,0 +1,1556 @@
+# Graded Takes - Source Library ("The Library")
+#
+# A curated directory of real, verified fantasy-football sources that a user can
+# add to THEIR model on the Sources page. This is a directory of links and
+# metadata, NOT a content-scraping list: every entry is link-only by default
+# (name, link, their line in the accuracy ledger). Quotes and call extraction
+# require a signed creator licence (see design/plan/platform.md).
+#
+# Schema (one entry per source):
+#   id                        kebab slug (stable; the two the owner already runs keep
+#                             their ids: sharp-or-square, the-favorites; so do the
+#                             built-ins: engine, espn-proj, sleeper-proj, chen-tiers,
+#                             house-research)
+#   name                      display name
+#   category                  podcasts | youtube | newsletters | analysts | feeds | news
+#   type                      podcast | youtube | newsletter | site | analyst | feed
+#   handle_or_url             the machine handle: podcast = RSS feed URL; youtube =
+#                             channel URL; newsletter = archive/feed URL; analyst =
+#                             author page; feed = API/base URL. All fetched 2026-09-10.
+#   what_for                  one line: start/sit, waivers, injuries, betting lens...
+#   cadence                   daily | weekdays | weekly | in-season | ...
+#   free_or_paid              free | freemium | paid
+#   feed_readable             true if a public machine feed exists that yields TITLES
+#                             and LINKS without scraping (RSS/API). YouTube: see
+#                             youtube_feed_status in meta.
+#   consent_status            link-only (default for everyone) | licensed | n/a
+#   suggested_default_weight  0-100, relative, same scale as data/sources.yaml
+#                             (engine = 17 there). 0 = informational, never votes.
+#   weight_reason             one line
+#   verified_on               ISO date the URL was fetched and metadata checked
+#   source_of_truth           the URL the facts were verified against
+#   flags                     optional: [moved, dormant, defunct, unverified, hosts-changed,
+#                             licence-blocked, needs-deal, owner-uses]
+#   Optional extras: hosts, network, youtube_channel, youtube_channel_id, subscribers,
+#                    last_episode, licensing, notes, x_handle
+#
+# Verification method (2026-09-10):
+#   podcasts   - iTunes lookup/search API (returns canonical feedUrl + last releaseDate),
+#                then the RSS itself was fetched and parsed (item count, latest pubDate).
+#   youtube    - channel page fetched; channel id from the page's own externalId and
+#                RSS <link>; subscriber count from YouTube's channel-search renderer.
+#   newsletters/sites - /feed fetched and parsed where one exists; archive page fetched.
+#   analysts   - author page or X profile fetched (HTTP 200); current employer from
+#                2026 press coverage (cited in source_of_truth).
+#   feeds      - docs/API fetched; licence text quoted in `licensing`.
+
+meta:
+  version: 1
+  built_on: "2026-09-10"
+  entry_count: 78
+  weight_scale: "0-100 relative, normalised at consensus time; data/sources.yaml uses the same scale (engine=17)."
+  youtube_feed_status: >-
+    YouTube's public RSS endpoint (https://www.youtube.com/feeds/videos.xml?channel_id=UC...)
+    returned HTTP 404 for every channel tested on 2026-09-10 (NFL, Fantasy Footballers, Harris
+    Football), from two different networks. This is the platform-wide 2025-26 outage documented
+    at https://discuss.ai.google.dev/t/youtube-rss-feed-endpoint-returns-404-errors/113379
+    (Dec 2025-May 2026, no fix from Google) and
+    https://thecodersblog.com/youtube-rss-feed-functionality-issues-2026/ (2026-05-06).
+    Every channel page still advertises the RSS link, so it may come back intermittently, but
+    it cannot be relied on. The sanctioned machine path for titles+links is the YouTube Data
+    API v3: channels.list -> uploads playlist (UU...) -> playlistItems.list, 1 quota unit per
+    call against a 10,000-unit/day default quota
+    (https://developers.google.com/youtube/v3/getting-started). That is enough to poll ~40
+    channels every 15 minutes. So youtube entries carry feed_readable: false and
+    machine_path: "youtube-data-api-v3". Transcripts are NOT part of this path (data-rights plan).
+  owner_already_uses: [engine, espn-proj, sleeper-proj, chen-tiers, sharp-or-square, house-research, the-favorites]
+
+sources:
+
+# =============================================================================
+# (a) PODCASTS - fantasy-first shows, verified live in September 2026
+# =============================================================================
+
+- id: fantasy-footballers
+  name: The Fantasy Footballers
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/sw7PGWfw
+  hosts: [Andy Holloway, Jason Moore, Mike Wright]
+  network: independent (Fantasy Footballers)
+  youtube_channel: https://www.youtube.com/@TheFantasyFootballers
+  youtube_channel_id: UC-No2ITxJsNt50oJQ3fLmUA
+  subscribers: "425K (YouTube, 2026-09-10)"
+  what_for: start/sit, waivers, weekly rankings; the largest fantasy-first audio show
+  cadence: weekdays in-season
+  free_or_paid: freemium (show free; Ultimate Draft Kit / Footclan paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: highest-reach weekly rankings show; consistent public calls that grade cleanly
+  last_episode: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/lookup?id=917453719
+  x_handle: "@TheFFBallers"
+
+- id: fantasy-focus-espn
+  name: Fantasy Focus Football (ESPN)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.megaphone.fm/ESP7699980268
+  hosts: [Field Yates, Mike Clay, Daniel Dopp, Liz Loza]
+  network: ESPN
+  youtube_channel: https://www.youtube.com/@espnfantasy
+  youtube_channel_id: UCN1zefFvhhAXA2We345EP0g
+  subscribers: "hidden on channel page (unverified)"
+  what_for: start/sit, injuries, news of the day; Mike Clay's projections lens
+  cadence: weekdays in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: daily and projection-backed; the feed's author tag still lists Stephania Bell, who was laid off 2026-07-21
+  last_episode: "2026-09-10"
+  flags: [hosts-changed]
+  notes: "Stephania Bell (injuries) left in ESPN's July 2026 layoffs after ESPN absorbed NFL Network; RSS metadata is stale."
+  verified_on: "2026-09-10"
+  source_of_truth: https://awfulannouncing.com/espn/layoffs-david-lloyd-stephania-bell-tom-pelissero.html
+
+- id: late-round
+  name: The Late-Round Fantasy Football Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/0a233618-d694-4c81-a139-b34e00f98fb1/5747cc82-33a9-497c-8353-b34e00f98fbe/podcast.rss
+  hosts: [JJ Zachariason]
+  network: iHeartPodcasts / NFL Podcast Network
+  youtube_channel: https://www.youtube.com/@lateroundff
+  youtube_channel_id: UCK5szBUaJMnuCViD6alvuXg
+  subscribers: "12.6K (YouTube, 2026-09-10)"
+  what_for: analytics-driven process, breakouts/busts, weekly rankings (members)
+  cadence: several per week in-season, bite-sized
+  free_or_paid: freemium (podcast free; weekly rankings + Discord paid membership)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: explicit, testable process claims; smaller reach than the majors
+  last_episode: "2026-09-09"
+  verified_on: "2026-09-10"
+  source_of_truth: https://lateround.com/
+  x_handle: "@LateRoundQB"
+
+- id: establish-the-run
+  name: Establish The Run Fantasy Football
+  category: podcasts
+  type: podcast
+  handle_or_url: https://anchor.fm/s/60e53980/podcast/rss
+  hosts: [Evan Silva, Adam Levitan]
+  network: Establish The Run
+  youtube_channel: https://www.youtube.com/@EstablishTheRun
+  youtube_channel_id: UCvIyBYSykqTU4oqB1gSTM5w
+  subscribers: "60.8K (YouTube, 2026-09-10)"
+  what_for: matchups, DFS/lineup construction, weekly rankings; the sharp-player reference
+  cadence: several per week in-season
+  free_or_paid: freemium (podcast free; In-Season $279.99/yr, Draft Kit Pro $54.99/yr)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: industry-reference matchup work; podcast makes public calls the paywall does not hide
+  last_episode: "2026-09-08"
+  verified_on: "2026-09-10"
+  source_of_truth: https://subscribe.establishtherun.com/nfl/
+
+- id: harris-football
+  name: Harris Fantasy Football Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://harrisfootball.libsyn.com/rss
+  hosts: [Christopher Harris]
+  network: HarrisFootball.com (independent)
+  youtube_channel: https://www.youtube.com/@HarrisFootball
+  youtube_channel_id: UCIwMvaZy_RPCwibOq_9iB1A
+  subscribers: "37.6K (YouTube, 2026-09-10)"
+  what_for: start/sit, opinionated player evaluation, waiver targets
+  cadence: multiple per week in-season
+  free_or_paid: freemium (podcast free; Patreon/site extras)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: long-running solo voice with clear, gradeable takes; smaller audience
+  last_episode: "2026-09-09"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=harris+football&media=podcast&limit=6
+
+- id: fantasy-life-show
+  name: Fantasy Life Show
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.megaphone.fm/fantasylifeshow
+  hosts: [Kendall Valenzuela, Peter Overzet, Dwain McFarland]
+  network: Matthew Berry's Fantasy Life
+  youtube_channel: https://www.youtube.com/@MBFantasyLife
+  youtube_channel_id: UCkLjLsEpv4yuz_8-5RCDJaQ
+  subscribers: "65.8K (YouTube hub, 2026-09-10)"
+  what_for: daily news reaction, usage data (McFarland), start/sit
+  cadence: weekdays
+  free_or_paid: free (Fantasy Life+ paid tools separate)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: daily, usage-grounded; Ian Hartitz left this network for RotoWire in July 2026
+  last_episode: "2026-09-10"
+  flags: [hosts-changed]
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/lookup?id=1642787926
+
+- id: happy-hour-berry
+  name: Fantasy Football Happy Hour with Matthew Berry
+  category: podcasts
+  type: podcast
+  handle_or_url: https://rss.amperwave.net/v2/feed/audacynetwork/102846fb12f29f9158fbf6f2178ee2bd
+  hosts: [Matthew Berry]
+  network: Audacy (audio) + Berry's YouTube; previously NBC Sports
+  youtube_channel: https://www.youtube.com/@MatthewBerry
+  youtube_channel_id: UCRr25AoMoEwN2AFB5AmqNmw
+  subscribers: "19.1K (YouTube, 2026-09-10)"
+  what_for: start/sit, love/hate, waivers; the mainstream reference voice
+  cadence: weekdays in-season (noon ET live), weekly offseason
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: the most-followed individual ranker; moved networks 2026-08-03 so the feed URL is new this season
+  last_episode: "2026-09-10"
+  flags: [moved]
+  notes: "Berry did not return to NBC's Football Night in America; show returned 2026-08-03 with Audacy handling audio distribution."
+  verified_on: "2026-09-10"
+  source_of_truth: https://barrettmedia.com/2026/08/03/audacy-matthew-berry-fantasy-football-podcast/
+
+- id: fantasy-football-today
+  name: Fantasy Football Today (CBS Sports)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://rss.amperwave.net/v2/feed/audacynetwork/38ad78ba12adc2acec34b47b1a455b85
+  hosts: [Adam Aizer, Dave Richard, Jamey Eisenberg, Heath Cummings]
+  network: CBS Sports (Audacy distribution)
+  youtube_channel: https://www.youtube.com/@fantasyfootballtoday
+  youtube_channel_id: UCviK78rIWXhZdFzJ1Woi7Fg
+  subscribers: "132K (YouTube, 2026-09-10)"
+  what_for: start/sit, waivers, projections-backed tiers (Cummings)
+  cadence: weekdays in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: daily, three rankers with published tiers/projections to grade against
+  last_episode: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=fantasy+football+today+cbs&media=podcast&limit=8
+
+- id: ringer-fantasy-football
+  name: The Ringer Fantasy Football Show
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.megaphone.fm/ringer-fantasy-football-show
+  hosts: [Danny Heifetz, Danny Kelly, Craig Horlbeck]
+  network: The Ringer (Spotify)
+  youtube_channel: https://www.youtube.com/@RingerFFS
+  youtube_channel_id: UCxJBjLmrObPRVdiFTnxL4Fg
+  subscribers: "18.7K (YouTube, 2026-09-10)"
+  what_for: start/sit with a football-first lens; entertainment-heavy
+  cadence: 2-3 per week in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: fewer explicit calls per episode; strong on game-script reasoning
+  last_episode: "2026-09-09"
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.theringer.com/podcasts/the-ringer-fantasy-football-show
+
+- id: yahoo-josh-hayden
+  name: Yahoo Fantasy Football with Josh & Hayden
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/Lj5JhCEG
+  hosts: [Josh Norris, Hayden Winks]
+  network: Yahoo Sports (since July 2026; formerly Underdog)
+  youtube_channel: https://www.youtube.com/@JoshandHayden
+  youtube_channel_id: UC7fnz7139CGSdtHWaPMCpIw
+  subscribers: "179K (YouTube, 2026-09-10)"
+  what_for: rankings, waivers, analytics; best-ball and team-building lens
+  cadence: daily
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: daily, rankings-explicit; Underdog shut its content network in 2026 and the show moved to Yahoo intact
+  last_episode: "2026-09-08"
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://awfulannouncing.com/yahoo/josh-norris-hayden-winks-shutdown-underdog-content.html
+
+- id: fantasypros-pod
+  name: FantasyPros Fantasy Football Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://rss.pdrl.fm/8516fd/www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/a425ba31-4316-4647-847e-b0030136e912/0afc299b-d04e-4bd7-91a8-b0030136e938/podcast.rss
+  network: FantasyPros / iHeartPodcasts
+  youtube_channel: https://www.youtube.com/@fantasypros
+  youtube_channel_id: UCZYaxEBdyKDsZfq_JGZwIeQ
+  subscribers: "293K (YouTube, 2026-09-10)"
+  what_for: start/sit, waivers, consensus-driven advice
+  cadence: weekdays in-season
+  free_or_paid: free (site tools paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: consensus-flavoured, so it overlaps ECR; hosts not verified for 2026
+  last_episode: "2026-09-10"
+  flags: [unverified]
+  notes: "Hosts not verified; the feed's author tag is the network, not people."
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=fantasy+footballers&media=podcast&limit=8
+
+- id: nfl-fantasy-football-show
+  name: NFL Fantasy Football Show
+  category: podcasts
+  type: podcast
+  handle_or_url: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/267b8710-aa47-4725-8ef5-ae270034320c/9213d6fe-a3ae-4a4c-a3ea-ae270034322d/podcast.rss
+  network: NFL Media (league-owned)
+  youtube_channel: https://www.youtube.com/@NFLFantasyFootball
+  youtube_channel_id: UCUDpxEz7PAI55ptRvMcWEdg
+  subscribers: "132K (YouTube, 2026-09-10)"
+  what_for: start/sit, waivers, official-league access to players/coaches
+  cadence: several per week in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: league-owned, less contrarian; hosts not verified after the 2026 ESPN-NFL Network changes
+  last_episode: "2026-09-04"
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=nfl+fantasy+football+podcast&media=podcast&limit=8
+
+- id: fantasy-points-pod
+  name: Fantasy Points Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.megaphone.fm/fantasypoints2
+  hosts: [John Hansen]
+  network: Fantasy Points
+  youtube_channel: https://www.youtube.com/@FantasyPoints
+  youtube_channel_id: UCaCshQX7-gQ0Bs5BnddUwZg
+  subscribers: "28K (YouTube, 2026-09-10)"
+  what_for: rankings, usage data, injuries (Porras), Scott Barrett's metrics
+  cadence: several per week in-season
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: data-house voice with named rankers; sister show School of Scott exists (feeds.megaphone.fm/schoolofscott)
+  last_episode: "2026-09-07"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=fantasy+points+podcast&media=podcast&limit=6
+
+- id: playerprofiler-pod
+  name: PlayerProfiler Fantasy Football Podcast Network
+  category: podcasts
+  type: podcast
+  handle_or_url: https://rss.pdrl.fm/8708d0/feeds.megaphone.fm/PPF6116029294
+  network: PlayerProfiler
+  youtube_channel: https://www.youtube.com/@PlayerProfiler
+  youtube_channel_id: UCthzZOV9hsJnCyC_3KsIhRw
+  subscribers: "30.1K (YouTube, 2026-09-10)"
+  what_for: dynasty and high-stakes, athleticism/opportunity metrics, waivers
+  cadence: near-daily in-season
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: network feed mixes many shows; dynasty-leaning, noisier for weekly start/sit
+  last_episode: "2026-09-10"
+  notes: "Waiver Wired sub-feed (feeds.megaphone.fm/waiver-wired) last posted 2025-12-03; treat as dormant."
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=playerprofiler&media=podcast&limit=6
+
+- id: footballguys-audible
+  name: The Audible (Footballguys)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://theaudible.libsyn.com/rss
+  network: Footballguys
+  youtube_channel: https://www.youtube.com/@TheAudible
+  youtube_channel_id: UCnMmnVlW_Iq0tdj3mPH-Ehg
+  subscribers: "31.7K (YouTube, 2026-09-10)"
+  what_for: start/sit, waivers, IDP; veteran staff roundtable
+  cadence: weekdays in-season
+  free_or_paid: freemium (site subscription for projections/tools)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: steady and experienced; hosts rotate so per-host grading is harder
+  last_episode: "2026-09-10"
+  notes: "Footballguys also runs a Daily Update feed (rss.libsyn.com/shows/550267/destinations/4748752.xml)."
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=footballguys&media=podcast&limit=6
+
+- id: most-accurate-4for4
+  name: The Most Accurate Podcast (4for4)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/pDzFErjY
+  network: 4for4
+  youtube_channel: https://www.youtube.com/@4for4FF
+  youtube_channel_id: UCFvntUp6EhZ7MnqYHJba8dA
+  subscribers: "4.33K (YouTube, 2026-09-10)"
+  what_for: projections-first start/sit, waivers, DFS
+  cadence: weekly-plus in-season
+  free_or_paid: freemium (site projections paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: projections house with a public accuracy track record claim; small video reach
+  last_episode: "2026-09-09"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=4for4+fantasy+football&media=podcast&limit=5
+
+- id: sharp-football-warren-sharp
+  name: Sharp Football Analysis by Warren Sharp
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/UiNmc8XS
+  hosts: [Warren Sharp]
+  network: Sharp Football Analysis
+  youtube_channel: https://www.youtube.com/@SharpFootballAnalysis
+  youtube_channel_id: UC5Me5Jw0nSj1qF6ZfibrFMw
+  subscribers: "14.4K (YouTube, 2026-09-10)"
+  what_for: betting lens - totals, pace, game script, coaching tendencies
+  cadence: several per week in-season
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: market/game-script lens that complements start/sit sources; not player-level calls
+  last_episode: "2026-09-10"
+  notes: "Do NOT confuse with youtube.com/@sharpfootball ('Sharp Football Channel', 450K subs) - unrelated channel."
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=warren+sharp+football&media=podcast&limit=5
+
+- id: sharp-or-square
+  name: Sharp or Square (Millman & Hunter)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/291fe8ed-f80d-4107-9ee1-b34c015266d0/51f38aeb-0341-43f7-a21b-b34c01526b07/podcast.rss
+  hosts: [Chad Millman, Simon Hunter]
+  network: The Volume / iHeartPodcasts (launched 2025-09-02 after Millman left Action Network)
+  youtube_channel: https://www.youtube.com/@SharporSquare
+  youtube_channel_id: UCzWldAuZDg1ctieD_SJdDSw
+  subscribers: "15.1K (YouTube, 2026-09-10)"
+  what_for: betting lens - sides, totals, moneyline parlays, survivor; NOT start/sit
+  cadence: Tue, Thu, 2x Sunday in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: owner runs it at 17; suggested lower for new users because RSS blurbs yield few gradeable fantasy calls
+  last_episode: "2026-09-08"
+  flags: [owner-uses]
+  verified_on: "2026-09-10"
+  source_of_truth: https://barrettmedia.com/2025/09/02/chad-millman-launches-sharp-or-square-program-with-the-volume/
+
+- id: the-favorites
+  name: The Favorites Sports Betting Podcast (Action Network)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/f806745c-9af9-4941-bf75-ae3300346a6c/012b8953-dca4-461c-becc-ae3300346a7a/podcast.rss
+  hosts: [Kendra Middleton, Brandon Kravitz, Stuckey]
+  network: Action Network ("Playmaker and iHeartPodcasts" in feed metadata)
+  youtube_channel: https://www.youtube.com/@TheActionNetwork
+  youtube_channel_id: UCLbe62TJjEM1a7gnvTIsxkw
+  subscribers: "83.2K (YouTube, 2026-09-10)"
+  what_for: betting lens - NFL picks, injuries as they move lines; mixed-sport channel
+  cadence: Tue/Thu 1pm ET + Sun 7:30pm ET
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: owner runs it at 17 via the YouTube channel; relaunched 2025-09-10 with new hosts and the channel is mostly non-fantasy
+  last_episode: "2026-09-10"
+  flags: [owner-uses, hosts-changed]
+  notes: "Owner's registry points at the YouTube channel; this entry adds the RSS feed, which is readable without the transcript pipeline."
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.actionnetwork.com/news/the-favorites-podcast-returns-tuesday-with-new-hosts
+
+- id: dynasty-nerds
+  name: Dynasty Nerds Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.megaphone.fm/dynastynerdspodcast
+  network: Dynasty Nerds
+  youtube_channel: https://www.youtube.com/@DynastyNerds
+  youtube_channel_id: UCyMng_8VKXye0ObmRX7Occw
+  subscribers: "26.1K (YouTube, 2026-09-10)"
+  site_feed: https://www.dynastynerds.com/feed/
+  what_for: dynasty - trade values, rookies, long-horizon buys/sells
+  cadence: several per week
+  free_or_paid: freemium (Nerd Herd paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 4
+  weight_reason: dynasty horizon rarely grades against a weekly ledger; hosts not verified for 2026
+  last_episode: "2026-09-10"
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=dynasty+nerds&media=podcast&limit=6
+
+- id: the-rant-ftn
+  name: The Rant with Jeff Ratcliffe (FTN)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/PONJnAaJ
+  hosts: [Jeff Ratcliffe]
+  network: FTN Media
+  youtube_channel: https://www.youtube.com/@FTNFantasy
+  youtube_channel_id: UCJFzJBE9bf3lPyE9WXz27qA
+  subscribers: "14.9K (YouTube, 2026-09-10)"
+  what_for: rankings, waivers, DFS and betting angles from FTN's data
+  cadence: weekly-plus in-season
+  free_or_paid: freemium (FTN data paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: FTN's flagship voice; the separate 'FTN Fantasy Football Podcast' feed (feeds.simplecast.com/wz4B5rqZ) last posted 2025-12-26 and looks dormant
+  last_episode: "2026-09-02"
+  verified_on: "2026-09-10"
+  source_of_truth: https://ftnfantasy.com/contributor/jeffratcliffe
+
+- id: pff-fantasy-pod
+  name: PFF Fantasy Football Podcast
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/lupMiJpJ
+  hosts: [Nathan Jahnke, Jon Macri]
+  network: PFF
+  youtube_channel: https://www.youtube.com/@ProFootballFocus
+  youtube_channel_id: UCY-IDqcyz8tev_jmRboQRsg
+  subscribers: "229K (YouTube main channel, 2026-09-10)"
+  what_for: snap counts, grades, usage; start/sit from a charting house
+  cadence: irregular in 2026
+  free_or_paid: freemium (PFF+ paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: audio feed last posted 2026-03-13 - dormant as of Week 1; PFF fantasy video may live on the main channel instead
+  last_episode: "2026-03-13"
+  flags: [dormant]
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=pff+fantasy+football&media=podcast&limit=6
+
+- id: rotowire-hartitz
+  name: Fantasy Football with Ian Hartitz (RotoWire)
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/Fmn2_88T
+  hosts: [Ian Hartitz]
+  network: RotoWire (Hartitz joined July 2026 from Fantasy Life)
+  youtube_channel: https://www.youtube.com/@rotowire
+  youtube_channel_id: UCuLXuwhSlU8jTkmYPsToJaA
+  subscribers: "42.2K (YouTube, 2026-09-10)"
+  what_for: rankings, start/sit, usage; RotoWire's news desk behind it
+  cadence: several per week in-season
+  free_or_paid: freemium (RotoWire subscription for tools)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: new show this season built around a ranker who publishes a public top-150; also 'RotoWire Fantasy Football with Theo Gremminger' (feeds.simplecast.com/D9lea_gL)
+  last_episode: "2026-09-09"
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://x.com/Ihartitz/status/2072304757264314445
+
+- id: footballers-dfs-betting
+  name: Fantasy Footballers DFS & Betting
+  category: podcasts
+  type: podcast
+  handle_or_url: https://feeds.simplecast.com/qM3pJCOl
+  hosts: [Kyle Borgognoni, Matthew Betz]
+  network: Fantasy Footballers
+  what_for: betting lens - player props, DFS plays on FanDuel/DraftKings/Underdog
+  cadence: weekly in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: prop-level calls are gradeable but a different unit than start/sit
+  last_episode: "2026-09-04"
+  verified_on: "2026-09-10"
+  source_of_truth: https://itunes.apple.com/search?term=fantasy+footballers&media=podcast&limit=8
+
+# =============================================================================
+# (b) YOUTUBE-ONLY CHANNELS - the show-linked channels are attached to their
+#     podcast entries above. These are video-first creators with no audio feed.
+#     feed_readable is false because YouTube's RSS is 404 in 2026 (see meta);
+#     machine_path is the Data API v3 uploads-playlist poll.
+# =============================================================================
+
+- id: flock-fantasy
+  name: Flock Fantasy
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@Flockfantasy
+  youtube_channel_id: UC3jkBCIA687DNpQOZFSbtsg
+  subscribers: "329K (2026-09-10)"
+  what_for: start/sit, waivers, rankings; second-largest fantasy-first YouTube audience
+  cadence: near-daily in-season
+  free_or_paid: free
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: large reach; titles are gradeable ("start X over Y") but no audio feed
+  notes: "Sister channels: Dynasty Football Flock (@Dynastyflock, 44.6K) and The Flock League (@FlockLeague, 96.4K)."
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@Flockfantasy
+
+- id: fantasy-headliners
+  name: The Fantasy Headliners
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@TheFantasyHeadliners
+  youtube_channel_id: UCClRnPtjFEm7Is7hpSoTBeg
+  subscribers: "281K (2026-09-10)"
+  what_for: start/sit, waivers, sleepers; daily video for the casual manager
+  cadence: near-daily
+  free_or_paid: free
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: high reach, frequent explicit calls; less data-driven than the podcast tier
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@TheFantasyHeadliners
+
+- id: sal-vetri
+  name: Sal Vetri (The Fantasy Football Club)
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@SalVetri
+  youtube_channel_id: UC6oJruhkkXrws3HWqPfMHJw
+  subscribers: "219K (2026-09-10)"
+  what_for: research-heavy start/sit, sleepers, waiver gems, DFS plays
+  cadence: several per week
+  free_or_paid: free
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: data-first solo creator with a large audience
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@SalVetri
+
+- id: fantasy-football-advice
+  name: Fantasy Football Advice
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@FantasyFootballAdviceFFA
+  youtube_channel_id: UCK4vtDxY3_2Bm5H6VQsuNTA
+  subscribers: "122K (2026-09-10)"
+  what_for: start/sit, waivers, trade advice
+  cadence: several per week in-season
+  free_or_paid: free
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: mid-size, advice-explicit; host not verified
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@FantasyFootballAdviceFFA
+
+- id: fantasy-football-counselor
+  name: Fantasy Football Counselor
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@fantasyfootballcounselor
+  youtube_channel_id: UC1DTCNwCalZSzoJm4gq6oGw
+  subscribers: "105K (2026-09-10)"
+  what_for: rankings, start/sit, "consistency" lens; also a podcast under the same name
+  cadence: several per week
+  free_or_paid: freemium
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 4
+  weight_reason: opinionated and gradeable but a single voice with a marketing bent
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@fantasyfootballcounselor
+
+- id: the-fantasy-football-show
+  name: The Fantasy Football Show (Smitty)
+  category: youtube
+  type: youtube
+  handle_or_url: https://www.youtube.com/@TheFantasyFootballShow
+  youtube_channel_id: UCYobYIoHLJTbAQV7t7qt4MQ
+  subscribers: "39.3K (2026-09-10)"
+  what_for: daily live news reaction and start/sit
+  cadence: daily livestream
+  free_or_paid: free
+  feed_readable: false
+  machine_path: youtube-data-api-v3
+  consent_status: link-only
+  suggested_default_weight: 4
+  weight_reason: fast on news; livestream titles are less structured for grading
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.youtube.com/@TheFantasyFootballShow
+
+# =============================================================================
+# (c) NEWSLETTERS / SUBSTACKS / FREE TIERS OF PAID SHOPS
+# =============================================================================
+
+- id: fantasy-life-newsletter
+  name: Fantasy Life Newsletter
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://www.fantasylife.com/articles/newsletters
+  network: Matthew Berry's Fantasy Life
+  what_for: daily news digest, start/sit, waivers; "400,000+ readers" per site
+  cadence: daily
+  free_or_paid: free (Fantasy Life+ tools paid)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: highest-reach free daily; no public RSS found (fantasylife.com/rss = 404), so link-only by archive page
+  notes: "Utilization Report (Dwain McFarland) lives here: https://www.fantasylife.com/nfl/utilization-report/preview"
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasylife.com/subscribe-a
+
+- id: stealing-signals
+  name: Stealing Signals (Ben Gretch)
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://bengretch.substack.com/feed
+  archive: https://bengretch.substack.com/archive
+  what_for: weekly usage/opportunity signal vs noise; the analyst's analyst
+  cadence: weekly in-season (Stealing Signals) + draft kits
+  free_or_paid: freemium (Substack; paid tier for full in-season posts)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: explicit signal/noise calls on player usage that grade well; 12,000+ subscribers per Substack
+  last_post: "2026-09-09"
+  verified_on: "2026-09-10"
+  source_of_truth: https://bengretch.substack.com/
+
+- id: unexpected-points
+  name: Unexpected Points (Kevin Cole)
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://unexpectedpoints.substack.com/feed
+  what_for: model-driven NFL analytics (ex-PFF data scientist); team-level and value projections
+  cadence: weekly-plus
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: strong methodology, but team-level more than start/sit
+  last_post: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://unexpectedpoints.substack.com/about
+
+- id: the-ff-newsletter
+  name: The FF Newsletter
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://theffnewsletter.substack.com/feed
+  what_for: curated link roundup of the industry's best articles; a discovery feed
+  cadence: 2-3x weekly in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 2
+  weight_reason: aggregator - makes no calls of its own; useful to seed the suggest-queue
+  last_post: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://theffnewsletter.substack.com/about
+
+- id: thinking-about-thinking
+  name: "Thinking About Thinking (Jakob Sanderson)"
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://jakobsanderson.substack.com/feed
+  what_for: best-ball and process theory; dynasty (also co-hosts Dynasty Points)
+  cadence: weekly
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 5
+  weight_reason: process-heavy, fewer weekly calls
+  last_post: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://jakobsanderson.substack.com/
+
+- id: the-worksheet-hribar
+  name: The Worksheet (Rich Hribar, Sharp Football Analysis)
+  category: newsletters
+  type: site
+  handle_or_url: https://www.sharpfootballanalysis.com/fantasy/the-worksheet/
+  site_feed: https://www.sharpfootballanalysis.com/feed/
+  what_for: every-game, every-player weekly preview; matchup and usage numbers
+  cadence: weekly (Wednesdays) in-season
+  free_or_paid: paid (Regular Season $159.99 or Bundle $150; weekly $9.99); site RSS carries free posts
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: the single most complete weekly matchup document; paywalled, so users bring their own subscription
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.sharpfootballanalysis.com/fantasy-packages/
+
+- id: 4for4
+  name: 4for4 (free tier)
+  category: newsletters
+  type: site
+  handle_or_url: https://www.4for4.com/rss.xml
+  site: https://www.4for4.com/
+  what_for: projections-driven rankings, start/sit, "accuracy" positioning
+  cadence: daily in-season
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: projection house with a public accuracy claim; RSS returns ~1000 items
+  last_post: "2026-09-02"
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.4for4.com/
+
+- id: footballguys
+  name: Footballguys (free tier)
+  category: newsletters
+  type: site
+  handle_or_url: https://www.footballguys.com/
+  what_for: projections, staff consensus, IDP, daily email update
+  cadence: daily in-season
+  free_or_paid: freemium
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: deep staff bench; no site RSS found (/rss and /news/rss = 404) - use The Audible / Daily Update podcast feeds for machine reads
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.footballguys.com/
+
+- id: pff-fantasy
+  name: PFF Fantasy (free tier)
+  category: newsletters
+  type: site
+  handle_or_url: https://www.pff.com/feed
+  site: https://www.pff.com/fantasy
+  what_for: snap counts, routes, grades; weekly rankings
+  cadence: daily
+  free_or_paid: freemium (PFF+ paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: charting house; site RSS is all-PFF (not fantasy-only), so filter by title
+  last_post: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.pff.com/fantasy/rankings/draft
+
+- id: fantasy-points
+  name: Fantasy Points (free tier)
+  category: newsletters
+  type: site
+  handle_or_url: https://www.fantasypoints.com/
+  what_for: rankings (Barrett), usage data, injury insights (Porras)
+  cadence: daily in-season
+  free_or_paid: freemium (pricing page returned HTTP 402 to a bot; prices unverified)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: strong data desk; no site RSS (/rss = 404) - use the podcast feeds for machine reads
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasypoints.com/nfl/rankings/redraft/barrett
+
+- id: rotoballer
+  name: RotoBaller NFL
+  category: newsletters
+  type: site
+  handle_or_url: https://www.rotoballer.com/feed
+  what_for: high-volume free start/sit, waivers, streamers
+  cadence: many per day
+  free_or_paid: freemium
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 4
+  weight_reason: volume over signal; many contributors, uneven quality
+  last_post: "2026-09-10"
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.rotoballer.com/
+
+- id: late-round-newsletter
+  name: Late-Round Newsletter
+  category: newsletters
+  type: newsletter
+  handle_or_url: https://lateround.com/newsletter/
+  what_for: JJ Zachariason's written process notes and news
+  cadence: weekly-plus
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: lateround.com/feed responds but is empty; treat as page-only
+  verified_on: "2026-09-10"
+  source_of_truth: https://lateround.com/newsletter/
+
+# =============================================================================
+# (d) INDIVIDUAL ANALYSTS with a public presence (link-only; no quotes)
+#     Only people whose rankings/data stand apart from a show entry above.
+# =============================================================================
+
+- id: matthew-berry
+  name: Matthew Berry
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.fantasylife.com/articles/author/matthew-berry
+  x_handle: "@MatthewBerryTMR"
+  publishes_at:
+    - "Fantasy Life"
+    - "Audacy (Happy Hour)"
+    - "YouTube @MatthewBerry"
+    - "SiriusXM"
+  what_for: weekly rankings, Love/Hate, 100 Facts; mainstream consensus anchor
+  cadence: weekdays
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: most-followed ranker; left NBC's FNIA in 2026, so his platform is now his own company
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://awfulannouncing.com/nfl/matthew-berry-fantasy-football-podcast-audacy.html
+
+- id: mike-clay
+  name: Mike Clay
+  category: analysts
+  type: analyst
+  handle_or_url: https://espnpressroom.com/bio/mike-clay/
+  x_handle: "@MikeClayNFL"
+  publishes_at:
+    - "ESPN"
+  what_for: projections (powers ESPN's game), snap/route data, weekly PPR rankings
+  cadence: daily in-season
+  free_or_paid: free (public projection PDF at g.espncdn.com/s/ffldraftkit/26/NFLDK2026_CS_ClayProjections2026.pdf)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: a full projection set behind the calls; the espn-proj feed is the machine form and is licence-blocked server-side
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers
+
+- id: evan-silva
+  name: Evan Silva
+  category: analysts
+  type: analyst
+  handle_or_url: https://establishtherun.com/author/evan/
+  x_handle: "@EvanSilva"
+  publishes_at:
+    - "Establish The Run"
+  what_for: Matchups column, weekly rankings; game-by-game player expectations
+  cadence: weekly in-season
+  free_or_paid: paid (ETR In-Season)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 12
+  weight_reason: reference-grade weekly matchup writing; paywalled so only the podcast calls grade publicly
+  verified_on: "2026-09-10"
+  source_of_truth: https://establishtherun.com/author/evan/
+
+- id: dwain-mcfarland
+  name: Dwain McFarland
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.fantasylife.com/articles/author/dwain-mcfarland
+  x_handle: "@dwainmcfarland"
+  publishes_at:
+    - "Fantasy Life"
+  what_for: Utilization Report - routes, snaps, target share by week; usage-based buys/sells
+  cadence: weekly in-season
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: usage data is the most predictive public input; calls are explicit
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasylife.com/nfl/utilization-report/preview
+
+- id: hayden-winks
+  name: Hayden Winks
+  category: analysts
+  type: analyst
+  handle_or_url: https://sports.yahoo.com/author/hayden-winks/
+  publishes_at:
+    - "Yahoo Sports (since July 2026)"
+    - "Josh & Hayden show"
+  what_for: rankings, best-ball structure, analytics
+  cadence: daily
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: analytics-explicit ranker; moved with the Underdog content shutdown
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://sports.yahoo.com/articles/yahoo-sports-signs-josh-norris-130018735.html
+
+- id: scott-barrett
+  name: Scott Barrett
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.fantasypoints.com/nfl/rankings/redraft/barrett
+  publishes_at:
+    - "Fantasy Points (owner/CEO)"
+    - "School of Scott podcast"
+  what_for: redraft rankings, invented metrics (ex-PFF senior fantasy analyst)
+  cadence: weekly rankings updates
+  free_or_paid: freemium
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: public weekly rankings page to grade against
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasypoints.com/about/team/scott-barrett
+
+- id: matt-harmon
+  name: Matt Harmon
+  category: analysts
+  type: analyst
+  handle_or_url: https://sports.yahoo.com/author/matt-harmon/
+  x_handle: "@MattHarmon_BYB"
+  publishes_at:
+    - "Yahoo Sports"
+    - "Reception Perception (receptionperception.com)"
+    - "YouTube @MattHarmonRP"
+  what_for: wide receiver evaluation (Reception Perception charting), WR rankings
+  cadence: weekly in-season
+  free_or_paid: freemium (RP paid)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: best-in-class WR-specific input; narrower than a full ranker
+  verified_on: "2026-09-10"
+  source_of_truth: https://receptionperception.com/
+
+- id: nathan-jahnke
+  name: Nathan Jahnke
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.pff.com/analyst/nathan-jahnke
+  publishes_at:
+    - "PFF"
+  what_for: snap counts, usage, PFF fantasy rankings; PFF Fantasy podcast
+  cadence: weekly in-season
+  free_or_paid: freemium
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: charting-backed; his podcast feed has been dormant since March 2026
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.pff.com/analyst/nathan-jahnke
+
+- id: heath-cummings
+  name: Heath Cummings
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.cbssports.com/writers/heath-cummings/
+  publishes_at:
+    - "CBS Sports"
+    - "Fantasy Football Today"
+  what_for: projections-based tiers (QB/RB/WR/TE), dynasty
+  cadence: weekly in-season
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 8
+  weight_reason: publishes tiers "based almost exclusively on his projections" - clean to grade
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.cbssports.com/fantasy/football/news/heath-cummings-fantasy-football-running-back-tiers-2-0/
+
+- id: edwin-porras
+  name: Edwin Porras, DPT
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/FBInjuryDoc
+  publishes_at:
+    - "Fantasy Points (Injury Insights)"
+    - "The Injury [Pro]ne podcast (Spotify for Creators)"
+  what_for: injuries - return-to-play timelines, re-injury risk
+  cadence: daily in-season
+  free_or_paid: freemium
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: injury timelines are gradeable (played/didn't); Fantasy Points' injury index URL moved (old /nfl/reports/injury-insights = 404)
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://x.com/FBInjuryDoc
+
+- id: stephania-bell
+  name: Stephania Bell
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/Stephania_Bell
+  publishes_at:
+    - "independent as of Sept 2026 - laid off by ESPN 2026-07-21"
+  what_for: injuries - PT-credentialed analysis
+  cadence: unknown post-ESPN
+  free_or_paid: unknown
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 4
+  weight_reason: the best-known injury analyst but with no verified 2026 platform; X handle @Stephania_Bell resolved (200) while the old @Stephania_ESPN is gone (404) - ownership unverified
+  flags: [moved, unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://awfulannouncing.com/espn/layoffs-david-lloyd-stephania-bell-tom-pelissero.html
+
+- id: adam-schefter
+  name: Adam Schefter
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/AdamSchefter
+  publishes_at:
+    - "ESPN (extended 2026)"
+  what_for: news - trades, signings, injury designations, first
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 3
+  weight_reason: no fantasy calls - informational; X has no public feed, so link-only by design
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.profootballnetwork.com/espn-mistake-analyst-network-layoff-adam-schefter-ian-rapoport-scooped-trade/
+
+- id: ian-rapoport
+  name: Ian Rapoport
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/RapSheet
+  publishes_at:
+    - "ESPN (retained/extended after ESPN's 2026 purchase of NFL Network)"
+  what_for: news - injuries, transactions, practice reports
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 3
+  weight_reason: informational; ESPN now employs both Schefter and Rapoport
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.profootballnetwork.com/espn-mistake-analyst-network-layoff-adam-schefter-ian-rapoport-scooped-trade/
+
+- id: tom-pelissero
+  name: Tom Pelissero
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/TomPelissero
+  publishes_at:
+    - "Netflix Gameday (sideline/insider)"
+    - "The Ringer NFL Show; laid off by ESPN July 2026"
+  what_for: news - trades and injuries; broke the first post-layoff trade ahead of ESPN
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 3
+  weight_reason: informational; platform changed in 2026
+  flags: [moved]
+  verified_on: "2026-09-10"
+  source_of_truth: https://sports.yahoo.com/articles/nfl-insider-tom-pelissero-lands-160550186.html
+
+- id: jordan-schultz
+  name: Jordan Schultz
+  category: analysts
+  type: analyst
+  handle_or_url: https://x.com/Schultz_Report
+  publishes_at:
+    - "independent - The Schultz Report (left Fox Sports after 2024 season)"
+  what_for: news - fast, sometimes early; verify before acting
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 2
+  weight_reason: speed with a mixed accuracy reputation; informational only
+  verified_on: "2026-09-10"
+  source_of_truth: https://awfulannouncing.com/nfl/insider-jordan-schultz-left-fox-sports.html
+
+- id: jeff-ratcliffe
+  name: Jeff Ratcliffe
+  category: analysts
+  type: analyst
+  handle_or_url: https://ftnfantasy.com/contributor/jeffratcliffe
+  publishes_at:
+    - "FTN (co-CEO)"
+    - "SiriusXM"
+    - "The Rant"
+  what_for: rankings, DFS, betting angles from FTN charting
+  cadence: weekly in-season
+  free_or_paid: freemium
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 6
+  weight_reason: ranker with public FantasyPros-tracked accuracy history
+  verified_on: "2026-09-10"
+  source_of_truth: https://ftnfantasy.com/contributor/jeffratcliffe
+
+- id: rich-hribar
+  name: Rich Hribar
+  category: analysts
+  type: analyst
+  handle_or_url: https://www.sharpfootballanalysis.com/author/rich/
+  publishes_at:
+    - "Sharp Football Analysis"
+  what_for: The Worksheet; weekly rankings (PPR/half/superflex)
+  cadence: weekly in-season
+  free_or_paid: paid (in-season)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 10
+  weight_reason: the analyst behind the-worksheet-hribar; listed separately so a user can follow him if the Worksheet moves
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.sharpfootballanalysis.com/author/rich/
+
+# =============================================================================
+# (e) ALGORITHMIC / DATA FEEDS - with the licensing status the data-rights plan
+#     established (design/plan/platform.md). 'public_status' is the plan's verdict:
+#     free | needs-deal | cannot-use-publicly | local-only
+# =============================================================================
+
+- id: engine
+  name: Graded Takes Engine (own projections + verdicts)
+  category: feeds
+  type: feed
+  handle_or_url: engine
+  what_for: weekly projections, lineup verdicts, tiers built from nflverse + own model
+  cadence: weekly
+  free_or_paid: free (owned)
+  feed_readable: true
+  consent_status: n/a
+  public_status: free
+  licensing: "Owned outright; the only input with no licence exposure. Plan: build own projections and tiers to replace FantasyPros-derived inputs."
+  suggested_default_weight: 20
+  weight_reason: the model is only 'yours' if the owned input carries the most weight (owner runs 17)
+  flags: [owner-uses]
+  verified_on: "2026-09-10"
+  source_of_truth: "/Users/andrewbrown/Desktop/War Room/data/sources.yaml"
+
+- id: house-research
+  name: House Research (verified verdicts)
+  category: feeds
+  type: feed
+  handle_or_url: engine
+  what_for: hand-curated multi-source verdicts (data/player_intel.yaml)
+  cadence: ad hoc
+  free_or_paid: free (owned)
+  feed_readable: true
+  consent_status: n/a
+  public_status: free
+  licensing: "Owned; hand-written. No third-party text stored."
+  suggested_default_weight: 10
+  weight_reason: skeptic-passed verdicts; small sample (owner runs 10)
+  flags: [owner-uses]
+  verified_on: "2026-09-10"
+  source_of_truth: "/Users/andrewbrown/Desktop/War Room/data/sources.yaml"
+
+- id: espn-proj
+  name: ESPN Projections (kona)
+  category: feeds
+  type: feed
+  handle_or_url: https://fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leaguedefaults/3?view=kona_player_info
+  what_for: weekly projections that power ESPN's game (Mike Clay)
+  cadence: weekly
+  free_or_paid: free to read on-site
+  feed_readable: true
+  consent_status: n/a
+  public_status: cannot-use-publicly
+  licensing: "No sanctioned API since 2014. Disney terms bar access by 'robot, spider, script, or other automated means' and bar commercial use. Server-side use dies at public launch; web-only/manual import per plan. Unauthenticated endpoint redirected to espn.com/fantasy on 2026-09-10."
+  suggested_default_weight: 0
+  weight_reason: 0 for the public product (owner runs 17 locally); a Phase-1 user cannot get this feed
+  flags: [owner-uses, licence-blocked]
+  verified_on: "2026-09-10"
+  source_of_truth: "/Users/andrewbrown/Desktop/War Room/design/plan/platform.md"
+
+- id: sleeper-proj
+  name: Sleeper Projections + Player API
+  category: feeds
+  type: feed
+  handle_or_url: https://api.sleeper.app/v1/
+  docs: https://docs.sleeper.com/
+  what_for: weekly projections, player master list, league/roster import
+  cadence: weekly (projections), continuous (players)
+  free_or_paid: free (non-commercial); licence for commercial
+  feed_readable: true
+  consent_status: n/a
+  public_status: needs-deal
+  licensing: "Docs: 'read-only HTTP API that is free to use for non-commercial purposes'; 'For commercial use of the Sleeper API, please reach out to us directly to discuss licensing.' No token; stay under 1000 calls/min. Projections endpoint is not in the public docs (undocumented). Plan: one email."
+  suggested_default_weight: 12
+  weight_reason: the beachhead platform's own numbers (owner runs 11); conditional on the licence email
+  flags: [owner-uses, needs-deal]
+  verified_on: "2026-09-10"
+  source_of_truth: https://docs.sleeper.com/
+
+- id: yahoo-proj
+  name: Yahoo Fantasy Sports API (projections, leagues)
+  category: feeds
+  type: feed
+  handle_or_url: https://sports.yahoo.com/developer/
+  what_for: league import, rosters, Yahoo projections/ranks for connected users
+  cadence: weekly
+  free_or_paid: free with approved app
+  feed_readable: true
+  consent_status: n/a
+  public_status: needs-deal
+  licensing: "OAuth 2.0; developers must agree to the API Access and Use Agreement and be approved. Plan: one application, with two written answers first (monetisation; how the 24-hour retention rule applies to the ledger)."
+  suggested_default_weight: 10
+  weight_reason: second platform; weight only for users whose league is on Yahoo
+  flags: [needs-deal]
+  verified_on: "2026-09-10"
+  source_of_truth: https://sports.yahoo.com/developer/
+
+- id: nflverse
+  name: nflverse (nflreadr data releases)
+  category: feeds
+  type: feed
+  handle_or_url: https://github.com/nflverse/nflverse-data/releases
+  what_for: play-by-play, snap counts, rosters, injuries, depth charts, ff_playerids - the engine's raw input
+  cadence: nightly in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: n/a
+  public_status: free
+  licensing: "CC-BY-4.0 (repo footer). Exclude the FTN charting release - ShareAlike is viral onto derived work (plan)."
+  suggested_default_weight: 0
+  weight_reason: data, not verdicts - it feeds the engine and never votes
+  verified_on: "2026-09-10"
+  source_of_truth: https://github.com/nflverse/nflverse-data
+
+- id: ffcalc-adp
+  name: Fantasy Football Calculator ADP API
+  category: feeds
+  type: feed
+  handle_or_url: https://fantasyfootballcalculator.com/api/v1/adp/ppr?teams=12&year=2026
+  docs: https://help.fantasyfootballcalculator.com/article/42-adp-rest-api
+  what_for: ADP by format for draft tools and trade-value baselines
+  cadence: daily
+  free_or_paid: free
+  feed_readable: true
+  consent_status: n/a
+  public_status: free
+  licensing: "'Use of the ADP REST API is free for personal and commercial use.' Attribution requested (link or mention). Data updates once per day."
+  suggested_default_weight: 0
+  weight_reason: draft-season input; no weekly calls
+  verified_on: "2026-09-10"
+  source_of_truth: https://help.fantasyfootballcalculator.com/article/42-adp-rest-api
+
+- id: fantasycalc
+  name: FantasyCalc (trade values)
+  category: feeds
+  type: feed
+  handle_or_url: https://api.fantasycalc.com/values/current?isDynasty=false&numQbs=1&numTeams=12&ppr=1
+  site: https://fantasycalc.com/
+  what_for: market-derived redraft/dynasty trade values from real Sleeper trades
+  cadence: daily
+  free_or_paid: free (no stated terms)
+  feed_readable: true
+  consent_status: n/a
+  public_status: needs-deal
+  licensing: "Open JSON endpoint (200, array of player values on 2026-09-10) but no terms retrievable anywhere. Unknown equals unlicensed (plan): email before public use."
+  suggested_default_weight: 0
+  weight_reason: trade desk input, not a weekly verdict
+  flags: [needs-deal]
+  verified_on: "2026-09-10"
+  source_of_truth: https://fantasycalc.com/
+
+- id: chen-tiers
+  name: Boris Chen Tiers
+  category: feeds
+  type: feed
+  handle_or_url: https://www.borischen.co/
+  code: https://github.com/borisachen/fftiers
+  what_for: gaussian-mixture tiers by position/scoring
+  cadence: weekly in-season
+  free_or_paid: free
+  feed_readable: true
+  consent_status: n/a
+  public_status: cannot-use-publicly
+  licensing: "Site: 'All data exclusively from FantasyPros.com' - FantasyPros' restrictions travel with the tiers; no licence statement on the site. Plan: build own tiers with the same public clustering method over own projections."
+  suggested_default_weight: 0
+  weight_reason: 0 for the public product (owner runs 11 locally)
+  flags: [owner-uses, licence-blocked]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.borischen.co/
+
+- id: fantasypros-ecr
+  name: FantasyPros Expert Consensus Rankings (ECR)
+  category: feeds
+  type: feed
+  handle_or_url: https://www.fantasypros.com/nfl/rankings/ppr-cheatsheets.php
+  api: https://www.fantasypros.com/api-data/
+  what_for: consensus of 130+ rankers; the industry's default benchmark
+  cadence: continuous
+  free_or_paid: freemium (site); API Premium $8.99/mo personal-only; Commercial custom-priced
+  feed_readable: true
+  consent_status: n/a
+  public_status: needs-deal
+  licensing: "UPDATE vs plan: FantasyPros now sells a self-serve API with three tiers - Free (sample data), Premium $8.99/mo 'personal & non-commercial apps', and Commercial (custom pricing) that 'explicitly includes commercial license & redistribution rights'. So ECR moves from 'dies' to 'needs a deal'; the plan's cost caution ($1,200-7,200/yr class) still applies."
+  suggested_default_weight: 0
+  weight_reason: 0 until a commercial key exists; if licensed, 12 (it is the best single external benchmark)
+  flags: [needs-deal]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasypros.com/api-data/
+
+- id: sleeper-trending
+  name: Sleeper Trending Adds/Drops
+  category: feeds
+  type: feed
+  handle_or_url: https://api.sleeper.app/v1/players/nfl/trending/add?lookback_hours=24&limit=25
+  what_for: waiver-wire crowd signal (adds/drops across all Sleeper leagues)
+  cadence: hourly
+  free_or_paid: free (same Sleeper terms as above)
+  feed_readable: true
+  consent_status: n/a
+  public_status: needs-deal
+  licensing: "Same Sleeper terms: free non-commercial, licence for commercial. Endpoint returned 200 on 2026-09-10."
+  suggested_default_weight: 3
+  weight_reason: a crowd vote on waivers - weak but honest; covered by the same one email
+  flags: [needs-deal]
+  verified_on: "2026-09-10"
+  source_of_truth: https://docs.sleeper.com/
+
+- id: the-odds-api
+  name: The Odds API (betting lines)
+  category: feeds
+  type: feed
+  handle_or_url: https://the-odds-api.com/
+  what_for: spreads, totals, player props from 100+ books - implied team totals for the engine
+  cadence: continuous
+  free_or_paid: freemium (500 credits/month free; $30/mo for 20K; $59/mo 100K)
+  feed_readable: true
+  consent_status: n/a
+  public_status: free
+  licensing: "Free tier covers all sports/markets; player props 'for selected US sports and bookmakers'. Commercial terms not stated on the homepage - read the T&C page before relying on it in the paid product."
+  suggested_default_weight: 6
+  weight_reason: market-implied totals are the best free game-environment input; the betting lens without a podcast
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://the-odds-api.com/
+
+# =============================================================================
+# (f) NEWS / INJURY WIRES - beat-reporter aggregators. None make fantasy calls;
+#     weights are 0-2 (informational). Prefer the ones with a real RSS.
+# =============================================================================
+
+- id: rotoworld-player-news
+  name: NBC Sports (Rotoworld) NFL Player News
+  category: news
+  type: site
+  handle_or_url: https://www.nbcsports.com/fantasy/football/player-news
+  what_for: the fastest fantasy-flavoured blurb wire; every beat report with a fantasy note
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 2
+  weight_reason: no public RSS any more (three candidate feed URLs = 404); page-only link
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.nbcsports.com/fantasy/football/player-news
+
+- id: rotowire-news
+  name: RotoWire NFL News (RSS)
+  category: news
+  type: site
+  handle_or_url: https://www.rotowire.com/rss/news.php?sport=NFL
+  what_for: player news blurbs with fantasy impact; headline+link only in RSS
+  cadence: continuous
+  free_or_paid: free RSS (full news API is paid)
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 2
+  weight_reason: the one fantasy news wire with a working public RSS (5 items, verified)
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.rotowire.com/rss/news.php?sport=NFL
+
+- id: fantasypros-player-news
+  name: FantasyPros Player News
+  category: news
+  type: site
+  handle_or_url: https://www.fantasypros.com/nfl/player-news.php
+  what_for: aggregated player news with a fantasy 'impact' line
+  cadence: continuous
+  free_or_paid: free (news is also an API product)
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 2
+  weight_reason: /rss/nfl-player-news.xml answers as RSS but carried zero items on 2026-09-10 - treat as page-only
+  flags: [unverified]
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.fantasypros.com/nfl/player-news.php
+
+- id: profootballtalk
+  name: ProFootballTalk (NBC)
+  category: news
+  type: site
+  handle_or_url: https://profootballtalk.nbcsports.com/feed/
+  what_for: league news, injuries, transactions; not fantasy-framed
+  cadence: continuous (30-item RSS)
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 1
+  weight_reason: reliable, unframed; useful as the 'did it really happen' cross-check
+  verified_on: "2026-09-10"
+  source_of_truth: https://profootballtalk.nbcsports.com/feed/
+
+- id: espn-nfl-news
+  name: ESPN NFL News (RSS)
+  category: news
+  type: site
+  handle_or_url: https://www.espn.com/espn/rss/nfl/news
+  what_for: Schefter/Rapoport reporting in feed form
+  cadence: continuous
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 1
+  weight_reason: reading a public RSS is not the ESPN fantasy-API problem; headlines and links only
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.espn.com/espn/rss/nfl/news
+
+- id: yahoo-nfl-news
+  name: Yahoo Sports NFL (RSS)
+  category: news
+  type: site
+  handle_or_url: https://sports.yahoo.com/nfl/rss/
+  what_for: NFL news wire; Yahoo fantasy writers surface here
+  cadence: continuous (13-item RSS)
+  free_or_paid: free
+  feed_readable: true
+  consent_status: link-only
+  suggested_default_weight: 1
+  weight_reason: informational
+  verified_on: "2026-09-10"
+  source_of_truth: https://sports.yahoo.com/nfl/rss/
+
+- id: nfl-injury-report
+  name: NFL.com Official Injury Report
+  category: news
+  type: site
+  handle_or_url: https://www.nfl.com/injuries/
+  what_for: the league's official Wed/Thu/Fri practice and game-status designations
+  cadence: Wed-Fri in-season, plus Sunday inactives
+  free_or_paid: free
+  feed_readable: false
+  consent_status: link-only
+  suggested_default_weight: 0
+  weight_reason: ground truth for grading injury calls, not a voter; page-only (nflverse 'injuries' release is the machine form)
+  verified_on: "2026-09-10"
+  source_of_truth: https://www.nfl.com/injuries/

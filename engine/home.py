@@ -2660,7 +2660,7 @@ def render_page(snapshots: Sequence[Dict], week, stamp: str = "",
         scripts += ("\n" + sheets) if sheets.lstrip().startswith("<script") \
             else "\n<script>%s</script>" % sheets
 
-    title = "War Room — your teams, week %s" % week
+    title = "%s — your teams, week %s" % (ui.PRODUCT_NAME, week)
     return ("<!doctype html>\n<html lang=\"en\"><head>\n"
             "<meta charset=\"utf-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, "

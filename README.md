@@ -1,7 +1,15 @@
-# Fantasy Draft War Room
+# Graded Takes
 
-A local draft-day decision engine for live snake drafts. You paste picks as
-they happen; when you are on the clock it tells you who to take and why.
+The fantasy decision engine: your teams, read by one model, as pages you
+open (`home.sh`, `lineup.sh`, `board.sh`, `season.sh`, `tradedesk.sh`),
+as an installable web app, and as the Graded Takes iPhone app (`ios/`).
+"War Room" was the working title; it survives only in internal names -
+the repo folder, `warroom.py`, the `wr-` CSS prefix, cache and launchd
+labels - never on a page.
+
+It began as a local draft-day decision engine for live snake drafts. You
+paste picks as they happen; when you are on the clock it tells you who to
+take and why.
 
 Built for **"Kid's Table"** — Yahoo, 10 teams, full PPR, two flex spots,
 16 rounds, 30-second clock.
@@ -12,6 +20,11 @@ Built for **"Kid's Table"** — Yahoo, 10 teams, full PPR, two flex spots,
 week (with deep links into ESPN/Yahoo), rosters, exposure. From there the
 top bar reaches the Board, the Ledger, the Trade Desk, the Sources page and
 Model Settings. See RUNBOOK.md section J for the page map.
+
+The same pages run inside the iPhone app, which draws its own header and
+tab bar: it stamps `<html data-app="ios">` and the pages hide their own
+shell chrome in answer. The contract is one attribute, documented in
+[`docs/APP_MODE.md`](docs/APP_MODE.md).
 
 ## Draft night, in three lines
 
@@ -210,7 +223,7 @@ LEAGUE=espn-1 ./start.sh
 
 A full mock draft against 9 bots that pick using live ADP plus roster-need
 logic, each with a different temperament every run — so every practice draft
-plays out differently. Your picks work exactly like the real war room: type a
+plays out differently. Your picks work exactly like the real draft console: type a
 name, read the block, decide. `fast` auto-picks the engine's #1 for a round if
 you want to skim ahead; `undo` rewinds your last pick (and the bots after it).
 Practice state is separate from the real draft and never touches it.
@@ -362,7 +375,7 @@ All three are read-only: nothing here ever writes to ESPN, Yahoo or Sleeper.
   **Requires the owner to have registered the app**; Yahoo's Fantasy API
   access is a reviewed application and is not instant.
 
-Cross-league exposure (the `expo` command in the war room, and banners in the
+Cross-league exposure (the `expo` command in the draft console, and banners in the
 in-season tools) reads every `data/rosters/*.yaml`, so your other league's
 holdings surface while you draft or set lineups.
 

@@ -5,6 +5,14 @@
 //  makes on that scheme comes here; the answer comes from PageService,
 //  which decides between the network and the copy on disk.
 //
+//  App mode: every HTML document goes out with its <html> tag stamped
+//  data-app="ios" and data-theme="light|dark" (PageMarkup). The first tells
+//  the page it is inside the native shell - the shell draws the top bar
+//  and the tab bar, so the page can drop its own; the second is the
+//  phone's appearance as the web view's trait collection reports it at
+//  the moment of serving, so the page paints in the phone's theme from
+//  the first frame. Non-HTML replies (icons, JSON) pass through untouched.
+//
 //  WebKit rules this code follows (WKURLSchemeHandler docs):
 //    - the protocol is @MainActor; every reply goes back on the main actor
 //    - a task must receive a response, then data, then didFinish
@@ -43,7 +51,9 @@ final class PageSchemeHandler: NSObject, WKURLSchemeHandler {
             // still in flight - and would receive the OLD page's bytes.
             // Only the task this closure was started for is answered.
             guard self.pending[id] === urlSchemeTask else { return }
-            self.finish(id, with: reply, url: url)
+            // Read the appearance after the await, so a slow fetch still
+            // stamps the theme the phone has now.
+            self.finish(id, with: reply, url: url, theme: Self.theme(of: webView))
         }
     }
 
@@ -51,12 +61,19 @@ final class PageSchemeHandler: NSObject, WKURLSchemeHandler {
         pending.removeValue(forKey: ObjectIdentifier(urlSchemeTask))
     }
 
-    private func finish(_ id: ObjectIdentifier, with reply: PageService.Reply, url: URL?) {
+    /// The phone's appearance as this web view sees it (UITraitCollection,
+    /// which already accounts for any override up the view hierarchy).
+    static func theme(of webView: WKWebView) -> PageMarkup.Theme {
+        webView.traitCollection.userInterfaceStyle == .dark ? .dark : .light
+    }
+
+    private func finish(_ id: ObjectIdentifier, with reply: PageService.Reply, url: URL?, theme: PageMarkup.Theme = .light) {
         guard let task = pending.removeValue(forKey: id) else { return }   // stopped meanwhile
         let responseURL = url ?? PageScheme.url(for: PageScheme.homePath)
+        let body = reply.mimeType == "text/html" ? PageMarkup.stamp(reply.data, theme: theme) : reply.data
         let headers: [String: String] = [
             "Content-Type": reply.mimeType + (reply.mimeType.hasPrefix("text/") ? "; charset=utf-8" : ""),
-            "Content-Length": String(reply.data.count),
+            "Content-Length": String(body.count),
             "Cache-Control": "no-store",
             "Referrer-Policy": "no-referrer",
         ]
@@ -65,7 +82,7 @@ final class PageSchemeHandler: NSObject, WKURLSchemeHandler {
             return
         }
         task.didReceive(response)
-        if !reply.data.isEmpty { task.didReceive(reply.data) }
+        if !body.isEmpty { task.didReceive(body) }
         task.didFinish()
     }
 }

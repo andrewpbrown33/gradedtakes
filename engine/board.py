@@ -4460,12 +4460,21 @@ def build_page(league_id: str, week: int, force: bool = False,
                calls_dir: Optional[str] = None,
                registry_path: Optional[str] = None,
                data_root: Optional[str] = None,
-               now: Optional[datetime] = None) -> str:
+               now: Optional[datetime] = None,
+               pa_rows_by_season: Optional[Dict[int, List[Dict]]] = None
+               ) -> str:
     """The whole board as a string. Every section degrades on its own.
 
     `now` is the clock lock state is judged against (default: the real
     one, UTC). Tests pass a fixed instant so a fixture schedule can hold a
     played game without the wall clock deciding the result.
+
+    `pa_rows_by_season` is the matching seam for the OTHER calendar-driven
+    input, the points-allowed basis: {season: nflverse weekly stat rows},
+    handed straight to engine/matchups.pa_table(rows_by_season=...), which
+    then skips nflverse entirely. Tests use it to render the same league
+    with and without current-season games on file. Default None: the live
+    fetch, unchanged.
     """
     league_path = os.path.join(HERE, "leagues", "%s.yaml" % league_id)
     if not os.path.exists(league_path):
@@ -4571,7 +4580,8 @@ def build_page(league_id: str, week: int, force: bool = False,
         if state["sched"] is None:
             raise RuntimeError("schedule unavailable: %s"
                                % ui.humanize_error(state["sched_err"], "no read"))
-        mstate["table"] = matchups_mod.pa_table(league, force=force)
+        mstate["table"] = matchups_mod.pa_table(
+            league, force=force, rows_by_season=pa_rows_by_season)
     except Exception as exc:  # noqa: BLE001 - the dossier carries the error
         mstate["err"] = "%s: %s" % (type(exc).__name__,
                                     _one_line(str(exc), 160))

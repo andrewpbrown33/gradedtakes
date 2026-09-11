@@ -208,8 +208,10 @@ def assert_page(html, label):
     for hx in FORBIDDEN_HEX:
         check(hx.lower() not in low, "%s: forbidden colour absent: %s"
               % (label, hx))
-    check('class="wr-nav"' in html and "WAR ROOM" in html,
-          "%s: the shared shell (navy header) is present" % label)
+    check('class="wr-nav"' in html and "GRADED TAKES" in html
+          and "WAR ROOM" not in html,
+          "%s: the shared shell (navy header) is present, and its wordmark "
+          "is the product name" % label)
     check('aria-current="page">Trade Desk</a>' in html,
           "%s: the shell marks Trade Desk as the current page" % label)
     check(html.find('class="wr-nav"') < html.find('<main class="wr-page'),

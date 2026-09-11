@@ -7,6 +7,14 @@
 //  the bar highlights whatever the web view is actually showing, so
 //  in-page links and the back gesture keep it truthful.
 //
+//  The shell owns the chrome. Every page is served with
+//  <html data-app="ios"> (PageSchemeHandler / PageMarkup), which is the
+//  pages' cue to drop their own sticky header and phone tab bar, so the
+//  reader sees one header and one tab bar - this one. The week badge and
+//  the league come from the pages (SiteMap: heartbeat.json, else the
+//  home page's links), never from a constant; the status line under the
+//  wordmark is derived from what PageService actually served.
+//
 //  Native value the reviewer can see in ninety seconds (docs/APPSTORE.md,
 //  guideline 4.2): native navigation, pull-to-refresh, the share sheet,
 //  haptics on a destination change, offline with a dated banner, and the
@@ -95,20 +103,31 @@ struct MainView: View {
 
     // MARK: Top bar
 
+    /// Width budget at 375pt (the narrowest phone the pages are tuned for):
+    /// 16 lead + 16 mark + 8 + WORDMARK + 8 + 44 week + 8 + ~70 league + 8
+    /// + 32 share + 2 + 32 gear + 8 trail = ~252, which leaves ~120pt for
+    /// the wordmark and its status line. "GRADED TAKES" at 12pt semibold
+    /// with 1.8 tracking is ~118pt; the scale factor is the safety net so
+    /// the wordmark never wraps onto two lines, and the status line
+    /// truncates at its tail rather than pushing anything.
     private var topBar: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             DiamondMark(size: 16)
             VStack(alignment: .leading, spacing: 1) {
                 Text(Brand.wordmark)
-                    .font(.system(size: 13, weight: .semibold))
-                    .tracking(2.2)
+                    .font(.system(size: 12, weight: .semibold))
+                    .tracking(1.8)
                     .foregroundStyle(Brand.navText)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                 Text(statusLine)
                     .font(.system(size: 11))
                     .foregroundStyle(Brand.navText.opacity(0.72))
                     .lineLimit(1)
+                    .truncationMode(.tail)
             }
-            Spacer(minLength: 6)
+            .accessibilityElement(children: .combine)
+            Spacer(minLength: 4)
 
             if pages.isLoading {
                 ProgressView()
@@ -129,25 +148,27 @@ struct MainView: View {
                 leagueMenu
             }
 
-            Button(action: { showShareOptions = true }) {
-                Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 17, weight: .medium))
-                    .frame(width: 36, height: 36)
-            }
-            .foregroundStyle(Brand.navText)
-            .disabled(isMakingPDF)
-            .accessibilityLabel("Share")
+            HStack(spacing: 2) {
+                Button(action: { showShareOptions = true }) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 17, weight: .medium))
+                        .frame(width: 32, height: 36)
+                }
+                .foregroundStyle(Brand.navText)
+                .disabled(isMakingPDF)
+                .accessibilityLabel("Share")
 
-            Button(action: { showSettings = true }) {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 17, weight: .medium))
-                    .frame(width: 36, height: 36)
+                Button(action: { showSettings = true }) {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 17, weight: .medium))
+                        .frame(width: 32, height: 36)
+                }
+                .foregroundStyle(Brand.navText)
+                .accessibilityLabel("Settings")
             }
-            .foregroundStyle(Brand.navText)
-            .accessibilityLabel("Settings")
         }
         .padding(.leading, 16)
-        .padding(.trailing, 6)
+        .padding(.trailing, 8)
         .padding(.vertical, 6)
         .background(Brand.navy)
         .overlay(alignment: .bottom) {

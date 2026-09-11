@@ -101,7 +101,7 @@ BUILTIN_FEEDS = ("engine", "espn-proj", "sleeper-proj", "chen-tiers")
 TOPIC_FILTERS = ("fantasy",)
 
 DEFAULT_SOURCES = [
-    {"id": "engine", "name": "War Room Engine", "type": "feed",
+    {"id": "engine", "name": "Graded Takes Engine", "type": "feed",
      "handle": "engine", "enabled": True, "weight": 40,
      "notes": "Built-in: weekly projections + lineup verdicts."},
     {"id": "espn-proj", "name": "ESPN Projections", "type": "feed",
@@ -116,7 +116,7 @@ DEFAULT_SOURCES = [
 ]
 
 _HEADER = """\
-# War Room creator-source registry (see engine/sources.py).
+# Graded Takes creator-source registry (see engine/sources.py).
 #
 #   id       unique kebab-slug          type     youtube|rss|url|paste|feed
 #   handle   channel URL/@handle, RSS url, page url, or builtin feed key

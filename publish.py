@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""THE PUBLISH PIPELINE — one private copy of War Room per person.
+"""THE PUBLISH PIPELINE — one private copy of Graded Takes per person.
 
     .venv/bin/python publish.py [--dry-run] [--person NAME] [--week N]
     .venv/bin/python publish.py check-heartbeat
@@ -933,7 +933,7 @@ def index_html(person, week, rendered, failures, pwa, generated,
                         "every league you have, and what needs you this week"))
     if pwa.get("install"):
         top.append(link(pwa["install"], "Add to your phone",
-                        "put War Room on your home screen"))
+                        "put Graded Takes on your home screen"))
     if src:
         top.append(link(src[0]["file"], "Sources",
                         "the per-source record behind every call"))
@@ -983,7 +983,7 @@ def index_html(person, week, rendered, failures, pwa, generated,
                esc(_and_list([n for _, n in lgs[1:]]))))
     notes.append(
         '<p class="pub-p">This copy covers %s and nothing else. Other '
-        'leagues in this War Room are not rendered here and are not reachable '
+        'leagues in this Graded Takes are not rendered here and are not reachable '
         'from this address.</p>'
         % esc(_and_list([n for _, n in lgs])))
 
@@ -1001,13 +1001,13 @@ def index_html(person, week, rendered, failures, pwa, generated,
     shell = ""
     if ui:
         try:
-            shell = ui.shell("home", None, week, leagues=lgs, title="War Room")
+            shell = ui.shell("home", None, week, leagues=lgs, title="Graded Takes")
         except Exception:
             shell = ""
     body = (
         '%s\n<main class="wr-page pub-page">\n'
         '<h1 class="pub-t wr-display">%s</h1>\n'
-        '<p class="pub-lede">Your War Room for week %d. Everything below was '
+        '<p class="pub-lede">Your Graded Takes for week %d. Everything below was '
         'built for your league%s on this machine and published to an address '
         'only you have &#8212; keep it to yourself.</p>\n'
         '%s\n%s\n<section class="pub-card pub-notes"><h2 class="pub-h">What '
@@ -1018,7 +1018,7 @@ def index_html(person, week, rendered, failures, pwa, generated,
             "<meta charset=\"utf-8\">\n"
             "<meta name=\"viewport\" content=\"width=device-width, "
             "initial-scale=1\">\n"
-            "<title>%s &#8212; War Room, week %d</title>\n%s\n<style>%s</style>"
+            "<title>%s &#8212; Graded Takes, week %d</title>\n%s\n<style>%s</style>"
             "\n</head><body>\n%s</body></html>\n"
             % (esc(person.name), int(week), style, INDEX_CSS, body))
 
@@ -1117,7 +1117,7 @@ def add_pwa(stage, person, week, log=print):
         "week": int(week), "league": person.leagues[0],
         "leagues": list(person.leagues), "league_id": person.leagues[0],
         "league_ids": list(person.leagues), "name": person.name,
-        "title": "War Room", "person": person.name,
+        "title": "Graded Takes", "person": person.name,
         "start_url": INDEX_NAME, "scope": "./",
     }
     called = None
@@ -2021,7 +2021,7 @@ def build_parser():
     ap = argparse.ArgumentParser(
         prog="publish.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="Publish one private copy of War Room per person in "
+        description="Publish one private copy of Graded Takes per person in "
                     "users.yaml.",
         epilog="COMMANDS\n"
                "  (none)           render, assert and publish everyone\n"

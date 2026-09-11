@@ -16,6 +16,20 @@ weekly_test); live fetches land in data/cache like every other fetcher.
 Roster fixtures go to a mkdtemp dir removed in a finally block - never
 into data/rosters/.
 
+FIXTURE RULE - read before editing the live report check:
+
+    The xFP signal is a FUNCTION OF THE CALENDAR: until the current season
+    files a week, fetch_xfp_signal() falls back to last season and every
+    line carries the '2025 signal' label plus a header saying so; from the
+    first filed week on it uses the current season and the label is gone.
+    A check that pins the live report to one of those states is true on
+    Sunday and false on Thursday - an expiry date, not a contract. So
+    section 7b stands fetch_xfp_signal() AND build_report() on both sides
+    of week 1 through the xfp_by_season seam (fixture maps, no network)
+    and pins the label, the header line and WHICH season's numbers reach
+    the shortlist; the live report then asserts only the rule - its label
+    matches what the current-season file actually holds today.
+
     .venv/bin/python tests/waivers_test.py
 """
 
@@ -454,8 +468,106 @@ def test_live_report():
           "bid-history calibration gap stays on screen")
     check("DROP CANDIDATE" in report,
           "a drop candidate is named")
-    check("2025 signal" in report,
-          "pre-season run labels the xFP signal as 2025 data")
+    # THE LABEL IS A FUNCTION OF THE CALENDAR (FIXTURE RULE, module
+    # docstring): assert the rule against the file the report read, not a
+    # date. Section 7b pins both sides exactly.
+    from engine import nflverse
+    try:
+        cur_on_file = nflverse.fetch_xfp(waivers.SEASON)
+    except RuntimeError:
+        cur_on_file = {}
+    cur_weeks = sorted(set(w["week"] for ws in cur_on_file.values()
+                           for w in ws))
+    expect_label = not cur_on_file
+    print("      today: %d %d xFP week(s) on file (%s) -> %s"
+          % (len(cur_weeks), waivers.SEASON,
+             ", ".join(str(w) for w in cur_weeks) or "none",
+             "prior-season label" if expect_label else "no label"))
+    check(("2025 signal" in report) == expect_label
+          and ("2026 weeks not yet filed" in report) == expect_label,
+          "the xFP label and its header line appear exactly when the %d "
+          "file has no weeks (%s today)"
+          % (waivers.SEASON, "labelled" if expect_label else "unlabelled"))
+
+
+# --- 7b. the calendar boundary: which season feeds xFP, and how it is labelled
+def _xfp_fixture(nkeys, gap):
+    """A fetch_xfp-shaped map giving every name the same 4-week gap."""
+    return dict((k, _weeks([(10.0 + gap, 10.0)] * 4)) for k in nkeys)
+
+
+def test_xfp_calendar_boundary():
+    print("\n7b. XFP CALENDAR BOUNDARY (prior-season fallback vs current "
+          "season, pure + report)")
+    cur, prior = waivers.SEASON, waivers.SEASON - 1
+    P = {"prior guy": _weeks([(12, 10)] * 4)}
+    C = {"current guy": _weeks([(12, 10)])}
+
+    # (a) the pure rule, through fetch_xfp_signal's own seam.
+    for shape, rbs in (("no %d file" % cur, {prior: P}),
+                       ("an empty %d file" % cur, {prior: P, cur: {}})):
+        got, label = waivers.fetch_xfp_signal(xfp_by_season=rbs)
+        check(got is P and label == "2025 signal",
+              "[%s] falls back to the %d map, labelled '2025 signal'"
+              % (shape, prior))
+    got, label = waivers.fetch_xfp_signal(xfp_by_season={prior: P, cur: C})
+    check(got is C and label == "",
+          "one %d week filed: the %d map is used and the label is gone"
+          % (cur, cur))
+    got, label = waivers.fetch_xfp_signal(xfp_by_season={cur: C})
+    check(got is C and label == "",
+          "...and it does not need the prior file to be there")
+    try:
+        waivers.fetch_xfp_signal(xfp_by_season={})
+        raised = False
+    except RuntimeError:
+        raised = True
+    check(raised, "neither season on file raises - a failure, never an "
+                  "empty signal dressed as 'no xFP data'")
+
+    # (b) the report, on both sides. The fixture covers every ranked name
+    #     so the shortlist ALWAYS has xFP lines, whoever is on it today;
+    #     the two seasons carry different gaps so the numbers say which
+    #     one reached the page.
+    league = LeagueConfig.load(os.path.join(HERE, "leagues",
+                                            "yahoo-main.yaml"))
+    nkeys = [p.nkey for p in load_players(os.path.join(HERE,
+                                                       league.rankings_csv))]
+    prior_map = _xfp_fixture(nkeys, +2.0)     # 2025: +2.0/wk everywhere
+    cur_map = _xfp_fixture(nkeys, -1.0)       # 2026: -1.0/wk everywhere
+    bogus = os.path.join(tempfile.gettempdir(), "no-such-espn-secrets.json")
+
+    def _report(rbs):
+        return waivers.build_report("yahoo-main", 1, top_n=8, color=False,
+                                    secrets_path=bogus, xfp_by_season=rbs)
+
+    def _xfp_lines(report):
+        return [ln for ln in report.split("\n") if ln.startswith("       xfp ")]
+
+    pre = _report({prior: prior_map, cur: {}})
+    lines = _xfp_lines(pre)
+    check(len(lines) >= 8 and all("(2025 signal)" in ln for ln in lines),
+          "pre-season report: every shortlist xfp line carries the "
+          "'(2025 signal)' label (%d lines)" % len(lines))
+    check(all("avg +2.0 xfp-actual/wk over last 4 wks" in ln for ln in lines),
+          "pre-season report: the numbers are the PRIOR season's (+2.0/wk)")
+    check(" xFP regression uses 2025 signal data - %d weeks not yet filed"
+          % cur in pre,
+          "pre-season report: the header says which season and why")
+
+    mid = _report({prior: prior_map, cur: cur_map})
+    lines = _xfp_lines(mid)
+    check(len(lines) >= 8 and not any("2025 signal" in ln for ln in lines),
+          "in-season report: the label is gone from every xfp line "
+          "(%d lines)" % len(lines))
+    check(all("avg -1.0 xfp-actual/wk over last 4 wks" in ln for ln in lines),
+          "in-season report: the numbers are the CURRENT season's (-1.0/wk)")
+    check("2025 signal" not in mid and "not yet filed" not in mid,
+          "in-season report: no prior-season label or header anywhere")
+    check(pre.count("\n       xfp ") == mid.count("\n       xfp ")
+          and "WAIVER WIRE" in pre and "WAIVER WIRE" in mid,
+          "both sides render the same shortlist shape - only the season "
+          "behind the xFP column moved")
 
 
 # --- 8. priority-mode guidance (pure) ---------------------------------------
@@ -770,6 +882,7 @@ def main():
     test_no_cookies()
     test_momentum_baseline()
     test_live_report()
+    test_xfp_calendar_boundary()
     test_priority_guidance()
     test_priority_live_report()
     test_competition()

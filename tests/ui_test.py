@@ -33,6 +33,12 @@ contracts that let three different pages share one vocabulary:
                  segmented control, three-column row, title switcher)
                  render valid markup, escape hostile text, carry their
                  a11y attributes, and every glyph carries a hover title.
+  [10] BRAND     the wordmark is the product name, GRADED TAKES - the
+                 working title "War Room" never reaches a reader.
+  [11] APP MODE  <html data-app="ios"> hides the shell's header and tab
+                 bar (and only those), releases the padding they reserved,
+                 keeps every token block and the hue rule intact, and the
+                 page's scripts leave the app's data-theme alone.
 
     .venv/bin/python tests/ui_test.py
 """
@@ -1193,6 +1199,118 @@ def test_v4():
           "the other leagues drop down beneath the title")
 
 
+# --- 10. brand --------------------------------------------------------------
+
+def test_brand():
+    print("\n[10] brand - the wordmark is the product name")
+    nav = ui.shell("board", "l1", 2, [("l1", "Main League")])
+    check(ui.PRODUCT_NAME == "Graded Takes" and ui.WORDMARK == "GRADED TAKES",
+          "the product is Graded Takes; the wordmark is set in caps")
+    mark = re.search(r'<a class="wr-mark"[^>]*>.*?</a>', nav)
+    check(mark is not None and
+          '<span class="wr-mark-t wr-display">GRADED TAKES</span>' in mark.group(0),
+          "the shell's wordmark text reads GRADED TAKES")
+    check(mark is not None and 'aria-label="Graded Takes - home"' in mark.group(0)
+          and 'class="wr-mark-sq"' in mark.group(0),
+          "the mark link is labelled with the product name and keeps the "
+          "gold diamond")
+    check("WAR ROOM" not in nav and "War Room" not in nav,
+          "the working title appears nowhere in the shell")
+    css = ui.css()
+    check("War Room" not in css and "WAR ROOM" not in css,
+          "...nor anywhere in the stylesheet")
+    for extra in (ui.shell("home", leagues=[("l1", "L")]),
+                  ui.shell("sources", title="Sources"),
+                  ui.shell("install", title="Install %s" % ui.PRODUCT_NAME)):
+        check("War Room" not in extra and "WAR ROOM" not in extra,
+              "every shell variant is free of the working title")
+
+
+# --- 11. app mode -----------------------------------------------------------
+
+def _strip_comments(css):
+    return re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+
+
+def _rule(css, selector):
+    """The declaration block(s) for one exact selector list, joined."""
+    out = []
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", _strip_comments(css)):
+        sels = [x.strip() for x in m.group(1).strip().split(",")]
+        if selector in sels:
+            out.append(m.group(2))
+    return " ".join(out)
+
+
+def test_app_mode():
+    print("\n[11] app mode - data-app=\"ios\" hides the shell chrome, nothing else")
+    css = ui.css()
+    block = ui.APP_MODE_CSS
+    check(block in ui.component_css() and block in css,
+          "APP_MODE_CSS is part of the owned component sheet and of css(), "
+          "so every page inherits it without a renderer changing")
+    check(ui.APP_ATTR == "data-app" and ui.APP_VALUES == ("ios",),
+          "the contract is one attribute, data-app, and one value, ios")
+    check('html[data-app="ios"]' in block
+          and re.search(r'html\[data-app="ios"\]\s+\.wr-nav\s*,', block)
+          and re.search(r'html\[data-app="ios"\]\s+\.wr-tabs\s*\{\s*display:\s*none;?\s*\}',
+                        block),
+          "html[data-app=\"ios\"] .wr-nav and .wr-tabs are display:none")
+    hidden = _rule(block, 'html[data-app="ios"] .wr-nav-sub')
+    check("display: none" in hidden,
+          "the subtitle strip - the bar's own second row - hides with the bar")
+    # every selector in the block is anchored on the attribute, and none of
+    # them reaches a card, table, sheet, popover or note
+    sels = [x.strip() for m in re.finditer(r"([^{}]+)\{", _strip_comments(block))
+            for x in m.group(1).split(",") if x.strip()]
+    check(sels and all(x.startswith('html[data-app="ios"]') for x in sels),
+          "every app-mode selector is anchored on html[data-app=\"ios\"] "
+          "(%s)" % [x for x in sels if not x.startswith('html[data-app="ios"]')])
+    touched = [x for x in sels for c in
+               ("wr-card", "wr-table", "wr-sheet", "wr-pop", "wr-quiet",
+                "wr-page", "wr-lgsw", "wr-legend") if c in x]
+    check(not touched,
+          "app mode touches no card, table, sheet, popover, page frame or "
+          "quiet note (%s)" % (touched or "clean"))
+    root = _rule(block, 'html[data-app="ios"]')
+    check("--wr-nav-h: 0px" in root and "scroll-padding-top: 0" in root,
+          "with no pinned bar --wr-nav-h and the scroll padding go to 0, so "
+          "an in-page anchor lands at the very top")
+    body = _rule(block, 'html[data-app="ios"] body')
+    check("padding-bottom: env(safe-area-inset-bottom, 0px)" in body
+          and "60px" not in body,
+          "the 60px the fixed tab bar reserved is released; only the "
+          "device's own bottom inset remains")
+    # specificity: the pwa layer's phone rule re-reserves the 60px; the
+    # app-mode rule must outrank it whatever the order of the layers
+    check(re.search(r"body \{ padding-bottom: calc\(60px", css)
+          and css.index('html[data-app="ios"] body') > 0,
+          "the pwa safe-area layer still reserves the bar for browsers; the "
+          "app-mode rule outranks it by specificity (html[attr] body)")
+    check("#" not in block,
+          "app mode adds no colour - the token blocks, and so the hue rule, "
+          "are untouched")
+    # the shell's markup is still emitted in full: one file, three homes
+    nav = ui.shell("lineup", "l1", 1, [("l1", "L")], subtitle="week 1")
+    check('class="wr-nav"' in nav and 'class="wr-tabs"' in nav
+          and 'class="wr-nav-sub"' in nav and "data-app" not in nav.split("<script")[0],
+          "the header, subtitle and tabs are still emitted, and the shell "
+          "never sets data-app itself - only the native app does")
+    # the theme toggle's script steps aside in app mode
+    tt = ui.theme_toggle()
+    js = tt.split("<script>", 1)[1]
+    check(js.find('if(r.hasAttribute("data-app"))return;') > 0
+          and js.find('if(r.hasAttribute("data-app"))return;') < js.find("localStorage"),
+          "the theme toggle's script returns before reading storage when "
+          "data-app is set - the app owns data-theme")
+    # the three theme states are still fully declared (app-set data-theme
+    # paints the same tokens as a toggle-set one)
+    check(':root[data-theme="dark"]' in css and
+          ':root:not([data-theme="light"])' in css,
+          "an app-set data-theme=\"dark\" hits the same explicit block the "
+          "toggle uses; light stays the bare :root")
+
+
 def main():
     print("UI DESIGN SYSTEM ACCEPTANCE TEST")
     test_icons()
@@ -1204,6 +1322,8 @@ def main():
     test_purity()
     test_type_scale()
     test_v4()
+    test_brand()
+    test_app_mode()
     print("\n%s" % ("ALL %d CHECKS PASSED" % CHECKS[0] if not FAILURES
                     else "%d of %d FAILURE(S):" % (len(FAILURES), CHECKS[0])))
     for f in FAILURES:

@@ -669,16 +669,34 @@ def fetch_trending_adds(lookback_hours: int = 24, limit: int = 300,
     return out
 
 
-def fetch_xfp_signal(force: bool = False) -> Tuple[Dict[str, List[Dict]], str]:
+def fetch_xfp_signal(force: bool = False,
+                     xfp_by_season: Optional[Dict[int, Dict[str, List[Dict]]]]
+                     = None) -> Tuple[Dict[str, List[Dict]], str]:
     """(xfp_map, label). Current season when it has filed weeks; otherwise
-    last season with the honest '2025 signal' label the task demands."""
+    last season with the honest '2025 signal' label the task demands.
+
+    `xfp_by_season` ({season: fetch_xfp-shaped map}) is a TEST SEAM: it
+    injects fixtures and skips nflverse entirely, so the calendar rule above
+    can be asserted on both sides of week 1 without depending on what the
+    live file holds today. A season absent from the dict reads as
+    "unavailable", exactly like a failed fetch. Default None: the live
+    fetch, unchanged.
+    """
+    def _season(season: int) -> Dict[str, List[Dict]]:
+        if xfp_by_season is not None:
+            got = xfp_by_season.get(season)
+            if got is None:
+                raise RuntimeError("no %d xFP fixture injected" % season)
+            return got
+        return nflverse.fetch_xfp(season, force=force)
+
     try:
-        cur = nflverse.fetch_xfp(SEASON, force=force)
+        cur = _season(SEASON)
         if cur:
             return cur, ""
     except RuntimeError:
         pass
-    return nflverse.fetch_xfp(SEASON - 1, force=force), "2025 signal"
+    return _season(SEASON - 1), "2025 signal"
 
 
 # --- ESPN cookie-gated extras (guarded, optional - RUNBOOK A3) --------------
@@ -876,7 +894,11 @@ def build_report(league_id: str, week: int, top_n: int = 12,
                  color: bool = False, force: bool = False,
                  roster_dir: Optional[str] = None,
                  secrets_path: Optional[str] = None,
-                 rival_loader: Optional[object] = None) -> str:
+                 rival_loader: Optional[object] = None,
+                 xfp_by_season: Optional[Dict[int, Dict[str, List[Dict]]]]
+                 = None) -> str:
+    """The waiver report as text. `xfp_by_season` is fetch_xfp_signal's
+    test seam, passed straight through (default None: the live fetch)."""
     league_path = os.path.join(HERE, "leagues", "%s.yaml" % league_id)
     if not os.path.exists(league_path):
         raise SystemExit("no league yaml: %s" % repo_path(league_path))
@@ -903,7 +925,8 @@ def build_report(league_id: str, week: int, top_n: int = 12,
 
     ros_map = build_ros_map(players, week, scoring, force=force)
     baselines = starter_baselines(league, roster_players, ros_map, players)
-    xfp_map, xfp_label = fetch_xfp_signal(force=force)
+    xfp_map, xfp_label = fetch_xfp_signal(force=force,
+                                          xfp_by_season=xfp_by_season)
     trending = fetch_trending_adds(force=force)
 
     view = load_rival_view(league, matcher, players, my_keys=my_keys,

@@ -3,7 +3,7 @@
 set -e
 cd "$(dirname "$0")"
 
-echo "Setting up the Fantasy Draft War Room..."
+echo "Setting up Graded Takes..."
 if [ ! -d .venv ]; then
   python3 -m venv .venv
   echo "  created .venv"

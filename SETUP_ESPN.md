@@ -101,7 +101,7 @@ It polls ESPN every few seconds, pulls new picks automatically, and prints your
 recommendation block the moment you're on the clock. You type nothing.
 
 Manual paste still works as a fallback if the connection drops mid-draft — the
-same war room, the same commands.
+same draft console, the same commands.
 
 ## What can go wrong
 

@@ -1,6 +1,6 @@
-# DEPLOY — giving War Room to other people
+# DEPLOY — giving Graded Takes to other people
 
-This is the whole procedure for putting a private copy of War Room in front of
+This is the whole procedure for putting a private copy of Graded Takes in front of
 somebody who is **not in your league**: your brother, your sister-in-law, two
 people at work. Each of them gets their own address, their own pages, their
 own leagues. Nobody sees your rosters, and you do not see theirs beyond what
@@ -206,13 +206,13 @@ belongs to league 'yahoo-main' — a league this person does not own.
 That was not a false alarm. It was the pipeline catching a genuine leak, and
 here is where it came from.
 
-War Room has a **cross-league exposure** feature. On the home page, the board
+Graded Takes has a **cross-league exposure** feature. On the home page, the board
 and the trade desk it marks players you hold in your *other* leagues — "ALSO
 YOURS", "starts in The Original 8; held in Kid's Table". It reads every file
 in `data/rosters/` (`engine/exposure.py`) and prints the other leagues'
 **names** onto the page.
 
-In a one-owner War Room that is exactly what you want. In a multi-tenant
+In a one-owner Graded Takes that is exactly what you want. In a multi-tenant
 publish it is a cross-tenant leak: a page built for Sam names *your* league,
 or somebody else's, in plain English. So the pre-flight refuses and nothing is
 published.
@@ -363,7 +363,7 @@ optional.
    nothing for them to set up. Add Google or GitHub as well if you like, but
    One-time PIN is the one that works for everybody.
 4. **Access → Applications → Add an application → Self-hosted.**
-   - **Application name:** `War Room`
+   - **Application name:** `Graded Takes`
    - **Session duration:** 1 month (they will not want to re-verify weekly)
    - **Public hostname:**
      - Subdomain: `war-room`
@@ -389,7 +389,7 @@ Do this. It is the only step that actually proves the door is shut.
 
 1. Open a **private/incognito window**.
 2. Go to `https://war-room.pages.dev/<some-token>/`.
-3. You should get **Cloudflare's login page**, not the War Room page.
+3. You should get **Cloudflare's login page**, not the Graded Takes page.
 4. Enter an email that is **not** on the policy. You should be refused.
 5. Enter one that is. You get a code by email, and then the pages.
 
@@ -502,7 +502,7 @@ Three ways to deal with it, in order of effort:
 
 **This is the part that matters, and it is the part people skip.**
 
-Everything in War Room is built to degrade honestly and exit 0. So does this
+Everything in Graded Takes is built to degrade honestly and exit 0. So does this
 publisher: a week where three feeds are down still produces pages, still says
 what it does not know, and still exits 0. Which means *"the cron job ran fine"
 proves nothing at all*. The failure that actually bites is silent: the Mac was
@@ -540,7 +540,7 @@ out=$(.venv/bin/python publish.py check-heartbeat 2>&1)
 code=$?
 echo "$out"
 if [ $code -ne 0 ]; then
-  osascript -e 'display notification "War Room publish is stale — see /tmp/warroom-check.log" with title "War Room" sound name "Basso"'
+  osascript -e 'display notification "Graded Takes publish is stale — see /tmp/warroom-check.log" with title "Graded Takes" sound name "Basso"'
 fi
 exit $code
 EOF
@@ -590,7 +590,7 @@ wrangler pages deploy public --project-name war-room --branch main
 ```
 
 Then remove their email from the Access policy (Zero Trust → Access →
-Applications → War Room → Policies).
+Applications → Graded Takes, or whatever you named it → Policies).
 
 Do all three. Deleting the entry alone leaves the folder published; pruning
 alone leaves them able to log in and try paths.

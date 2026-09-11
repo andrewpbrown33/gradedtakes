@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared presentation vocabulary for every War Room page.
+"""Shared presentation vocabulary for every Graded Takes page.
 
 WHY THIS MODULE EXISTS
 ----------------------
@@ -1721,8 +1721,21 @@ def matchup_meter(grade, label: bool = True, title: Optional[str] = None,
 
 
 # --- the shell: one navigation for every page (v3) ---------------------------
-# Static pages, so the nav is links between sibling files. The wordmark is a
-# working title; the product name is decided downstream.
+# Static pages, so the nav is links between sibling files. The wordmark is the
+# product name, GRADED TAKES (gradedtakes.com); "War Room" was the working
+# title and survives only in internal identifiers (the wr- CSS prefix, module
+# and file names, cache names), never in text a reader sees.
+PRODUCT_NAME = "Graded Takes"
+WORDMARK = "GRADED TAKES"
+
+# APP MODE. The native iPhone app (ios/, "Graded Takes") shows every page
+# inside a WKWebView and draws its OWN header and tab bar around it. When
+# <html> carries data-app="ios" the page's shell chrome is hidden by CSS
+# (see APP_MODE_CSS, appended by component_css(), and docs/APP_MODE.md);
+# the markup is still emitted, so one HTML file serves the browser, the
+# installed web app and the native app alike.
+APP_ATTR = "data-app"
+APP_VALUES = ("ios",)
 
 NAV_PAGES = (
     ("home", "Home", "home.html"),
@@ -1752,6 +1765,45 @@ def shell(active: str, league: Optional[str] = None,
 
     Pages that need a league (board/ledger/trade desk) link to the current
     league's file; with no league the link falls back to the first one.
+
+    APP MODE - THE CONTRACT (docs/APP_MODE.md is the long form)
+    -----------------------------------------------------------
+    The native app sets ONE attribute on the root element, before first
+    paint:
+
+        <html data-app="ios">
+
+    and the stylesheet (APP_MODE_CSS, shipped inside css() so every page
+    inherits it without a renderer changing) answers with:
+
+      * `.wr-nav` is display:none - the whole sticky header: the wordmark,
+        the league switcher, the nav links, the WK badge, the theme toggle
+        and the preferences gear (the prefs <details> lives inside the
+        header, so its sheet goes with it);
+      * `.wr-tabs` is display:none at every width - the phone tab bar;
+      * the space they reserved is released: the body's bottom padding
+        (60px + the home indicator, kept for the fixed tab bar) drops to
+        the device's own safe-area inset (0 when the native chrome already
+        encloses the web view), `--wr-nav-h` and the html scroll-padding
+        go to 0 so an in-page `#anchor` lands at the very top, and the
+        `.wr-nav-sub` subtitle strip is hidden with the bar it belongs to.
+
+    Nothing else changes: cards, tables, sheets, popovers, the quiet-mode
+    note and the offline banner render exactly as in a browser, and the
+    markup for the header and tabs is STILL EMITTED - the same file serves
+    a browser tab, the installed web app and the native app.
+
+    What the native app provides instead: its own header (title, league
+    switcher, week), its own tab bar (Home / Lineup / Board / Ledger /
+    Trade), and its own theme and settings. The preferences layer
+    (engine/prefs.py) still applies - its CSS keys on the same attributes
+    - so the app drives it with data-theme="light|dark|broadcast",
+    data-density="compact", data-type="large" and data-quiet="1" on the
+    same element. In app mode the page's own scripts neither read nor
+    write those attributes from storage: the theme toggle's script bails
+    out, and the prefs boot script leaves whatever the app set untouched
+    (prefs.boot_js), so an attribute the app writes at document start is
+    the attribute the page paints with.
     """
     lg = league or (leagues[0][0] if leagues else "")
     wk = int(week) if week else 1
@@ -1816,27 +1868,34 @@ def shell(active: str, league: Optional[str] = None,
     return (
         '<header class="wr-nav">'
         '<div class="wr-nav-in">'
-        '<a class="wr-mark" href="home.html" aria-label="home">'
+        '<a class="wr-mark" href="home.html" aria-label="%s - home">'
         '<span class="wr-mark-sq" aria-hidden="true"></span>'
-        '<span class="wr-mark-t wr-display">WAR ROOM</span></a>'
+        '<span class="wr-mark-t wr-display">%s</span></a>'
         '%s'
         '<nav class="wr-nav-links" aria-label="pages">%s</nav>'
         '<span class="wr-nav-week wr-num">WK %d</span>'
         '%s%s'
         '</div></header>%s'
         '<nav class="wr-tabs" aria-label="pages">%s</nav>'
-        % (switch, "".join(links), wk, theme_toggle(), prefs_control(), sub_html, "".join(tabs)))
+        % (PRODUCT_NAME, WORDMARK, switch, "".join(links), wk, theme_toggle(),
+           prefs_control(), sub_html, "".join(tabs)))
 
 
 def theme_toggle() -> str:
     """Light/dark switch persisted per browser. The shell's one script (pages may add small local ones); it is the
-    system, and it degrades to nothing: without JS the page follows the OS."""
+    system, and it degrades to nothing: without JS the page follows the OS.
+
+    APP MODE: the button is hidden with the header, and the script returns
+    before touching storage - in app mode `data-theme` belongs to the
+    native app (see shell()), and a stored value from an earlier browser
+    session must not paint over it."""
     return (
         '<button class="wr-theme" type="button" data-wr-theme '
         'aria-label="toggle light or dark">'
         '<span class="wr-theme-l">Light</span><span class="wr-theme-d">Dark</span>'
         '</button>'
         '<script>(function(){try{var r=document.documentElement;'
+        'if(r.hasAttribute("data-app"))return;'
         'var k="wr-theme";var v=localStorage.getItem(k);'
         'if(v==="light"||v==="dark"){r.setAttribute("data-theme",v);}'
         'document.addEventListener("click",function(e){'
@@ -2260,12 +2319,35 @@ _V4_CSS = """
 """
 
 
+# APP MODE (docs/APP_MODE.md). One attribute on the root element -
+# <html data-app="ios"> - and the page's own shell chrome steps aside for
+# the native app's. Every selector is anchored on html[data-app="ios"],
+# which is (0,1,1) specific: it beats the bare `body` and `:root` rules the
+# component sheet and engine/pwa.py's safe-area layer write, whatever the
+# order the layers are concatenated in, and it can never fire outside the
+# app. Nothing here touches a card, a table, a sheet or a popover.
+APP_MODE_CSS = """
+  /* app mode: the native app draws the header and the tab bar ----------- */
+  html[data-app="ios"] .wr-nav,
+  html[data-app="ios"] .wr-nav-sub,
+  html[data-app="ios"] .wr-tabs { display: none; }
+  /* no pinned bar: in-page anchors land at the very top ... */
+  html[data-app="ios"] { --wr-nav-h: 0px; scroll-padding-top: 0; }
+  /* ... and the 60px (+ home indicator) the fixed tab bar reserved goes
+     back to the page. The device's own bottom inset is all that is left,
+     and it is 0 when the native chrome already encloses the web view. */
+  html[data-app="ios"] body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+"""
+
+
 def component_css() -> str:
     """The layers this module OWNS - the type scale and every component
     rule - without the fonts, the tokens, the avatar rules or the optional
     prefs layer. This is the sheet tests/ui_test.py audits for the type
-    scale: every font-size in it is a scale token or a scale number."""
-    return type_css() + _COMPONENT_CSS + _V3_CSS + _V4_CSS
+    scale: every font-size in it is a scale token or a scale number.
+    APP_MODE_CSS rides last so the app-mode contract reaches every page
+    that includes css() without a renderer changing."""
+    return type_css() + _COMPONENT_CSS + _V3_CSS + _V4_CSS + APP_MODE_CSS
 
 
 def css() -> str:

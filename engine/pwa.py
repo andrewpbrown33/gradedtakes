@@ -75,8 +75,12 @@ from engine import ui
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ICON_SVG = os.path.join(HERE, "design", "icon.svg")
 
-APP_NAME = "War Room"
-APP_SHORT = "War Room"
+# The product name, from the design system so the label under the home
+# screen icon can never drift from the wordmark in the bar. "Graded
+# Takes" is 12 characters - inside the short_name budget every launcher
+# shows untruncated.
+APP_NAME = ui.PRODUCT_NAME
+APP_SHORT = ui.PRODUCT_NAME
 APP_DESC = ("Your fantasy teams, read by one model: lineup verdicts, the "
             "waiver board, the trade desk and the week's ledger.")
 
@@ -545,7 +549,7 @@ def _js_str(value) -> str:
 
 
 _SW_TEMPLATE = """'use strict';
-/* War Room service worker - engine/pwa.py wrote this file; edit that.
+/* Graded Takes service worker - engine/pwa.py wrote this file; edit that.
 
    The whole contract in one line: this worker may make the app OPEN
    offline, and it may never make the app LIE. Anything it serves from the
@@ -629,12 +633,12 @@ function nothingSaved() {
   return new Response(
     '<!doctype html><meta charset="utf-8"><meta name="referrer" content="no-referrer">'
     + '<meta name="viewport" content="width=device-width,initial-scale=1">'
-    + '<title>War Room &mdash; offline</title>'
+    + '<title>Graded Takes &mdash; offline</title>'
     + '<body style="margin:0;padding:28px;background:%(paper)s;'
     + 'color:%(ink)s;'
     + 'font:15px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">'
     + '<h1 style="font-size:26px;margin:0 0 10px">Offline</h1>'
-    + '<p>War Room has no saved copy of this page yet, so it has nothing to '
+    + '<p>Graded Takes has no saved copy of this page yet, so it has nothing to '
     + 'show you and will not guess. Reconnect and open it once; after that '
     + 'it opens without a signal.</p>',
     {status: 503, headers: {'Content-Type': 'text/html; charset=utf-8'}});
@@ -756,26 +760,26 @@ def install_page(week: int = 1, league: str = "", stamp_human: str = "",
     """
     esc = ui.esc
     shell = ui.shell("install", league=league or None, week=week,
-                     leagues=(), title="Install War Room")
+                     leagues=(), title="Install %s" % APP_NAME)
 
     ios = _steps((
-        'Open the War Room link you were sent (it ends in <b>%s</b>) in '
+        'Open the %s link you were sent (it ends in <b>%s</b>) in '
         '<b>Safari</b>. Safari is the sure route on an iPhone; some other '
-        'browsers can do this now, but not all of them.' % esc(host_page),
+        'browsers can do this now, but not all of them.' % (esc(APP_NAME), esc(host_page)),
         'Tap the <span class="ins-k">Share</span> button: the square with an '
         'arrow coming out of the top. It is at the bottom of the screen, or '
         'top-right on an iPad.',
         'Scroll the grey list down until you see '
         '<span class="ins-k">Add to Home Screen</span>, and tap it.',
-        'The name will already say <b>War Room</b>. Tap '
-        '<span class="ins-k">Add</span>, top-right.',
+        'The name will already say <b>%s</b>. Tap '
+        '<span class="ins-k">Add</span>, top-right.' % esc(APP_NAME),
         'Close Safari. The gold diamond is on your home screen. Tap it and '
         'it opens full screen — no address bar, no tabs.',
     ))
 
     android = _steps((
-        'Open the War Room link you were sent (it ends in <b>%s</b>) in '
-        '<b>Chrome</b>.' % esc(host_page),
+        'Open the %s link you were sent (it ends in <b>%s</b>) in '
+        '<b>Chrome</b>.' % (esc(APP_NAME), esc(host_page)),
         'Tap the <span class="ins-k">⋮</span> menu, top-right.',
         'Tap <span class="ins-k">Add to Home screen</span> (older phones say '
         '<span class="ins-k">Install app</span>), then confirm.',
@@ -805,7 +809,7 @@ def install_page(week: int = 1, league: str = "", stamp_human: str = "",
 
     body = (
         '<header class="ins-head"><p class="wr-kicker">Install</p>'
-        '<h1 class="wr-h1 wr-display">Put War Room on your phone</h1>'
+        '<h1 class="wr-h1 wr-display">Put %s on your phone</h1>'
         '<p class="ins-lede">Two minutes, no App Store, no account, nothing '
         'to pay. You end up with a gold diamond on your home screen that '
         'opens straight into your week.</p></header>'
@@ -822,7 +826,7 @@ def install_page(week: int = 1, league: str = "", stamp_human: str = "",
         '<div><p class="ins-sub">It cannot</p>'
         '<ul class="ins-list ins-no">%s</ul></div>'
         '</div>'
-        '<p class="ins-note">War Room will never show you a saved page as if '
+        '<p class="ins-note">%s will never show you a saved page as if '
         'it were live. If your phone is offline, every page opens with a '
         'banner naming the week and the moment it was built, and saying that '
         'nothing in it has been re-checked. A verdict that was right on '
@@ -844,24 +848,24 @@ def install_page(week: int = 1, league: str = "", stamp_human: str = "",
         '<code>.venv/bin/python -m engine.pwa</code>. The mark is one file, '
         '<code>design/icon.svg</code> — the same gold diamond that sits '
         'in the bar at the top of every page.</p>'
-        % (ui.section_header("On an iPhone or iPad",
+        % (esc(APP_NAME), ui.section_header("On an iPhone or iPad",
                              "Safari · about two minutes"), ios,
            ui.section_header("On an Android phone", "Chrome"), android,
            ui.section_header("With no signal",
                              "what the saved copy can and cannot tell you"),
            "".join("<li>%s</li>" % y for y in yes),
            "".join("<li>%s</li>" % n for n in no),
-           built,
+           esc(APP_NAME), built,
            ui.section_header("Afterwards")))
 
     return ('<!doctype html>\n<html lang="en"><head>\n'
             '<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, '
             'initial-scale=1">\n'
-            '<title>Install War Room</title>\n%s\n<style>%s</style>\n'
+            '<title>Install %s</title>\n%s\n<style>%s</style>\n'
             '</head><body>\n%s\n<main class="wr-page">\n%s\n</main>\n'
             '</body></html>\n'
-            % (ui.style_tag(), _INSTALL_CSS, shell, body))
+            % (esc(APP_NAME), ui.style_tag(), _INSTALL_CSS, shell, body))
 
 
 # --- discovery + writing ----------------------------------------------------
@@ -966,7 +970,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if i + 1 < len(args):
             week = int(args[i + 1])
     rep = write_all(week=week)
-    print("War Room - installable app")
+    print("%s - installable app" % APP_NAME)
     print("  week cached : %d  (%s)" % (rep["week"],
                                         ", ".join(rep["leagues"]) or "no leagues"))
     print("  rasteriser  : %s" % (rep["rasteriser"] or "NONE"))

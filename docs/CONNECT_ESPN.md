@@ -1,4 +1,4 @@
-# Getting your ESPN league into the war room
+# Getting your ESPN league into Graded Takes
 
 This is for the person whose league it is. No technical knowledge assumed.
 Ten minutes, most of it waiting.
@@ -9,7 +9,7 @@ those out of your browser and paste them in. Those cookies are your whole
 Disney/ESPN account — mail, subscriptions, everything — not a
 fantasy-football-only key. Handing them to anyone breaks ESPN's terms for
 *you*, and there is no way to take them back except changing your password.
-This war room does not accept them, does not store them, and will not ask.
+Graded Takes does not accept them, does not store them, and will not ask.
 If anything ever does ask you for them, that is your cue to walk away.
 
 There are two ways in. Pick either one; both end up with the same screens
@@ -21,7 +21,7 @@ working.
 
 **What it is.** ESPN has a per-league switch called *Make League Viewable to
 Public*. Flip it on and ESPN itself will hand your league's pages to anyone
-with the league's ID number — no login. The war room then just reads it, the
+with the league's ID number — no login. Graded Takes then just reads it, the
 same way any person with the link could. Nothing is impersonated and nothing
 is stored on your behalf.
 
@@ -50,7 +50,7 @@ viewable also does **not** let anyone join it — your league is still
 invite-only.
 
 And it is reversible. Set it back to **No** at any time and ESPN goes back to
-refusing outsiders immediately. If you turn it off later, the war room's next
+refusing outsiders immediately. If you turn it off later, Graded Takes' next
 refresh will fail loudly and say exactly why, rather than quietly serving you
 stale numbers.
 
@@ -72,7 +72,7 @@ That is all. Nothing else, ever.
 ## Way 2 — Paste your roster (works on a private league)
 
 Use this if you are not the commissioner, or if the league would rather stay
-private. This path is fully supported — everything the war room does works
+private. This path is fully supported — everything Graded Takes does works
 off a pasted roster. The only thing you give up is automatic refreshing.
 
 **The clicks:**
@@ -216,7 +216,7 @@ Established on 2026-09-09 by fetching real leagues, not by reading docs:
   retroactively open every past season.
 - On a public league every ESPN view works unauthenticated, so the rosters,
   settings and scoring all come through. Nothing is missing versus the
-  cookie path for the purposes of this war room.
+  cookie path for the purposes of Graded Takes.
 
 See the docstring at the top of `engine/espn_public.py` for the league IDs,
 the status codes, and how the lineup-slot and scoring-stat mappings were

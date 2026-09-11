@@ -36,7 +36,7 @@ field:
 
 | Field | What to put | Why |
 |---|---|---|
-| **Application Name** | `War Room` | Your friends see this name on Yahoo's consent screen. Use something they will recognise as yours — a name they don't recognise is a name they should refuse. |
+| **Application Name** | `Graded Takes` | Your friends see this name on Yahoo's consent screen (an app registered under the earlier working title, *War Room*, keeps showing that until you rename it here). Use something they will recognise as yours — a name they don't recognise is a name they should refuse. |
 | **Application Type** | **Installed Application** | This is a program running on your Mac, not a website. There is no server, so there is nothing for Yahoo to call back to. |
 | **Description** | `Read-only fantasy football advice tool. Reads league settings and rosters to generate draft, waiver and lineup recommendations. Never writes to Yahoo.` | Yahoo reviews this. Say read-only, because it is. |
 | **Home Page URL** | your Cloudflare Pages URL, or leave blank | Optional. |

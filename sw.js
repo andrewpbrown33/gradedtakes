@@ -1,14 +1,14 @@
 'use strict';
-/* War Room service worker - engine/pwa.py wrote this file; edit that.
+/* Graded Takes service worker - engine/pwa.py wrote this file; edit that.
 
    The whole contract in one line: this worker may make the app OPEN
    offline, and it may never make the app LIE. Anything it serves from the
    cache is rewritten with a banner that says so before it is handed over. */
 
-var CACHE  = "warroom-v1-wk1-20260909T183024";
+var CACHE  = "warroom-v1-wk1-20260910T211755";
 var PREFIX = "warroom-";
 var WEEK   = 1;
-var BUILT  = "Wed 9 Sep, 6:30 PM";
+var BUILT  = "Thu 10 Sep, 9:17 PM";
 var START  = "./home.html";
 var SHELL  = [
   "./home.html",
@@ -99,12 +99,12 @@ function nothingSaved() {
   return new Response(
     '<!doctype html><meta charset="utf-8"><meta name="referrer" content="no-referrer">'
     + '<meta name="viewport" content="width=device-width,initial-scale=1">'
-    + '<title>War Room &mdash; offline</title>'
+    + '<title>Graded Takes &mdash; offline</title>'
     + '<body style="margin:0;padding:28px;background:#F4F2EC;'
     + 'color:#101B33;'
     + 'font:15px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">'
     + '<h1 style="font-size:26px;margin:0 0 10px">Offline</h1>'
-    + '<p>War Room has no saved copy of this page yet, so it has nothing to '
+    + '<p>Graded Takes has no saved copy of this page yet, so it has nothing to '
     + 'show you and will not guess. Reconnect and open it once; after that '
     + 'it opens without a signal.</p>',
     {status: 503, headers: {'Content-Type': 'text/html; charset=utf-8'}});

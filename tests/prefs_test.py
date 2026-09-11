@@ -166,7 +166,7 @@ def walk(markup):
 # --- 1. boot ----------------------------------------------------------------
 
 _NODE_SHIM = r"""
-var attrs = {};
+var attrs = %(attrs)s;              // what is on <html> before the script runs
 var listeners = {};
 var store = %(store)s;              // null -> localStorage throws
 var root = {
@@ -226,13 +226,16 @@ console.log(JSON.stringify(out));
 """
 
 
-def _run_boot(store):
+def _run_boot(store, attrs=None):
     """Execute the boot script under node with `store` as localStorage
-    (None = the store throws). Returns the parsed result or None."""
+    (None = the store throws) and `attrs` already on <html> - the native
+    app writes data-app (and its theme) at document start, before any
+    inline script runs. Returns the parsed result or None."""
     node = shutil.which("node")
     if not node:
         return None
     src = _NODE_SHIM % {"store": "null" if store is None else json.dumps(store),
+                        "attrs": json.dumps(attrs or {}),
                         "boot": prefs.boot_js()}
     p = subprocess.run([node, "-"], input=src.encode("utf-8"),
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
@@ -351,6 +354,47 @@ def test_boot():
     check((ob.get("prefs") or {}).get("theme") == "dark" and ob.get("legacy") == "dark",
           "when the legacy toggle flips data-theme, the observer writes the "
           "theme to BOTH wr-prefs and wr-theme (%s)" % ob)
+
+    # APP MODE (ui.shell(), docs/APP_MODE.md): inside the native app the
+    # attributes on <html> are the app's. The boot script must neither
+    # paint a stored preference over them nor write anything back.
+    guard = 'if(r.hasAttribute("data-app"))return;'
+    check(guard in js and js.index(guard) < js.index("localStorage"),
+          "in app mode the script returns before it reads storage")
+    app = {"data-app": "ios", "data-theme": "dark"}
+    stale = {"wr-prefs": json.dumps({"theme": "light", "density": "compact",
+                                     "type": "large", "inbox": "top",
+                                     "quiet": True}), "wr-theme": "light"}
+    r = _run_boot(stale, app) or {}
+    b = r.get("boot") or {}
+    check("error" not in r and b.get("data-theme") == "dark"
+          and b.get("data-app") == "ios",
+          "an app-set data-theme=dark survives a stored theme=light (%s)" % b)
+    check("data-density" not in b and "data-type" not in b
+          and "data-quiet" not in b and "data-inbox" not in b,
+          "...and no stored density/type/quiet/inbox is applied - the app "
+          "sets what it wants on the same element (%s)" % b)
+    check(not r.get("listeners"),
+          "...and no handler is registered: the gear is hidden with the "
+          "header, so there is nothing for them to do (%s)" % r.get("listeners"))
+    r = _run_boot(stale, {"data-app": "ios"}) or {}
+    b = r.get("boot") or {}
+    check("error" not in r and "data-theme" not in b,
+          "with data-app set and no data-theme, the page follows the OS - "
+          "a stored theme never sneaks in (%s)" % b)
+    r = _run_boot(stale, {"data-app": "ios", "data-density": "compact",
+                          "data-theme": "broadcast"}) or {}
+    b = r.get("boot") or {}
+    check(b.get("data-density") == "compact" and b.get("data-theme") == "broadcast",
+          "the app can drive density and the signature theme through the "
+          "very same attributes (%s)" % b)
+    r = _run_boot(None, {"data-app": "ios", "data-theme": "light"}) or {}
+    check("error" not in r and (r.get("boot") or {}).get("data-theme") == "light",
+          "a blocked store in app mode is never even touched")
+    r = _run_boot({"wr-theme": "dark"}, {"data-theme": "light"}) or {}
+    check((r.get("boot") or {}).get("data-theme") == "dark",
+          "control: WITHOUT data-app a stored theme still applies as before "
+          "(%s)" % r.get("boot"))
 
 
 # --- 2. control -------------------------------------------------------------

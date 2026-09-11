@@ -42,6 +42,17 @@ Every other module coordinates through those attributes and NOTHING else:
 home.py reads data-inbox, every page that lists rows may mark a row
 data-unanimous="1", and the CSS here hides those rows under data-quiet.
 
+APP MODE (ui.shell(), docs/APP_MODE.md). Inside the native app <html>
+carries data-app="ios", the shell's header - and with it this layer's
+gear and sheet - is hidden, and the attributes above BELONG TO THE APP:
+it writes data-theme / data-density / data-type / data-quiet itself,
+before first paint, from its own settings. The CSS here keys on the
+attributes and so applies unchanged; the boot script, though, returns
+before reading storage, so a preference filed in some earlier browser
+session can never paint over what the app set, and nothing is written
+back. `data-app` is checked by presence, not value: any native shell that
+claims the root element owns it.
+
 ONE SCRIPT, NOT TWO. The boot script must be inline and pre-paint, so it
 already exists on every page; the control's handlers ride in the same
 script as delegated listeners (change / click / toggle on document). The
@@ -592,8 +603,12 @@ def control() -> str:
 # on its own: with storage blocked (a data: URL, a locked-down browser) the
 # page follows the OS and the controls still work for the session - only
 # persistence is lost. With bad JSON the preference is simply empty.
+# In app mode (data-app on <html>, set by the native app before this runs)
+# the script returns at once: the attributes are the app's, and neither
+# half - the stored preferences nor the handlers - has anything to do.
 _BOOT_JS = """(function(){try{
 var r=document.documentElement,K="%(key)s",L="%(legacy)s";
+if(r.hasAttribute("data-app"))return;
 var TH=["light","dark","%(sig)s"];
 function get(k){try{return window.localStorage.getItem(k)}catch(e){return null}}
 function put(k,v){try{window.localStorage.setItem(k,v)}catch(e){}}

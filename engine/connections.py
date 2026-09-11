@@ -1808,7 +1808,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             return 1
         return 0
 
-    print("War Room platform connections - one place for all three.")
+    print("Graded Takes platform connections - one place for all three.")
     _print_status_board()
     print("\n  1. Sleeper  (username only - no password, no keys)")
     print("  2. ESPN     (browser cookies - YOUR OWN account only)")

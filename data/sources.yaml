@@ -1,4 +1,4 @@
-# War Room creator-source registry (see engine/sources.py).
+# Graded Takes creator-source registry (see engine/sources.py).
 #
 #   id       unique kebab-slug          type     youtube|rss|url|paste|feed
 #   handle   channel URL/@handle, RSS url, page url, or builtin feed key
@@ -9,7 +9,7 @@
 
 sources:
 - id: engine
-  name: War Room Engine
+  name: Graded Takes Engine
   type: feed
   handle: engine
   enabled: true

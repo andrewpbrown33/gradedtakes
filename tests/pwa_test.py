@@ -99,9 +99,17 @@ def test_manifest():
         check(field in man and man[field] not in (None, "", [], {}),
               "declares %s (%r)" % (field, man.get(field)))
 
-    check(man.get("name") == "War Room" and man.get("short_name") == "War Room",
-          "the name and short name are both 'War Room' - the label under the "
-          "icon is never truncated into something else")
+    check(man.get("name") == "Graded Takes" and man.get("short_name") == "Graded Takes",
+          "the name and short name are both 'Graded Takes' - the label under "
+          "the icon is never truncated into something else")
+    check(pwa.APP_NAME == ui.PRODUCT_NAME and pwa.APP_SHORT == ui.PRODUCT_NAME,
+          "the manifest name IS the design system's product name - one "
+          "source, so the icon label can never drift from the wordmark")
+    check(len(str(man.get("short_name", ""))) <= 12,
+          "short_name fits the 12-character launcher budget (%d)"
+          % len(str(man.get("short_name", ""))))
+    check("War Room" not in json.dumps(man),
+          "the working title is nowhere in the manifest")
     check(man.get("display") == "standalone",
           "display is standalone - no address bar, no tabs")
     check(man.get("orientation") == "portrait",
@@ -214,7 +222,7 @@ MUST_HAVE = (
      "iOS opens it full screen"),
     ('name="apple-mobile-web-app-status-bar-style" content="black-translucent"',
      "the navy bar fills the status bar"),
-    ('name="apple-mobile-web-app-title" content="War Room"',
+    ('name="apple-mobile-web-app-title" content="Graded Takes"',
      "the label under the icon"),
     ('name="theme-color"', "the OS chrome colour"),
     ('rel="manifest"', "the manifest link"),
@@ -505,6 +513,9 @@ def test_install():
     text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", prose)).lower()
     for word in ("share", "add to home screen", "safari", "chrome"):
         check(word in text, "it says %r - the actual thing to tap" % word)
+    check("graded takes" in text and "war room" not in text
+          and "<title>Install Graded Takes</title>" in html,
+          "it names the product, Graded Takes, and never the working title")
     for jargon in ("progressive web app", "pwa", "service worker",
                    "manifest", "cache", "localstorage", "standalone"):
         # `\bpwa\b` would also hit the `engine.pwa` in the rebuild command at

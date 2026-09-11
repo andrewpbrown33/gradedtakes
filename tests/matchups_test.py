@@ -16,12 +16,28 @@ named on every table, matchup and evidence string; the blend weighting is
 source ships DISABLED so opting in never silently re-normalizes the weights
 already in data/sources.yaml.
 
-Finally the live 2025 season: 32 defenses in a valid competition ranking at
-each position on 17 games each (2025 really does contain an exact tie -
-CLE and GB allowed identical TE points - and a shared rank is the correct
-answer to that, not a bug), nflverse's 'LA' normalized to LAR, and score_row
-reproducing the file's own fantasy_points_ppr column exactly on every
-QB/RB/WR/TE row.
+FIXTURE RULE - read before editing this file:
+
+    Acceptance tests assert INVARIANTS AND BEHAVIOR against controlled
+    fixtures or an injected clock, never the contents of a live file or
+    the real date. The points-allowed table is a FUNCTION OF THE CALENDAR:
+    before week 1 it is prior-season-only ("2025 season, 17 games", loud
+    caveat, 2026 at 0%); from the first 2026 game on it is a blend ("2026
+    wk1-1 (20%%) + 2025 season (80%%)", softer caveat, 17+1 games). A check
+    that pins the live table to ONE of those states is true on Sunday and
+    false on Thursday - an expiry date, not a contract. So section 6b
+    stands the assembly code on BOTH sides of week 1 through pa_table's
+    own seam (rows_by_season=...) and pins every value exactly; the live
+    sections then assert only what is true in ANY week - the basis is in
+    matchups.py's grammar and names the prior season, the caveat is the
+    one the basis form calls for, the blend is blend_weights() of the
+    weeks actually on file, and every game count is prior + current.
+
+Finally the live season: 32 defenses in a valid competition ranking at
+each position (2025 really does contain an exact tie - CLE and GB allowed
+identical TE points - and a shared rank is the correct answer to that, not
+a bug), nflverse's 'LA' normalized to LAR, and score_row reproducing the
+file's own fantasy_points_ppr column exactly on every QB/RB/WR/TE row.
 
 register() is only ever pointed at a tempdir - this test never writes
 data/sources.yaml (same discipline as consensus.LEDGER_PATH redirection).
@@ -30,6 +46,7 @@ data/sources.yaml (same discipline as consensus.LEDGER_PATH redirection).
 """
 
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -41,8 +58,13 @@ from engine import matchups                                  # noqa: E402
 from engine import nflverse                                  # noqa: E402
 from engine import sources as sources_mod                    # noqa: E402
 from engine.models import LeagueConfig, Player               # noqa: E402
+from engine.projections import norm_team                     # noqa: E402
 
 FAILURES = []
+
+# The two seasons the engine blends. Named here, not spelled 2025/2026 in
+# the calendar checks, so the checks describe the rule and not the year.
+CUR, PRIOR = matchups.CURRENT_SEASON, matchups.PRIOR_SEASON
 
 
 def check(cond, label):
@@ -391,6 +413,186 @@ def test_blending():
           "games are summed across the blended parts (%d)" % cin["games"])
 
 
+# --- 6b. the calendar boundary, through pa_table's own seam -----------------
+#
+# Section 6 proves build_table's arithmetic on hand-weighted parts. This
+# section proves the ASSEMBLY that runs live - pa_table(): which seasons it
+# reads, how many weeks it counts, the weights it derives, and every label
+# it prints - on both sides of week 1, by handing it the rows through
+# rows_by_season=... so nflverse is never touched. Every value the live
+# section (10) can only assert as an invariant is pinned exactly here.
+
+# Flat current-season rates for every fixture defense, so each blend below
+# is one line of arithmetic against the FIX_* prior rates.
+FIX_CUR = {"QB": 15.0, "RB": 20.0, "WR": 25.0, "TE": 10.0}
+
+
+def cur_rows(weeks, season=CUR):
+    """`weeks` of flat current-season rows for every fixture defense,
+    with game ids that can never collide with the prior fixture's."""
+    rows = []
+    for w in range(1, weeks + 1):
+        for d in sorted(FIX_TE):
+            for pos, col in (("QB", "passing_yards"), ("RB", "rushing_yards"),
+                             ("WR", "receiving_yards"),
+                             ("TE", "receiving_yards")):
+                mult = 25 if pos == "QB" else 10
+                r = _row(d, w, pos, **{col: mult * FIX_CUR[pos]})
+                r["game_id"] = "FX%d_%02d_%s" % (season, w, d)
+                rows.append(r)
+    return rows
+
+
+def _cells(table, pos="TE"):
+    return list(table["by_pos"][pos]["defenses"].values())
+
+
+def test_calendar_boundary():
+    print("\n6b. THE CALENDAR BOUNDARY - pa_table on both sides of week 1")
+    league = _league()
+    prior = fixture_rows(18, byes=True)         # a completed 17-game season
+    pre_basis = "%d season, 17 games" % PRIOR
+
+    # (a) PRE-SEASON. Two ways the current season can be "not played yet":
+    #     no file at all, and a file with no rows. Both must read the same.
+    for shape, rbs in (("no %d file" % CUR, {PRIOR: prior}),
+                       ("an empty %d file" % CUR, {PRIOR: prior, CUR: []})):
+        pre = matchups.pa_table(league, rows_by_season=rbs)
+        check(pre["basis"] == pre_basis,
+              "[%s] basis reads %r" % (shape, pre_basis))
+        check(pre["prior_only"] is True,
+              "[%s] the table is flagged prior_only" % shape)
+        check(pre["caveat"].startswith("Basis is %s - NOT %d" % (pre_basis, CUR))
+              and "changed" in pre["caveat"],
+              "[%s] the loud caveat: names the basis, says NOT %d, says "
+              "things have changed" % (shape, CUR))
+        check(pre["blend"] == {"weeks_played": 0, "current": 0.0,
+                               "prior": 1.0,
+                               "halflife": matchups.PRIOR_HALFLIFE},
+              "[%s] %d contributes 0%% - zero weeks played" % (shape, CUR))
+        check(any("%d has no completed games on file" % CUR in n
+                  for n in pre["notes"]),
+              "[%s] the notes say the current season has no games" % shape)
+    pre = matchups.pa_table(league, rows_by_season={PRIOR: prior, CUR: []})
+    check(all(c["games"] == 17 and not c["thin"]
+              for pos in matchups.PA_POSITIONS for c in _cells(pre, pos)),
+          "pre-season: every defense at every position is graded on "
+          "exactly the prior season's 17 games, none thin")
+    cin = pre["by_pos"]["TE"]["defenses"]["CIN"]
+    check(abs(cin["pa_per_game"] - FIX_TE["CIN"]) < 0.01,
+          "pre-season: the rate IS the prior rate, unblended (22.0)")
+    ev = matchups.evidence_for(cin, pre, "TE", "ppr")
+    check(ev.endswith("basis: %s; %d rosters and schemes have changed since."
+                      % (pre_basis, CUR)),
+          "pre-season: the evidence carries the basis AND the "
+          "schemes-have-changed warning: %r" % ev)
+    m = matchups.matchup_for(_p("Fixture TE", "TE", "ATL"), 1, league,
+                             table=pre, schedule=FIX_SCHEDULE)
+    check(m["prior_only"] is True and m["basis"] == pre_basis
+          and "have changed since" in m["evidence"],
+          "pre-season: the matchup dict is prior_only with the same basis "
+          "and warning")
+
+    # (b) IN-SEASON, ONE WEEK - the real shape of the Thursday after the
+    #     Wednesday-night opener. The documented weight at one week is 20%.
+    one = matchups.pa_table(league,
+                            rows_by_season={PRIOR: prior, CUR: cur_rows(1)})
+    one_basis = "%d wk1-1 (20%%) + %d season (80%%)" % (CUR, PRIOR)
+    check(one["blend"] == {"weeks_played": 1, "current": 0.2, "prior": 0.8,
+                           "halflife": matchups.PRIOR_HALFLIFE},
+          "one week played: the blend is blend_weights(1) = 20/80")
+    check(one["basis"] == one_basis,
+          "one week: the basis names both seasons, the week span and the "
+          "documented shares: %r" % one["basis"])
+    check(one["prior_only"] is False,
+          "one week: prior_only clears the moment a current game is on file")
+    check(one["caveat"].startswith("Blended basis (%s)" % one_basis)
+          and "still young" in one["caveat"]
+          and "NOT %d" % CUR not in one["caveat"],
+          "one week: the caveat SOFTENS - 'still young', no longer "
+          "'NOT %d': %r" % (CUR, one["caveat"]))
+    check(not any("no completed games" in n for n in one["notes"]),
+          "one week: the no-games note is gone")
+    te_cin = one["by_pos"]["TE"]["defenses"]["CIN"]
+    rb_cin = one["by_pos"]["RB"]["defenses"]["CIN"]
+    check(abs(te_cin["pa_per_game"] - (0.2 * 10.0 + 0.8 * 22.0)) < 0.01
+          and abs(rb_cin["pa_per_game"] - (0.2 * 20.0 + 0.8 * 8.0)) < 0.01,
+          "one week: rates are the documented 20/80 blend (TE 19.6, RB 10.4)")
+    check(all(c["games"] == 18 and not c["thin"]
+              for pos in matchups.PA_POSITIONS for c in _cells(one, pos)),
+          "one week: every defense is on 17 + 1 = 18 games, none thin")
+    check(te_cin["rank"] == 1 and rb_cin["rank"] == 12,
+          "one week: a one-game sample moves the rate but cannot flip a "
+          "17-game ranking (CIN still 1st vs TE, 12th vs RB)")
+    ev = matchups.evidence_for(te_cin, one, "TE", "ppr")
+    check(ev.endswith("basis: %s." % one_basis)
+          and "have changed since" not in ev,
+          "one week: the evidence carries the blended basis and drops the "
+          "schemes-have-changed warning: %r" % ev)
+    m = matchups.matchup_for(_p("Fixture TE", "TE", "ATL"), 1, league,
+                             table=one, schedule=FIX_SCHEDULE)
+    check(m["prior_only"] is False and m["basis"] == one_basis,
+          "one week: the matchup dict carries the blended basis, not "
+          "prior_only")
+
+    # (c) THE WEIGHTS TRACK THE DOCUMENTED TABLE as weeks accrue, the prior
+    #     share falls monotonically, and it never reaches zero.
+    expect = {2: (33, 67, 19), 4: (50, 50, 21), 8: (67, 33, 25),
+              17: (81, 19, 34)}
+    shares = [1.0, one["blend"]["prior"]]
+    for weeks, (pc, pp, games) in sorted(expect.items()):
+        t = matchups.pa_table(league, rows_by_season={PRIOR: prior,
+                                                      CUR: cur_rows(weeks)})
+        want = "%d wk1-%d (%d%%) + %d season (%d%%)" % (CUR, weeks, pc,
+                                                       PRIOR, pp)
+        check(t["basis"] == want,
+              "%d weeks: basis %r" % (weeks, want))
+        check(t["blend"]["weeks_played"] == weeks
+              and (t["blend"]["current"], t["blend"]["prior"])
+              == matchups.blend_weights(weeks),
+              "%d weeks: the blend dict is blend_weights(%d) of the weeks "
+              "on file" % (weeks, weeks))
+        cin = t["by_pos"]["TE"]["defenses"]["CIN"]
+        wc, wp = matchups.blend_weights(weeks)
+        check(abs(cin["pa_per_game"] - (wc * 10.0 + wp * 22.0)) < 0.01
+              and cin["games"] == games,
+              "%d weeks: CIN TE rate is the weighted blend (%.1f) on %d "
+              "games" % (weeks, cin["pa_per_game"], games))
+        check(t["prior_only"] is False and "still young" in t["caveat"],
+              "%d weeks: still a blend, still caveated" % weeks)
+        shares.append(t["blend"]["prior"])
+    check(all(a > b for a, b in zip(shares, shares[1:])),
+          "the prior season's share falls strictly with every added week: "
+          "%s" % " > ".join("%.0f%%" % (100 * s) for s in shares))
+    check(shares[-1] > 0.15,
+          "...and never vanishes (%.0f%% at 17 weeks)" % (100 * shares[-1]))
+    full = matchups.pa_table(league, rows_by_season={PRIOR: prior,
+                                                     CUR: cur_rows(18)})
+    check(full["basis"] == "%d season (82%%) + %d season (18%%)"
+          % (CUR, PRIOR),
+          "a COMPLETED current season reads 'season', and still names the "
+          "prior at 18%%: %r" % full["basis"])
+
+    # (d) THE EDGES of "is week 1 on file": rows without a week number are
+    #     not a played week; a current season with NO prior file is graded
+    #     on itself alone and says so with a game count, no percentages.
+    junk = [dict(r, week="") for r in cur_rows(1)]
+    edge = matchups.pa_table(league, rows_by_season={PRIOR: prior,
+                                                     CUR: junk})
+    check(edge["basis"] == pre_basis and edge["prior_only"] is True
+          and edge["blend"]["weeks_played"] == 0,
+          "current rows with no week number do not count as a played "
+          "week - the table stays prior-only")
+    alone = matchups.pa_table(league, rows_by_season={CUR: cur_rows(4)})
+    check(alone["basis"] == "%d wk1-4, 4 games" % CUR
+          and alone["prior_only"] is False and alone["caveat"] == "",
+          "no prior file: the current season stands alone with a game "
+          "count and no blend caveat: %r" % alone["basis"])
+    check(all(c["games"] == 4 and not c["thin"] for c in _cells(alone)),
+          "...on exactly its own 4 games (the thin line is %d)"
+          % matchups.MIN_GAMES)
+
+
 # --- 7. the source ships DISABLED ------------------------------------------
 
 def test_source_disabled():
@@ -572,13 +774,36 @@ def test_highlighting():
           "top/bottom N is honoured (N=3)")
 
 
-# --- 10. live 2025 season ---------------------------------------------------
+# --- 10. live season ---------------------------------------------------------
+#
+# Everything here is true in ANY week. The exact values for each side of
+# week 1 are pinned in 6b; this section proves the live assembly obeys the
+# same rules on whatever nflverse holds today, by cross-checking the table
+# against the raw rows it was built from rather than against a calendar.
 
-def test_live_2025():
-    print("\n10. LIVE 2025 - the real leaguewide table")
+_BASIS_ONE = re.compile(r"^(\d{4}) (?:season|wk1-\d+), (\d+) games$")
+_BASIS_BLEND = re.compile(r"^(\d{4}) (?:season|wk1-(\d+)) \((\d+)%\) \+ "
+                          r"(\d{4}) season \((\d+)%\)$")
+
+
+def _games_on_file(rows):
+    """{defense: distinct game ids} straight from raw rows - the same count
+    points_allowed() makes, recomputed here without it."""
+    seen = {}
+    for r in rows:
+        opp = norm_team(r.get("opponent_team") or "")
+        gid = str(r.get("game_id") or "")
+        if opp and gid:
+            seen.setdefault(opp, set()).add(gid)
+    return dict((d, len(g)) for d, g in seen.items())
+
+
+def test_live_season():
+    print("\n10. LIVE - the real leaguewide table, whatever week it is")
     league = LeagueConfig.load(os.path.join(HERE, "leagues", "espn-1.yaml"))
-    rows = nflverse.fetch_weekly_stats(2025)
-    check(len(rows) > 15000, "2025 weekly stats fetched (%d rows)" % len(rows))
+    rows = nflverse.fetch_weekly_stats(PRIOR)
+    check(len(rows) > 15000,
+          "%d weekly stats fetched (%d rows)" % (PRIOR, len(rows)))
     check(all(r.get("season_type") == "REG" for r in rows),
           "REG filter applied - no playoff games in a per-game rate")
 
@@ -595,16 +820,75 @@ def test_live_2025():
           "score_row reproduces nflverse's own PPR column on all %d "
           "QB/RB/WR/TE rows (%d mismatches)" % (checked, bad))
 
+    # Build the live table FIRST, then read the same cached files it just
+    # read (same freshness windows), so the cross-checks below see exactly
+    # the rows the table was assembled from.
     table = matchups.pa_table(league)
-    check(table["basis"] == "2025 season, 17 games",
-          "live basis is %r" % table["basis"])
-    check(table["prior_only"] is True and "NOT 2026" in table["caveat"],
-          "the live table is flagged prior-season-only with a loud caveat")
-    check(table["blend"]["weeks_played"] == 0
-          and table["blend"]["current"] == 0.0,
-          "2026 contributes 0% - week 1 has not been played")
+    try:
+        cur_live = nflverse.fetch_weekly_stats(CUR, max_age_hours=24.0)
+    except RuntimeError:
+        cur_live = []
+    weeks_on_file = set()
+    for r in cur_live:
+        try:
+            weeks_on_file.add(int(str(r.get("week") or "").strip() or 0))
+        except ValueError:
+            pass
+    weeks_on_file.discard(0)
+    n_weeks = len(weeks_on_file)
+    print("      today: %d %s week(s) on file (%s) -> basis %r"
+          % (n_weeks, CUR, ", ".join(str(w) for w in sorted(weeks_on_file))
+             or "none", table["basis"]))
+
+    one = _BASIS_ONE.match(table["basis"])
+    blend = _BASIS_BLEND.match(table["basis"])
+    check(bool(one) != bool(blend),
+          "the live basis is in matchups.py's grammar - one season with a "
+          "game count, or two seasons with their shares: %r"
+          % table["basis"])
+    check(str(PRIOR) in table["basis"],
+          "the basis names the prior season - it never leaves the blend")
+    check(table["blend"]["weeks_played"] == n_weeks,
+          "weeks_played (%d) is the count of distinct %d weeks on file "
+          "(%d) - the engine read the same file this test did"
+          % (table["blend"]["weeks_played"], CUR, n_weeks))
+    check((table["blend"]["current"], table["blend"]["prior"])
+          == matchups.blend_weights(n_weeks),
+          "the live weights are blend_weights(%d) = %s - the documented "
+          "formula applied to the weeks on file"
+          % (n_weeks, matchups.blend_weights(n_weeks)))
+    if n_weeks == 0:
+        state = "PRE-SEASON"
+        consistent = (bool(one) and one.group(1) == str(PRIOR)
+                      and table["prior_only"] is True
+                      and "NOT %d" % CUR in table["caveat"]
+                      and str(CUR) not in table["basis"])
+    else:
+        state = "IN-SEASON"
+        consistent = (bool(blend) and blend.group(1) == str(CUR)
+                      and blend.group(4) == str(PRIOR)
+                      and int(blend.group(3))
+                      == round(100 * table["blend"]["current"])
+                      and int(blend.group(5))
+                      == round(100 * table["blend"]["prior"])
+                      and table["prior_only"] is False
+                      and "still young" in table["caveat"]
+                      and "NOT %d" % CUR not in table["caveat"])
+    check(consistent,
+          "%s: basis, prior_only, caveat and shares all agree with the "
+          "weeks on file (basis %r, prior_only %s)"
+          % (state, table["basis"], table["prior_only"]))
     check(table["scoring"] == "ppr",
           "the table was built in espn-1's full-PPR scoring")
+
+    prior_games = _games_on_file(rows)
+    cur_games = _games_on_file(cur_live)
+    check(len(prior_games) == 32 and set(prior_games.values()) == {17},
+          "the %d file is a completed season: 32 defenses, 17 games each"
+          % PRIOR)
+    check(all(0 <= n <= n_weeks for n in cur_games.values()),
+          "no defense has more %d games on file than weeks played (%d)"
+          % (CUR, n_weeks))
 
     for pos in matchups.PA_POSITIONS:
         block = table["by_pos"][pos]
@@ -624,10 +908,19 @@ def test_live_2025():
               "%s: the only shared ranks are EXACT rate ties (%s) - ranking "
               "uses the full-precision rate, not the 2dp display value"
               % (pos, ", ".join(str(r) for r in shared) or "none"))
-        check(all(c["games"] == 17 for c in block["defenses"].values()),
-              "%s: every defense graded on 17 games" % pos)
-        check(not any(c["thin"] for c in block["defenses"].values()),
-              "%s: no thin samples in a completed season" % pos)
+        off = [(c["defense"], c["games"],
+                prior_games.get(c["defense"], 0)
+                + cur_games.get(c["defense"], 0)) for c in cells
+               if c["games"] != prior_games.get(c["defense"], 0)
+               + cur_games.get(c["defense"], 0)]
+        check(not off,
+              "%s: every defense's game count is its %d games + its %d "
+              "games on file (%s)"
+              % (pos, PRIOR, CUR,
+                 "; ".join("%s %d != %d" % o for o in off[:3]) or "all 32"))
+        check(not any(c["thin"] for c in cells),
+              "%s: no thin samples - a completed prior season underwrites "
+              "every cell" % pos)
         grades = [c["grade"] for c in block["defenses"].values()]
         check(1 <= grades.count("SMASH") <= 4
               and 1 <= grades.count("AVOID") <= 4,
@@ -648,7 +941,7 @@ def test_live_2025():
 # --- 11. live week-1 grades for the user's espn-1 starters -----------------
 
 def test_live_roster():
-    print("\n11. LIVE - week-1 grades for the espn-1 roster")
+    print("\n11. LIVE - week-1 grades for the espn-1 roster, whatever week it is")
     from engine import lineup as lineup_mod
     from engine import weekly
     from engine.ingest import Matcher
@@ -677,10 +970,18 @@ def test_live_roster():
           "every grade is one of %s" % ", ".join(matchups.GRADES))
     check(all(m["opponent"] for m in graded),
           "every graded player has a real week-1 opponent from the schedule")
-    check(all("2025" in m["evidence"] for m in graded),
-          "every graded evidence string names its 2025 basis")
-    check(all(m["prior_only"] for m in graded),
-          "every graded row is flagged prior_only pre-week-1")
+    check(all(str(PRIOR) in m["evidence"] for m in graded),
+          "every graded evidence string names the prior season - it never "
+          "leaves the blend, whatever the week")
+    check(all(m["prior_only"] == table["prior_only"]
+              and m["basis"] == table["basis"] for m in graded),
+          "every graded row carries the table's own basis and prior_only "
+          "flag (today: prior_only=%s, %r)"
+          % (table["prior_only"], table["basis"]))
+    check(all(("rosters and schemes have changed since" in m["evidence"])
+              == m["prior_only"] for m in graded),
+          "the schemes-have-changed warning rides on the evidence exactly "
+          "when the grade is prior-only, and only then")
     check(all(m["vote"] == matchups.VOTE_ON.get(m["pa_grade"])
               for m in graded),
           "the vote on every row matches the published grade->vote rule")
@@ -716,10 +1017,11 @@ def main():
     test_scoring_sensitivity()
     test_basis_label()
     test_blending()
+    test_calendar_boundary()
     test_source_disabled()
     test_consensus_integration()
     test_highlighting()
-    test_live_2025()
+    test_live_season()
     test_live_roster()
 
     print("\n" + "=" * 74)

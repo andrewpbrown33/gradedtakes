@@ -1,6 +1,6 @@
 {
-  "name": "War Room",
-  "short_name": "War Room",
+  "name": "Graded Takes",
+  "short_name": "Graded Takes",
   "description": "Your fantasy teams, read by one model: lineup verdicts, the waiver board, the trade desk and the week's ledger.",
   "id": "./",
   "start_url": "./home.html",

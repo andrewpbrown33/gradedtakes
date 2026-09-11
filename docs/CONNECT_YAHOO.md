@@ -26,7 +26,8 @@ check the address bar; if it isn't Yahoo, don't type anything.
 
 That screen will tell you two things:
 
-* **which app is asking** — it'll be named *War Room*, which is mine
+* **which app is asking** — it'll be named *Graded Takes*, which is mine
+  (an older registration may still show its earlier name, *War Room*)
 * **what it's asking for** — **Fantasy Sports: Read**
 
 Read means read. The tool can see your league settings, your roster, your
@@ -62,7 +63,7 @@ by someone holding my app's secret. It is not a password and not a login.
 Any time, without asking me, without telling me:
 
 **Yahoo → Account Info → Recent activity → "Apps connected to your account" →
-find *War Room* → Remove.**
+find *Graded Takes* (or *War Room*) → Remove.**
 
 (Yahoo also lists third-party connections under **Account Security → External
 connections**. Either route works.)

@@ -1,5 +1,5 @@
 #!/bin/bash
-# THE PUBLISH PIPELINE - one private copy of War Room per person in
+# THE PUBLISH PIPELINE - one private copy of Graded Takes per person in
 # users.yaml. Renders THEIR leagues, assembles public/<token>/, asserts that
 # nothing in it belongs to anybody else, and publishes. If any assertion
 # fails, nothing is published for ANYONE and the exit code is 2.

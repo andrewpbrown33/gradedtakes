@@ -67,6 +67,22 @@ off a phone:
   .wr-scroll box, and the compact row's nowrap must not leak into the
   score breakdown (it did, and laid four sentences out on one 2100px line).
 
+FIXTURE RULE - read before editing the live renders:
+
+  Two of the board's inputs are FUNCTIONS OF THE CALENDAR, and a check
+  that pins the live page to one side of week 1 is true on Sunday and
+  false on Thursday - an expiry date, not a contract. Lock state is one
+  (build_page takes `now`); the matchup BASIS is the other: before the
+  first 2026 game every meter cites "2025 season, 17 games" and warns that
+  rosters and schemes have changed, from the first game on it cites a
+  blend ("2026 wk1-1 (20%) + 2025 season (80%)") and the warning softens
+  to "the sample is still young". build_page takes `pa_rows_by_season`
+  for exactly this reason: the espn-1 render is repeated with fixture
+  rows on BOTH sides of the boundary and every label pinned exactly, and
+  the live render asserts only what is true in any week - one basis on
+  the page in engine/matchups.py's grammar, the caveat the basis form
+  calls for, and every rated meter's title carrying that basis.
+
     .venv/bin/python tests/board_test.py
 """
 
@@ -85,6 +101,7 @@ sys.path.insert(0, HERE)
 
 from engine import board                                    # noqa: E402
 from engine import dk as dk_mod                             # noqa: E402
+from engine import matchups as matchups_mod                 # noqa: E402
 from engine import ui                                       # noqa: E402
 from engine.models import LeagueConfig                      # noqa: E402
 
@@ -1330,6 +1347,64 @@ def test_palette(html, tag):
           % (tag, sorted(tones)))
 
 
+# --- the matchup basis on the page ------------------------------------------
+#
+# engine/matchups.py prints its basis in one of two forms: a single season
+# with a game count ('2025 season, 17 games' / '2026 wk1-3, 3 games') or a
+# weighted blend ('2026 wk1-1 (20%) + 2025 season (80%)'). The DST/K block
+# prints its own bd-basis line naming engine/streaming, so the matchup
+# lines are picked out by that grammar rather than by the div alone.
+
+_BASIS_ONE = re.compile(r"^\d{4} (?:season|wk1-\d+), \d+ games$")
+_BASIS_BLEND = re.compile(r"^\d{4} (?:season|wk1-\d+) \(\d+%\) \+ "
+                          r"\d{4} season \(\d+%\)$")
+
+NFL_DEFENSES = ("ARI", "ATL", "BAL", "BUF", "CAR", "CHI", "CIN", "CLE", "DAL",
+                "DEN", "DET", "GB", "HOU", "IND", "JAX", "KC", "LAC", "LAR",
+                "LV", "MIA", "MIN", "NE", "NO", "NYG", "NYJ", "PHI", "PIT",
+                "SEA", "SF", "TB", "TEN", "WAS")
+
+
+def _pa_rows(season, weeks, byes=False):
+    """Synthetic nflverse weekly stat rows for all 32 defenses.
+
+    Every defense allows a different rate (rising with its index) so the
+    fixture table grades the whole ladder, SMASH to AVOID; `byes` gives
+    each defense one week off in weeks 5-8 so an 18-week season is the
+    NFL's 17 games. Game ids carry the season, so two seasons' rows can
+    never be mistaken for one.
+    """
+    rows = []
+    for week in range(1, weeks + 1):
+        for i, d in enumerate(NFL_DEFENSES):
+            if byes and week == 5 + (i % 4):
+                continue
+            base = {"season_type": "REG", "week": str(week),
+                    "opponent_team": d, "team": "OFF",
+                    "game_id": "FX%d_%02d_%s" % (season, week, d)}
+            for pos, col, yds in (("QB", "passing_yards", 25 * (12 + 0.5 * i)),
+                                  ("RB", "rushing_yards", 10 * (10 + 0.6 * i)),
+                                  ("WR", "receiving_yards", 10 * (20 + 0.8 * i)),
+                                  ("TE", "receiving_yards", 10 * (6 + 0.4 * i))):
+                row = dict(base, position=pos)
+                row[col] = "%g" % yds
+                rows.append(row)
+    return rows
+
+
+def _matchup_bases(html):
+    """The distinct matchup basis strings printed under the meters."""
+    found = re.findall(r'<div class="bd-ev bd-basis">basis: ([^<]*)</div>',
+                       html)
+    return sorted(set(b for b in found
+                      if _BASIS_ONE.match(b) or _BASIS_BLEND.match(b)))
+
+
+def _rated_titles(html):
+    """Every rated meter's title: 'matchup GOOD (4/5) vs DAL - ...'."""
+    return re.findall(r'title="(matchup [A-Z]+ \(\d/5\)[^"]*)"', html)
+
+
 def test_live_espn():
     print("\n[7] live - espn-1 (FULL data: 8 of 8 rosters known)")
     html = board.build_page("espn-1", 1)
@@ -1353,10 +1428,33 @@ def test_live_espn():
     check("allowed" in html and "pts/game" in html,
           "espn-1: the dossier carries engine/matchups.py's evidence "
           "sentence, not a bare grade")
-    check("rosters and schemes have changed" in html,
-          "espn-1: a prior-season matchup basis states that it is one")
     check('<div class="bd-ev bd-basis">basis:' in html,
           "espn-1: the matchup basis line is printed under the meter")
+    # THE BASIS IS A FUNCTION OF THE CALENDAR (see the FIXTURE RULE in the
+    # module docstring). The live page is asserted against the RULE - one
+    # basis, in matchups.py's grammar, with the caveat that form calls for
+    # - and the two fixture renders below pin each side of week 1 exactly.
+    bases = _matchup_bases(html)
+    basis = bases[0] if bases else ""
+    check(len(bases) == 1,
+          "espn-1: every matchup row on the page cites ONE basis, in "
+          "matchups.py's grammar (%s)" % (", ".join(bases) or "none found"))
+    check(str(matchups_mod.PRIOR_SEASON) in basis,
+          "espn-1: the basis names the prior season whatever the week - "
+          "%d never leaves the blend (%r)" % (matchups_mod.PRIOR_SEASON,
+                                             basis))
+    blended = bool(_BASIS_BLEND.match(basis))
+    prior_said = "rosters and schemes have changed" in html
+    young_said = "sample is still young" in html
+    check(prior_said != young_said and young_said == blended,
+          "espn-1: exactly one honesty caveat, and it is the one the basis "
+          "form calls for (%s basis -> %s)"
+          % ("blended" if blended else "prior-only",
+             "'still young'" if young_said else "'schemes have changed'"))
+    titles = _rated_titles(html)
+    check(titles and all(("basis: " + basis) in t for t in titles),
+          "espn-1: every rated matchup carries its step and the page's "
+          "basis, year and all (%d titles)" % len(titles))
     # One render, reused by the structural checks - build_page is the
     # expensive call in this suite and there is no reason to pay it twice.
     test_board_structure(html, "espn-1")
@@ -1366,10 +1464,6 @@ def test_live_espn():
           "espn-1: the call reads as a share of the room")
     check(_count(r'<span class="mdl-mu">', html) > 0,
           "espn-1: the 1-5 matchup rating rides beside the call")
-    check(_count(r'title="matchup [A-Z]+ \(\d/5\)', html) > 0
-          and "basis: 2025" in html,
-          "espn-1: every rated matchup carries its step and basis year in "
-          "the title")
     check(_count(r'<details class="(wr-score|bd-score)', html) > 0,
           "espn-1: rows carry a tappable score cell")
     # LOCK STATE IS A FUNCTION OF THE CLOCK, so asserting a fixed answer
@@ -1378,9 +1472,21 @@ def test_live_espn():
     # fail a "nothing is locked" check. build_page takes `now` precisely so
     # this can be tested honestly - render the same league on both sides of
     # a real kickoff and assert the behaviour FLIPS.
+    #
+    # THE MATCHUP BASIS is the other calendar-driven input, and it rides on
+    # the same two renders: the "before" world has no current-season rows
+    # on file (pa_rows_by_season with an empty current season), the "after"
+    # world has two weeks of them. Both fixtures cover all 32 defenses so
+    # every rostered player's opponent is graded on both sides.
+    PRIOR, CUR = matchups_mod.PRIOR_SEASON, matchups_mod.CURRENT_SEASON
+    prior_rows = _pa_rows(PRIOR, 18, byes=True)
+    pre_basis = "%d season, 17 games" % PRIOR
+    mid_basis = "%d wk1-2 (33%%) + %d season (67%%)" % (CUR, PRIOR)
     _before = board.build_page("espn-1", 1,
                                now=datetime(2026, 9, 1, 12, 0,
-                                            tzinfo=timezone.utc))
+                                            tzinfo=timezone.utc),
+                               pa_rows_by_season={PRIOR: prior_rows,
+                                                  CUR: []})
     # Count locked ROWS, not the word: the rebuilt board has a "LOCKED IN"
     # section (unanimous starts) and the legend carries one padlock glyph
     # explaining the symbol, so both appear whatever the clock says.
@@ -1391,7 +1497,9 @@ def test_live_espn():
           "(got %d)" % _locked_rows(_before))
     _after = board.build_page("espn-1", 1,
                               now=datetime(2026, 12, 1, 12, 0,
-                                           tzinfo=timezone.utc))
+                                           tzinfo=timezone.utc),
+                              pa_rows_by_season={PRIOR: prior_rows,
+                                                 CUR: _pa_rows(CUR, 2)})
     check(_locked_rows(_after) > 0,
           "espn-1: with the clock past every week-1 kickoff, rows lock "
           "(got %d)" % _locked_rows(_after))
@@ -1399,6 +1507,45 @@ def test_live_espn():
           "espn-1: locking is driven by the clock, not by the roster "
           "(%d locked after vs %d before)"
           % (_locked_rows(_after), _locked_rows(_before)))
+
+    # PRE-SEASON: prior-season-only, said loudly on every surface.
+    check(_matchup_bases(_before) == [pre_basis],
+          "espn-1 pre-season: every meter cites %r and nothing else"
+          % pre_basis)
+    check("rosters and schemes have changed" in _before
+          and "NOT %d" % CUR in _before
+          and "sample is still young" not in _before,
+          "espn-1 pre-season: the page says the rosters and schemes have "
+          "changed and that this is NOT %d - and never calls the sample "
+          "young" % CUR)
+    pre_titles = _rated_titles(_before)
+    pre_tail = ("basis: %s; %d rosters and schemes have changed since."
+                % (pre_basis, CUR))
+    check(pre_titles and all(pre_tail in t for t in pre_titles),
+          "espn-1 pre-season: every rated title carries its step, the "
+          "%d basis and the schemes-have-changed warning (%d titles)"
+          % (PRIOR, len(pre_titles)))
+
+    # IN-SEASON: a blend with the documented shares, and the caveat softens.
+    check(_matchup_bases(_after) == [mid_basis],
+          "espn-1 in-season: every meter cites the blend %r and nothing "
+          "else" % mid_basis)
+    check("sample is still young" in _after
+          and "rosters and schemes have changed" not in _after
+          and "NOT %d" % CUR not in _after,
+          "espn-1 in-season: the caveat softens to 'still young' - the "
+          "schemes-have-changed warning and 'NOT %d' are gone" % CUR)
+    mid_titles = _rated_titles(_after)
+    check(mid_titles
+          and all(("basis: %s." % mid_basis) in t for t in mid_titles)
+          and not any("have changed since" in t for t in mid_titles),
+          "espn-1 in-season: every rated title carries its step and the "
+          "blended basis, both years and shares (%d titles)"
+          % len(mid_titles))
+    check(all("(%d/5)" % board.MATCHUP_STEPS[t.split()[1]] in t
+              for t in pre_titles + mid_titles),
+          "espn-1 both sides: the step in every title is MATCHUP_STEPS of "
+          "the grade it names")
 
 
 def test_live_yahoo():

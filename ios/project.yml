@@ -52,7 +52,7 @@ options:
 settings:
   base:
     # ---- signing ---------------------------------------------------------
-    DEVELOPMENT_TEAM: ""        # <-- your 10-character Team ID goes between the quotes
+    DEVELOPMENT_TEAM: "Z93HYKN87F"  # ANDREW PATRICK BROWN - read from Xcode after Team was selected
     CODE_SIGN_STYLE: Automatic
     # ---- versions: kept at project level so the app and the widget always
     #      agree (App Store Connect rejects a mismatch: ITMS-90473). Bump

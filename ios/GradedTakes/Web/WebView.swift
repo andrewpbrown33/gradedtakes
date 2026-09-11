@@ -20,6 +20,13 @@
 //  page that might lack it. Nothing that starts inside this web view can
 //  carry the private link to another host.
 //
+//  App mode and theme: PageSchemeHandler stamps <html data-app="ios"
+//  data-theme="light|dark"> on every page it serves, so the page knows it
+//  is inside the shell and paints in the phone's theme from the first
+//  frame. When the appearance changes while a page is up, the trait
+//  change is forwarded into the live document (themeScript) so the page
+//  follows the phone without a reload.
+//
 //  Swift 6: WKNavigationDelegate is a @MainActor protocol, so the
 //  Coordinator is @MainActor and uses the async policy method (the
 //  completion-handler form's handler became @MainActor in the iOS 18 SDK
@@ -80,6 +87,11 @@ struct WebView: UIViewRepresentable {
             injectionTime: .atDocumentStart,
             forMainFrameOnly: false
         ))
+        config.userContentController.addUserScript(WKUserScript(
+            source: Self.appModeScript,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: true
+        ))
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
@@ -97,6 +109,16 @@ struct WebView: UIViewRepresentable {
         refresh.tintColor = Brand.uiGold
         refresh.addTarget(context.coordinator, action: #selector(Coordinator.refreshPulled(_:)), for: .valueChanged)
         webView.scrollView.refreshControl = refresh
+
+        // Appearance changed while a page is showing: retint the live
+        // document. (The next page load is stamped by the scheme handler.)
+        // UIKit calls trait-change handlers on the main thread; the
+        // closure type is not annotated, hence assumeIsolated.
+        webView.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: WKWebView, _: UITraitCollection) in
+            MainActor.assumeIsolated {
+                view.evaluateJavaScript(Self.themeScript(PageSchemeHandler.theme(of: view)), completionHandler: nil)
+            }
+        }
 
         context.coordinator.webView = webView
         proxy.webView = webView
@@ -119,6 +141,22 @@ struct WebView: UIViewRepresentable {
     var m=d.createElement('meta');m.setAttribute('name','referrer');m.setAttribute('content','no-referrer');\
     (d.head||d.documentElement).appendChild(m);}catch(e){}})();
     """
+
+    /// Belt and braces for app mode: the scheme handler already stamps
+    /// data-app="ios" into the served bytes (PageMarkup); this sets it at
+    /// document start on any main-frame document that arrived without it,
+    /// before the page's own scripts run (docs/APP_MODE.md: the shell's
+    /// theme script steps aside when data-app is present).
+    static let appModeScript = """
+    (function(){try{var r=document.documentElement;\
+    if(!r.hasAttribute('data-app'))r.setAttribute('data-app','\(PageMarkup.app)');}catch(e){}})();
+    """
+
+    /// Sets data-theme on the live document to the phone's appearance.
+    /// `theme.rawValue` is "light" or "dark" - never reader input.
+    static func themeScript(_ theme: PageMarkup.Theme) -> String {
+        "(function(){try{document.documentElement.setAttribute('data-theme','\(theme.rawValue)');}catch(e){}})();"
+    }
 
     // MARK: Coordinator
 
