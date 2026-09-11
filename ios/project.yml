@@ -1,0 +1,199 @@
+# GRADED TAKES - iOS shell. XcodeGen spec (https://github.com/yonaskolb/XcodeGen)
+#
+# This file IS the Xcode project. GradedTakes.xcodeproj is generated from it
+# and is not committed; regenerate with  ./ios/generate.sh  after any edit
+# here (the script uses the vendored binary in tools/xcodegen/). Anything you
+# change inside Xcode's project editor is lost on the next generate - the
+# entitlements files, asset catalogs and Swift sources are real files on disk
+# and survive; build settings live here.
+#
+# ┌───────────────────────────────────────────────────────────────────────┐
+# │ ONE THING TO FILL IN: DEVELOPMENT_TEAM (below, under settings.base). │
+# │ Your Team ID is 10 characters, e.g. AB12CD34EF. Find it at            │
+# │ https://developer.apple.com/account -> Membership details -> Team ID  │
+# │ (or in Xcode: Settings -> Accounts -> your Apple ID -> the Team row). │
+# │ Put it between the quotes, save, run ./ios/generate.sh, reopen Xcode. │
+# └───────────────────────────────────────────────────────────────────────┘
+#
+# Names are a contract with the Swift sources - do not rename:
+#   app target    GradedTakes        bundle id  com.gradedtakes.app
+#   widget target GradedTakesWidget  bundle id  com.gradedtakes.app.widget
+#   app group     group.com.gradedtakes.app   (set in the .entitlements files)
+#
+# Layout the spec expects (Swift files are picked up automatically):
+#   ios/GradedTakes/*.swift         app sources          (+ Assets.xcassets,
+#                                   GradedTakes.entitlements, PrivacyInfo.xcprivacy)
+#   ios/GradedTakesWidget/*.swift   widget sources       (+ Assets.xcassets,
+#                                   GradedTakesWidget.entitlements, PrivacyInfo.xcprivacy)
+#   ios/Shared/*.swift              OPTIONAL - compiled into BOTH targets
+#                                   (e.g. the WidgetState struct the app writes
+#                                   and the widget reads). Absent today; the
+#                                   spec tolerates that.
+# There is deliberately no bundled page snapshot: every reader has a different
+# private link, so pages baked into the binary would be one person's pages on
+# everyone's phone. Offline is the on-device cache the app fills itself.
+
+name: GradedTakes
+
+options:
+  minimumXcodeGenVersion: "2.46.0"
+  bundleIdPrefix: com.gradedtakes
+  deploymentTarget:
+    iOS: "17.0"                 # Xcode 27 debugs iOS 17+; iOS 26 is not forced on the league
+  developmentLanguage: en
+  createIntermediateGroups: true
+  generateEmptyDirectories: false
+  groupSortPosition: top
+  # Xcode's "autocreate schemes" makes a scheme for the widget on first open;
+  # the app scheme is written explicitly below.
+
+# Project-wide build settings. Everything a new Xcode 26 project sets by
+# default that matters, made explicit so the file documents itself.
+settings:
+  base:
+    # ---- signing ---------------------------------------------------------
+    DEVELOPMENT_TEAM: ""        # <-- your 10-character Team ID goes between the quotes
+    CODE_SIGN_STYLE: Automatic
+    # ---- versions: kept at project level so the app and the widget always
+    #      agree (App Store Connect rejects a mismatch: ITMS-90473). Bump
+    #      MARKETING_VERSION for a new release, CURRENT_PROJECT_VERSION for
+    #      every upload (each TestFlight build needs a higher number). ------
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: 1
+    # ---- Swift 6, strict concurrency, explicit isolation --------------------
+    #      nonisolated default (not Xcode 26's MainActor default) so protocol
+    #      conformances such as UNUserNotificationCenterDelegate and
+    #      TimelineProvider behave exactly as documented and the sources say
+    #      @MainActor where they mean it.
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    # ---- iPhone only. Declaring iPad support would force 13" iPad
+    #      screenshots at submission (docs/APPSTORE.md, Assets). ------------
+    TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTED_PLATFORMS: iphoneos iphonesimulator
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    # ---- asset catalog symbols (Color(.navy), .paper, .gold) -----------------
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+    ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    # ---- hygiene ------------------------------------------------------------
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ENABLE_PREVIEWS: YES
+    GCC_TREAT_WARNINGS_AS_ERRORS: NO
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    Release:
+      VALIDATE_PRODUCT: YES
+
+targets:
+
+  # ===========================================================================
+  # The app: SwiftUI shell hosting WKWebView, native push, offline cache,
+  # share sheet. Embeds the widget extension.
+  # ===========================================================================
+  GradedTakes:
+    type: application
+    platform: iOS
+    sources:
+      - path: GradedTakes
+      - path: Shared
+        optional: true
+    dependencies:
+      - target: GradedTakesWidget    # embedded as PlugIns/GradedTakesWidget.appex
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gradedtakes.app
+        PRODUCT_NAME: GradedTakes
+        # XcodeGen's iOS preset writes "1,2" (iPhone+iPad) at target level,
+        # which would override the project-level "1" above. Repeated here so
+        # the app stays iPhone-only. Same in the widget target.
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_IDENTITY: Apple Development
+        # Hand-maintained file (Xcode's "+ Capability" button edits it in place
+        # and the edit survives regeneration). Push, Time Sensitive, App Group.
+        CODE_SIGN_ENTITLEMENTS: GradedTakes/GradedTakes.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: GradedTakes/Info.plist      # generated from the keys below on every ./ios/generate.sh
+      properties:
+        CFBundleDisplayName: Graded Takes
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.sports
+        LSRequiresIPhoneOS: true
+        UIRequiredDeviceCapabilities: [arm64]
+        # SwiftUI App lifecycle is scene-based (required for apps built with
+        # the iOS 27 SDK). Same key Xcode's SwiftUI template generates; one
+        # scene, iPhone never shows more than one.
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        # Launch screen: system-generated, painted in the Paper colour from
+        # Assets.xcassets so there is no white flash before the web view.
+        UILaunchScreen:
+          UIColorName: Paper
+        # Portrait only. The pages are tuned at 375/390/430pt widths.
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        # Push. Alert pushes need no background mode; remote-notification is
+        # here for the silent pre-fetch push that warms the Sunday page
+        # before the visible "ruled out" alert lands.
+        UIBackgroundModes:
+          - remote-notification
+        # App Transport Security is NOT relaxed. Everything is HTTPS to
+        # gradedtakes.com; the web view only ever loads local files.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+          NSAllowsArbitraryLoadsInWebContent: false
+        # No usage-description keys: the shell calls no Face ID, Photos,
+        # camera, location or contacts API. Add the matching NS*UsageDescription
+        # here the day one is added (a missing key is a crash on the device).
+        # Deep link the widget opens: gradedtakes://calls (handled by .onOpenURL)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.gradedtakes.app
+            CFBundleURLSchemes: [gradedtakes]
+            CFBundleTypeRole: Viewer
+        # Only HTTPS via URLSession/WKWebView - OS-provided encryption, exempt
+        # from export documentation (docs/APPSTORE.md, Export compliance).
+        # Revisit if you ever add your own cryptography.
+        ITSAppUsesNonExemptEncryption: false
+    scheme: {}                       # "GradedTakes" scheme: Run on a simulator or your iPhone, Archive for TestFlight
+
+  # ===========================================================================
+  # The widget: "2 calls need you" on the home screen and lock screen.
+  # Reads widget.json from the shared App Group container; never touches the
+  # network or the private link.
+  # ===========================================================================
+  GradedTakesWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: GradedTakesWidget
+      - path: Shared
+        optional: true
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gradedtakes.app.widget
+        PRODUCT_NAME: GradedTakesWidget
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_IDENTITY: Apple Development
+        CODE_SIGN_ENTITLEMENTS: GradedTakesWidget/GradedTakesWidget.entitlements
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+        SKIP_INSTALL: YES
+    info:
+      path: GradedTakesWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Graded Takes
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension

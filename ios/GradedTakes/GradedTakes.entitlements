@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Stays "development" in this file. When Xcode signs an archive with a
+	     distribution profile (TestFlight / App Store) the value is taken from
+	     the profile and becomes "production". Do not edit it by hand. -->
+	<key>aps-environment</key>
+	<string>development</string>
+	<!-- Time Sensitive interruption level: "your starter was just ruled out".
+	     A real Boolean entitlement, "Time Sensitive Notifications" in Xcode's
+	     capability list. Not the "critical" entitlement, which needs Apple's
+	     approval - this one does not. -->
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
+	<!-- Shared container the widget reads its "N calls need you" state from.
+	     Must match GradedTakesWidget.entitlements exactly. -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.gradedtakes.app</string>
+	</array>
+</dict>
+</plist>

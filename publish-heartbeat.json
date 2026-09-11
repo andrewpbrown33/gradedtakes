@@ -31,7 +31,7 @@
       "pages": 10,
       "person": "Andrew",
       "person_fingerprint": "a30a76067342",
-      "published_at": "2026-09-10T03:40:44Z",
+      "published_at": "2026-09-10T18:23:27Z",
       "pwa": true,
       "schema": "warroom.publish.heartbeat/2",
       "stamped_weeks": [
@@ -43,5 +43,5 @@
   },
   "public_dir": "/Users/andrewbrown/Desktop/War Room/public",
   "schema": "warroom.publish.heartbeat/2",
-  "written_at": "2026-09-10T03:42:01Z"
+  "written_at": "2026-09-10T18:24:19Z"
 }

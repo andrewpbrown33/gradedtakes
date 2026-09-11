@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- ================================================================
+	     TODO - BEFORE THE APP STORE PRIVACY "NUTRITION LABEL" (docs/APPSTORE.md
+	     section 9, Privacy; docs/TESTFLIGHT.md section 10).
+
+	     NSPrivacyCollectedDataTypes below is EMPTY, yet on every launch the
+	     app POSTs the APNs device token plus a SHA-256 fingerprint of the
+	     reader's private link to the owner's server, which keeps them
+	     (ios/GradedTakes/Push/Push.swift, "THE SERVER CONTRACT"). Under
+	     Apple's definition, "collect" means transmitting data off the device
+	     in a way that lets you access it for longer than the request itself.
+
+	     The owner must decide, before filling in the App Privacy label in
+	     App Store Connect, whether that token counts as
+	         Identifiers -> Device ID, purpose "App Functionality"
+	     (and whether it is "linked to the user" via the link fingerprint),
+	     and then make THIS manifest and the label say the same thing. Apple
+	     cross-checks the two. Nothing in this file is that decision; it has
+	     deliberately not been guessed here.
+	     ================================================================ -->
+	<!-- No tracking, no ad networks, no analytics, no third-party SDKs.
+	     Nothing leaves the device except the APNs device token (to the
+	     Graded Takes server) and page fetches of the user's own private link. -->
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array/>
+	<!-- "Required reason" APIs this shell may touch. Declaring a reason for an
+	     API you do not call is harmless; omitting one you do call earns an
+	     ITMS-91053 warning at upload. -->
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<!-- UserDefaults: CA92.1 = the app's own defaults; 1C8F.1 = an
+			     app-group suite shared with the widget. -->
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CA92.1</string>
+				<string>1C8F.1</string>
+			</array>
+		</dict>
+		<dict>
+			<!-- File timestamps: C617.1 = shown to the user. The offline
+			     banner's "Saved copy - fetched Sun 14 Sep 09:12" is exactly
+			     this use. -->
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>C617.1</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

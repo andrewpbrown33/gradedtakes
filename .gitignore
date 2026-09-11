@@ -55,3 +55,28 @@ __pycache__/
 .claude/
 data/*.bak
 data/*.bak2
+
+# ── iOS SHELL (ios/) ────────────────────────────────────────────────────
+# The APNs auth key. Downloadable from Apple exactly once; a leaked one lets
+# anyone push to every reader's phone. Lives in ~/secrets/, never here.
+*.p8
+AuthKey_*.p8
+ios/*.p8
+# Generated from ios/project.yml by ./ios/generate.sh - regenerate, don't commit.
+ios/*.xcodeproj/
+ios/GradedTakes/Info.plist
+ios/GradedTakesWidget/Info.plist
+# Xcode's per-user state and build output.
+ios/**/xcuserdata/
+ios/**/*.xcuserstate
+ios/**/*.xcuserdatad/
+ios/DerivedData/
+ios/build/
+ios/**/*.xcarchive
+ios/**/*.ipa
+ios/**/*.dSYM.zip
+ios/.swiftpm/
+ios/**/.swiftpm/
+# Vendored XcodeGen: 14 MB binary, restored by tools/xcodegen/get.sh.
+tools/xcodegen/xcodegen/
+tools/xcodegen/xcodegen.zip
