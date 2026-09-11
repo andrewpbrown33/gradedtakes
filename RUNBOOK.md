@@ -252,6 +252,15 @@ name last:
    local now -> ONE WEEK of league beta with The Original 8 -> then
    public-platform setup (hosting, accounts, per-user credentials, and a
    hard-gate commercial re-audit of every data feed before launch).
+0b. **DECIDED (Sep 10, 2026): per-user data lives in Supabase.** The owner's
+   existing Supabase Pro org (Pro, not Free - Free pauses after 7 idle days
+   and this product is idle Feb-Aug). First use: the Model page - each
+   reader's source weights and enabled sources, keyed by their private-link
+   fingerprint until real auth arrives; the weekly render reads them so the
+   digest and notifications honour what the reader set. Write path = a
+   small Vercel function holding the service key; pages never carry a
+   Supabase key. Later: Yahoo tokens (Vault), the accuracy ledger,
+   suggestions queue, magic-link auth.
 1. **DONE - Model Settings** (creator inputs + weights + consensus):
    shipped, gated, branded.
 2. **NEXT - grounded UI mockups**: navy/gold family (#101B33 / #182848 /
@@ -262,10 +271,13 @@ name last:
    self-tests the onboarding with his own accounts when built.
 4. **DOWNSTREAM - keeper leagues setting**: none of Andrew's leagues keep,
    but ship it as a per-league toggle (engine.keeper already exists).
-5. **LAST - name + domain decision.** Available .coms as of Aug 30 whois:
-   leaguewarroom, mymodelfantasy, sundayformula, myfantasymodel,
-   modelroomhq, weightedroom, yourmodelhq, modelballhq, secretformulahq
-   (whois "no match" = strong signal; confirm at registrar checkout).
+5. **DONE - name + domain: Graded Takes, gradedtakes.com.** The pages'
+   wordmark, the manifest, install.html and the docs say Graded Takes;
+   "War Room" stays only in internal identifiers (repo folder, `warroom.py`,
+   `wr-` CSS prefix, `com.warroom.*` launchd labels, cache names).
+   (Candidates weighed as of Aug 30 whois: leaguewarroom, mymodelfantasy,
+   sundayformula, myfantasymodel, modelroomhq, weightedroom, yourmodelhq,
+   modelballhq, secretformulahq.)
 
 ## J. THE BOARD — the whole week as one picture (built; run it beside the digest)
 
