@@ -252,6 +252,16 @@ name last:
    local now -> ONE WEEK of league beta with The Original 8 -> then
    public-platform setup (hosting, accounts, per-user credentials, and a
    hard-gate commercial re-audit of every data feed before launch).
+0d. **Sep 11, 2026 — design feedback on the swatches.** DECIDED: the matchup
+   grade is a bipolar centred scale (right = good, green; left = avoid, red);
+   colour follows position, not a one-way fill. UNDER REVIEW before any
+   further build: (1) the gold accent throughout - owner: "feels cheap or
+   diminishes the quality"; (2) the gold-diamond logo - owner does not like
+   it; brand mark to be rethought; (3) source monograms and category glyphs
+   "don't stick" - source iconography to be rethought. KEEP: the obsidian
+   glass quality. NEXT: owner shares a best-practices guidebook; assistant
+   asks clarifying questions before implementing; mockups reviewed together
+   before continuing.
 0c. **DECIDED (Sep 10, 2026): the app's look and tab bar.** Obsidian glass
    theme approved (direction; see design/obsidian/). MODEL replaces LEDGER as
    the fifth tab. The Ledger (Tuesday digest) stays reachable off the tab

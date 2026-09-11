@@ -8,6 +8,19 @@ The one-sentence version: **the text ladder never takes a hue; hue is carried by
 
 ---
 
+
+> **OWNER DECISION 2026-09-11 — supersedes the matchup rows below and R1's matchup clause.**
+> The matchup grade is a **bipolar scale, centred by default**: neutral sits in the middle,
+> a good matchup weights the indicator to the RIGHT, a matchup to avoid weights it to the
+> LEFT. Colour follows position on the scale — **green toward the right, red toward the
+> left** — not a one-directional fill. R1 keeps verdicts (START/SIT/TOSS-UP), status and
+> urgency out of red/green; the matchup scale is the named exception. Tune both hues for
+> obsidian (lifted, desaturated) and prove ≥ 4.5:1 for any label and ≥ 3:1 for the bar.
+>
+> **UNDER REVIEW (same date):** the gold accent itself ("feels cheap"), the gold-diamond
+> mark, and source monograms/category glyphs ("don't stick"). Do not extend gold's role
+> until resolved; see RUNBOOK 0d.
+
 ## 0. The palette, on one page
 
 Ratios are WCAG 2.x contrast. "min text" is the minimum over the six obsidian grounds a token can sit on (canvas `#0A0C12`, panel `#12151D`, raised `#1C202B`, raised-2 `#262A35`, the brightest native-ground pixel `#2A3145`, the 78 % card over that pixel `#171B26`). "fill / ink" is navy `chip-ink #101B33` on the token as a fill. "pill" is the token as a glyph on the tab bar's selection pill over the worst glass (`#353946`; non-text floor 3:1). Hue/chroma/lightness are OKLCH ([Ottosson](https://bottosson.github.io/posts/oklab/)); HSV is given because the critic's existing scan speaks HSV.
