@@ -69,15 +69,6 @@
      "overall": 64
     },
     {
-     "player": "Rico Dowdle",
-     "pos": "RB",
-     "nfl": "PIT",
-     "bye": 9,
-     "proj": 186.1,
-     "round": 10,
-     "overall": 80
-    },
-    {
      "player": "Josh Downs",
      "pos": "WR",
      "nfl": "IND",
@@ -120,12 +111,6 @@
      "bye": 8
     },
     {
-     "player": "Evan McPherson",
-     "pos": "K",
-     "nfl": "CIN",
-     "bye": 6
-    },
-    {
      "player": "Dontayvion Wicks",
      "pos": "WR",
      "nfl": "PHI",
@@ -142,6 +127,18 @@
      "pos": "DEF",
      "nfl": "SF",
      "bye": 8
+    },
+    {
+     "player": "Blake Grupe",
+     "pos": "K",
+     "nfl": "LAR",
+     "bye": 11
+    },
+    {
+     "player": "Dameon Pierce",
+     "pos": "RB",
+     "nfl": "PHI",
+     "bye": 10
     }
    ]
   },
@@ -519,15 +516,6 @@
      "overall": 61
     },
     {
-     "player": "Jalen Hurts",
-     "pos": "QB",
-     "nfl": "PHI",
-     "bye": 10,
-     "proj": 320.3,
-     "round": 9,
-     "overall": 68
-    },
-    {
      "player": "Sam LaPorta",
      "pos": "TE",
      "nfl": "DET",
@@ -808,15 +796,6 @@
      "overall": 54
     },
     {
-     "player": "DJ Moore",
-     "pos": "WR",
-     "nfl": "BUF",
-     "bye": 7,
-     "proj": 209.5,
-     "round": 8,
-     "overall": 59
-    },
-    {
      "player": "Rhamondre Stevenson",
      "pos": "RB",
      "nfl": "NE",
@@ -892,16 +871,22 @@
      "bye": 13
     },
     {
-     "player": "Keon Coleman",
-     "pos": "WR",
-     "nfl": "BUF",
-     "bye": 7
-    },
-    {
      "player": "Dominic Zvada",
      "pos": "K",
      "nfl": "NYG",
      "bye": 8
+    },
+    {
+     "player": "Pat Freiermuth",
+     "pos": "TE",
+     "nfl": "PIT",
+     "bye": 9
+    },
+    {
+     "player": "Tre Tucker",
+     "pos": "WR",
+     "nfl": "LV",
+     "bye": 13
     }
    ]
   },
