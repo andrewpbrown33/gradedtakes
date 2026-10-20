@@ -13,35 +13,35 @@ sources:
   type: feed
   handle: engine
   enabled: true
-  weight: 17
+  weight: 12
   notes: 'Built-in: weekly projections + lineup verdicts.'
 - id: espn-proj
   name: ESPN Projections
   type: feed
   handle: espn-proj
   enabled: true
-  weight: 17
+  weight: 20
   notes: 'Built-in: ESPN kona weekly projections.'
 - id: sleeper-proj
   name: Sleeper Projections
   type: feed
   handle: sleeper-proj
   enabled: true
-  weight: 11
+  weight: 24
   notes: 'Built-in: Sleeper weekly projections.'
 - id: chen-tiers
   name: Boris Chen Tiers
   type: feed
   handle: chen-tiers
   enabled: true
-  weight: 11
+  weight: 14
   notes: 'Built-in: Boris Chen clustering tiers.'
 - id: sharp-or-square
   name: Sharp or Square (Millman & Hunter)
   type: rss
   handle: https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/291fe8ed-f80d-4107-9ee1-b34c015266d0/51f38aeb-0341-43f7-a21b-b34c01526b07/podcast.rss
   enabled: true
-  weight: 17
+  weight: 6
   notes: Millman+Hunter's show on The Volume (they left Action Network; The Favorites
     now has different hosts). BETTING lens - game scripts/totals, not start/sit. RSS
     gives episode blurbs only, so auto-extraction yields few calls; paste specific
@@ -52,7 +52,7 @@ sources:
   type: feed
   handle: engine
   enabled: true
-  weight: 10
+  weight: 6
   notes: data/player_intel.yaml - the Aug 29 five-desk verdicts (2+ sources each,
     skeptic-passed).
 - id: the-favorites
@@ -60,7 +60,7 @@ sources:
   type: youtube
   handle: https://www.youtube.com/@TheActionNetwork
   enabled: true
-  weight: 17
+  weight: 8
   notes: Action Network channel (The Favorites + fantasy shows). Mixed feed - betting/MLB/CFB
     dropped by the fantasy filter.
   topic_filter: fantasy

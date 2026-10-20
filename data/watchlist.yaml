@@ -1,0 +1,102 @@
+# Trade watchlist for The Original 8 (espn-1).
+league: espn-1
+updated: '2026-10-20'
+note: 'Players Andrew flagged for trades (interest: High/Medium) plus Claude suggestions. Calls use Weeks
+  1-6 usage.'
+players:
+- player: Ashton Jeanty
+  pos: RB
+  team: LV
+  owner: Ugly Nabers
+  interest: High
+  action: Buy
+  why: 61% of carries and 17% of targets. His usage is worth 21.0 pts/game but he's scoring 16.7. Ugly
+    Nabers already has two QBs (Dak, Bryce Young), so offer Purdy for Jeanty and replace Purdy from waivers
+    (C.J. Stroud, QB5, 18.7 pts/game).
+- player: Chase Brown
+  pos: RB
+  team: CIN
+  owner: Minnesota Mommies
+  interest: High
+  action: Buy
+  why: Three-down role (64% of carries, 15–17% of targets); scoring 13.0 pts/game on usage worth 16.1.
+    His owner is RB-deep and has only one TE (Fannin), so offer Kelce for Brown.
+- player: Quinshon Judkins
+  pos: RB
+  team: CLE
+  owner: Carnell Sin
+  interest: High
+  action: Buy
+  why: 61% of carries over the last two games; 2.7 pts/game below his usage. Carnell Sin has 6 RBs, with
+    McLaurin out and Addison questionable, so they need WRs. Offer Downs + Wicks.
+- player: J.K. Dobbins
+  pos: RB
+  team: DEN
+  owner: JacksOn Rice
+  interest: High
+  action: Buy
+  why: 17 carries in Week 6, a 61% carry share over the last two games, 3.2 pts/game below his usage.
+    JacksOn Rice has Adams on IR and Rice questionable. Offer Downs for Dobbins straight up.
+- player: Michael Wilson
+  pos: WR
+  team: ARI
+  owner: Minnesota Mommies
+  interest: Medium
+  action: Buy
+  why: 'The biggest buy-low WR in the league: usage worth 17.2 pts/game, scoring 11.8. Add him to the
+    Kelce for Chase Brown talks if they want more.'
+- player: Travis Kelce
+  pos: TE
+  team: KC
+  owner: You
+  interest: High
+  action: Sell
+  why: Scoring 12.4 pts/game on usage worth 9.1. A sell-high. Schultz (TE14, 9.3 pts/game) can hold TE,
+    or claim Hockenson or Goedert.
+- player: Josh Downs
+  pos: WR
+  team: IND
+  owner: You
+  interest: High
+  action: Sell
+  why: 8 targets in Week 6, but his share has fallen to 17% since Keenan Allen arrived. His points (8.9/game)
+    are actually below his usage (11.7), so he isn't a sell-high. Use him as the second piece of a deal,
+    not the headliner.
+- player: Emeka Egbuka
+  pos: WR
+  team: TB
+  owner: Parker? I hardly know her
+  interest: Suggested
+  action: Buy
+  why: 'New: a 38% target share over the last two games, 2.9 pts/game below his usage. A WR1 workload
+    at a WR3 price.'
+- player: Colston Loveland
+  pos: TE
+  team: CHI
+  owner: Ugly Nabers
+  interest: Suggested
+  action: Buy
+  why: 'Your TE replacement if Kelce goes: 85% of snaps and 3.5 pts/game below his usage. Ugly Nabers
+    has 3 TEs.'
+- player: Courtland Sutton
+  pos: WR
+  team: DEN
+  owner: JacksOn Rice
+  interest: Suggested
+  action: Buy (throw-in)
+  why: 3.1 pts/game below his usage. Ask for him as a throw-in with Dobbins.
+- player: Tony Pollard
+  pos: RB
+  team: TEN
+  owner: You
+  interest: Hold
+  action: Hold
+  why: 80% of carries over the last two games. His usage is worth 11.6 pts/game vs 8.6 actual, so his
+    scoring should rise.
+- player: Dameon Pierce
+  pos: RB
+  team: PHI
+  owner: You
+  interest: Hold
+  action: Hold
+  why: 77% of carries and 86% of snaps in Week 6 (15 pts). His value depends on how long Barkley is out.
